@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as fabric from "fabric";
 import { EraserBrush } from "@erase2d/fabric";
+import "../assets/css/Canvas.css"
 
 const DEFAULT_COLOR = "#000000";
 const DEFAULT_WIDTH = 10;
@@ -181,7 +182,7 @@ export const App = () => {
   }, [canvas, histories.redo]);
 
   return (
-    <div>
+    <div >
       <button onClick={changeToRed}>赤色に変更</button>
       <button onClick={changeToBlack}>黒色に変更</button>
       <button onClick={changeToThick}>太くする</button>
@@ -189,8 +190,10 @@ export const App = () => {
       <button onClick={changeToEraser}>消しゴム</button>
       <button onClick={undo}>undo</button>
       <button onClick={redo}>redo</button>
-      <canvas ref={canvasEl} width="1000" height="1000" />
-    </div>
+      <div class="canvas_box">
+        <canvas ref={canvasEl}  width="700" height="400" />
+        {/* TODO:幅整える */}
+      </div></div>
   );
 };
 

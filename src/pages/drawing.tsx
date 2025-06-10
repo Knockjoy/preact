@@ -2,7 +2,7 @@ import react from "react";
 import { useLocation, Navigate, useNavigate } from "react-router-dom";
 
 import App from "../components/camvas.tsx";
-
+import "../assets/css/Drawing.css"
 const Drawing = () => {
     
     const navigate =useNavigate();
@@ -14,10 +14,34 @@ const Drawing = () => {
         return <Navigate to={"/home"} replace />
     }
     return (
-        <div>
-            <h1>draw</h1>
-            <button onClick={changePage}>確定</button>
-            <App></App>
+        <div class="box">
+          <button onClick={changePage}>go to battle</button>
+        {/* <link rel="stylesheet" href="../assets/css/Drawing.css" /> */}
+            <div class="canvas">
+    <App class="canvas"></App>
+  </div>
+
+  <div class="card-slider">
+    <div class="arrow" onclick="scrollCards(-1)">&#8592;</div>
+    <div class="cards-container" id="cardsContainer">
+      <div class="card">cards</div>
+      <div class="card"></div>
+      <div class="card"></div>
+      <div class="card"></div>
+      <div class="card"></div>
+      <div class="card"></div>
+    </div>
+    <div class="arrow" onclick="scrollCards(1)">&#8594;</div>
+  </div>
+
+  {/* <script>
+    function scrollCards(direction) {
+      const container = document.getElementById('cardsContainer');
+      const scrollAmount = 120;
+      container.scrollLeft += direction * scrollAmount;
+    }
+  </script> */}
+
         </div>
     );
 }

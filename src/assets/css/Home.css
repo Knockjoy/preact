@@ -1,0 +1,19 @@
+.TitleBox{
+    text-align: center;
+    padding: 15vh;
+}
+
+.Title{
+    font-size: 3em;
+    
+}
+
+.HeaderBox{
+padding: 1.5%;
+background-color: whitesmoke;
+border-bottom: solid gray 1.5px;
+flex-direction: column;
+}
+.Setting{
+
+}
