@@ -216,7 +216,7 @@ export const App = () => {
 
     isCanvasLocked.current = false;
   }, [canvas, histories.redo]);
-
+  // TODO:ショートカットキー対応
   return (
     <div >
       <div class="ColorBox">
