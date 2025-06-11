@@ -35,35 +35,4 @@
       width: 90%;
     }
 
-    .arrow {
-      font-size: 30px;
-      cursor: pointer;
-      padding: 0 10px;
-      user-select: none;
-    }
-
-    .cards-container {
-      display: flex;
-      justify-content: center; /* 中央寄せ */
-      align-items: center;      /* 縦方向中央 */
-      gap: 20px;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      flex-grow: 1;
-    }
-
-    .card {
-      min-width: 100px;
-      height: 140px;
-      background-color: #e0e0e0;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-weight: bold;
-    }
-
-    .cards-container::-webkit-scrollbar {
-      display: none;
-    }
+    

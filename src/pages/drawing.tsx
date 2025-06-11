@@ -3,6 +3,8 @@ import { useLocation, Navigate, useNavigate } from "react-router-dom";
 
 import App from "../components/camvas.tsx";
 import "../assets/css/Drawing.css"
+import "../assets/css/Cards.css"
+
 const Drawing = () => {
     
     const navigate =useNavigate();

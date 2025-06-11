@@ -2,6 +2,7 @@ import react from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Home from "./home";
 import "../assets/css/Battle.css"
+import "../assets/css/Cards.css"
 
 const Battle = () => {
     const location = useLocation();

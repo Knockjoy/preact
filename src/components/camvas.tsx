@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import * as fabric from "fabric";
 import { EraserBrush } from "@erase2d/fabric";
 import "../assets/css/Canvas.css"
+import useWindowWidth from "../hooks/pageWidth.ts"
 
 const DEFAULT_COLOR = "#000000";
 const DEFAULT_WIDTH = 10;
@@ -46,6 +47,36 @@ export const App = () => {
     canvas.freeDrawingBrush.color = "#ff0000";
     canvas.freeDrawingBrush.width = width;
     setColor("#ff0000");
+  };
+
+  const changeToBlue = () => {
+    if (canvas?.freeDrawingBrush === undefined) {
+      return;
+    }
+    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+    canvas.freeDrawingBrush.color = "#0000ff";
+    canvas.freeDrawingBrush.width = width;
+    setColor("#0000ff");
+  };
+
+  const changeToYellow = () => {
+    if (canvas?.freeDrawingBrush === undefined) {
+      return;
+    }
+    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+    canvas.freeDrawingBrush.color = "#ffff00";
+    canvas.freeDrawingBrush.width = width;
+    setColor("#ffff00");
+  };
+
+  const changeToGreen = () => {
+    if (canvas?.freeDrawingBrush === undefined) {
+      return;
+    }
+    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+    canvas.freeDrawingBrush.color = "#008000";
+    canvas.freeDrawingBrush.width = width;
+    setColor("#008000");
   };
 
   const changeToBlack = () => {
@@ -183,15 +214,21 @@ export const App = () => {
 
   return (
     <div >
-      <button onClick={changeToRed}>赤色に変更</button>
-      <button onClick={changeToBlack}>黒色に変更</button>
-      <button onClick={changeToThick}>太くする</button>
-      <button onClick={changeToThin}>細くする</button>
-      <button onClick={changeToEraser}>消しゴム</button>
-      <button onClick={undo}>undo</button>
-      <button onClick={redo}>redo</button>
+      <div class="ColorBox">
+        
+        <div class="ColorButton" style={{background:"red"}} onClick={changeToRed}></div>
+        <div class="ColorButton" style={{background:"blue"}} onClick={changeToBlue}></div>
+        <div class="ColorButton" style={{background:"yellow"}} onClick={changeToYellow}></div>
+        <div class="ColorButton" style={{background:"green"}} onClick={changeToGreen}></div>
+        <div class="ColorButton" style={{background:"black"}} onClick={changeToBlack}></div>
+        <button onClick={changeToThick}>太くする</button>
+        <button onClick={changeToThin}>細くする</button>
+        <button onClick={changeToEraser}>消しゴム</button>
+        <button onClick={undo}>undo</button>
+        <button onClick={redo}>redo</button>
+      </div>
       <div class="canvas_box">
-        <canvas ref={canvasEl}  width="700" height="400" />
+        <canvas ref={canvasEl} width={useWindowWidth()} height="400" />
         {/* TODO:幅整える */}
       </div></div>
   );
