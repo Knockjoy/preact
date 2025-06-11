@@ -3,6 +3,11 @@ import * as fabric from "fabric";
 import { EraserBrush } from "@erase2d/fabric";
 import "../assets/css/Canvas.css"
 import useWindowWidth from "../hooks/pageWidth.ts"
+import edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
+import border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg"
+import ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
+import redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
+import undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
 
 const DEFAULT_COLOR = "#000000";
 const DEFAULT_WIDTH = 10;
@@ -215,17 +220,16 @@ export const App = () => {
   return (
     <div >
       <div class="ColorBox">
-        
         <div class="ColorButton" style={{background:"red"}} onClick={changeToRed}></div>
         <div class="ColorButton" style={{background:"blue"}} onClick={changeToBlue}></div>
         <div class="ColorButton" style={{background:"yellow"}} onClick={changeToYellow}></div>
         <div class="ColorButton" style={{background:"green"}} onClick={changeToGreen}></div>
         <div class="ColorButton" style={{background:"black"}} onClick={changeToBlack}></div>
-        <button onClick={changeToThick}>太くする</button>
-        <button onClick={changeToThin}>細くする</button>
-        <button onClick={changeToEraser}>消しゴム</button>
-        <button onClick={undo}>undo</button>
-        <button onClick={redo}>redo</button>
+        <img src={border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="太くする" onClick={changeToThick}/>
+        <img src={edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="細くする" onClick={changeToThin} />
+        <img src={ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="消しゴム" onClick={changeToEraser} />
+        <img src={undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="元に戻す" onClick={undo} />
+        <img src={redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="取り消し" onClick={redo} />
       </div>
       <div class="canvas_box">
         <canvas ref={canvasEl} width={useWindowWidth()} height="400" />

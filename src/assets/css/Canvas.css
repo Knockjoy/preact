@@ -16,6 +16,7 @@
     border-radius: 10px;
     justify-content: center;
     display: flex;
+    width: 25%;
 }
 
 .ColorButton{
