@@ -17,14 +17,61 @@
     justify-content: space-around;
     display: flex;
     width: 20vw;
+    position: absolute;
+    z-index: 1;
 }
 
 .ColorButton{
     border-radius: 50%;
     padding: 10px;
-    width: 10px;
+    width: 10px;    
     height: 10px;
     border: 1px solid;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position:   relative;
 
+}
+.ColorButtonGap{
+    padding: 1%;
+}
+
+.undermenubox{
+    width: 100vw;
+    height: 20vh;
+    flex-direction: row;
+    display: flex;
+}
+
+.gotobattlebox {
+    width: 15%;
+    background-color: aqua;
+    margin: 20px 0px 20px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+}
+
+.gotobattleButton {
+    border-radius: 10px;
+    background: blue;
+    /* height: 40%; */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.undermenuGap{
+    width:5%;
+}
+.undermenu{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
 }

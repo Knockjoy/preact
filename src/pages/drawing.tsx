@@ -17,13 +17,16 @@ const Drawing = () => {
     }
     return (
         <div class="box">
-          <button onClick={changePage}>go to battle</button>
+          {/* <button onClick={changePage}>go to battle</button> */}
         {/* <link rel="stylesheet" href="../assets/css/Drawing.css" /> */}
             <div class="canvas">
     <App class="canvas"></App>
   </div>
 
-  <div class="card-slider">
+    <div class="undermenubox">
+      <div class="undermenuGap"></div>
+      <div class="undermenu">
+        <div class="card-slider">
     <div class="arrow" onclick="scrollCards(-1)">&#8592;</div>
     <div class="cards-container" id="cardsContainer">
       <div class="card">cards</div>
@@ -35,6 +38,13 @@ const Drawing = () => {
     </div>
     <div class="arrow" onclick="scrollCards(1)">&#8594;</div>
   </div>
+<div class="gotobattlebox" onClick={changePage}>
+<span>Go to Battle</span>
+</div>
+</div>
+<div className="undermenuGap"></div>
+    </div>
+
 
   {/* <script>
     function scrollCards(direction) {

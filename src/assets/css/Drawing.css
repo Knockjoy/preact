@@ -13,7 +13,7 @@
     .canvas {
       margin-top: 20px;
       width: 90%;
-      height: 80vh; /* 画面の高さの80% */
+      height: 73vh; /* 画面の高さの80% */
       background-color: white;
       border-radius: 20px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
