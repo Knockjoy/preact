@@ -1,6 +1,6 @@
   .canvas {
       width: 90%;
-      height: 80vh;
+      height: 73vh;
       margin-top: 20px;
       background-color: #ffffff;
       border-radius: 20px;
@@ -34,5 +34,3 @@
       font-weight: bold;
       box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
     }
-
-    

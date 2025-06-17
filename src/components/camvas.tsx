@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import * as fabric from "fabric";
 import { EraserBrush } from "@erase2d/fabric";
 import "../assets/css/Canvas.css";
+import "../assets/css/Drawing.css"
 import useWindowWidth from "../hooks/pageWidth.ts";
 import useWindowHeight from "../hooks/pageHeight.ts";
 import { SketchPicker } from 'react-color';
@@ -19,7 +20,7 @@ export const App = () => {
 
   const [width, setWidth] = useState(DEFAULT_WIDTH);
   const [color, setColor] = useState(DEFAULT_COLOR);
-  const [picker,setPicker]=useState(DEFAULT_COLOR);
+  const [picker, setPicker] = useState(DEFAULT_COLOR);
   useEffect(() => {
     if (canvasEl.current === null) {
       return;
@@ -95,13 +96,13 @@ export const App = () => {
     setColor("#000000");
   };
 
-  const handleChange=(color_)=>{
+  const handleChange = (color_) => {
     canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
     canvas.freeDrawingBrush.width = width
-    const r=parseInt(color_.rgb["r"],10).toString(16).padEnd(2,"0");
-    const g=parseInt(color_.rgb["g"],10).toString(16).padEnd(2,"0");
-    const b=parseInt(color_.rgb["b"],10).toString(16).padEnd(2,"0");
-    const colorCode=`#${r}${g}${b}`.toUpperCase();
+    const r = parseInt(color_.rgb["r"], 10).toString(16).padEnd(2, "0");
+    const g = parseInt(color_.rgb["g"], 10).toString(16).padEnd(2, "0");
+    const b = parseInt(color_.rgb["b"], 10).toString(16).padEnd(2, "0");
+    const colorCode = `#${r}${g}${b}`.toUpperCase();
     canvas.freeDrawingBrush.color = colorCode;
     setPicker(color_);
     setColor(colorCode);
@@ -230,24 +231,32 @@ export const App = () => {
   }, [canvas, histories.redo]);
   // TODO:ショートカットキー対応
   return (
-    <div >
-      <div className="ToolField">
-      <div class="ColorBox">
-       <div className=""><SketchPicker color={picker} onChange={handleChange}></SketchPicker></div>
-    </div>
-    <div class="ToolBox">
-        <img src={border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="太くする" onClick={changeToThick}/>
-        <img src={edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="細くする" onClick={changeToThin} />
-        <img src={ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="消しゴム" onClick={changeToEraser} />
-        <img src={undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="元に戻す" onClick={undo} />
-        <img src={redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="取り消し" onClick={redo} />
-      </div>
-        </div>
+    <div class="CanvasMenu">
 
-      <div>
-        <canvas ref={canvasEl} width={useWindowWidth() * 0.89} height={useWindowHeight() * 0.79} />
+      <div class="canvas">
+        <canvas ref={canvasEl} width={useWindowWidth() * 0.75} height={useWindowHeight() * 0.79} />
         {/* TODO:幅整える */}
-      </div></div>
+      </div>
+
+      <div className="RightMenu">
+        <div className="ToolField">
+          <div class="ColorBox">
+            <div className=""><SketchPicker color={picker} onChange={handleChange}></SketchPicker></div>
+          </div>
+          <div class="ToolBox">
+            <img src={border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="太くする" onClick={changeToThick} />
+            <img src={edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="細くする" onClick={changeToThin} />
+            <img src={ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="消しゴム" onClick={changeToEraser} />
+            <img src={undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="元に戻す" onClick={undo} />
+            <img src={redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="取り消し" onClick={redo} />
+          </div>
+        </div>
+      <div>
+        カードを作成
+      </div>
+      </div>
+
+    </div>
   );
 };
 
