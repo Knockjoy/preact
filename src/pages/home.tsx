@@ -25,7 +25,6 @@ const Home = () => {
             </div>
                 {/* <button onClick={changePage}>let's drawing</button> */}
         </div>
-        <input type="color" name="" id="" />
         </div>);
 };
 

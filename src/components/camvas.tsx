@@ -13,14 +13,13 @@ import undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/undo_24
 
 const DEFAULT_COLOR = "#000000";
 const DEFAULT_WIDTH = 10;
-
 export const App = () => {
   const canvasEl = useRef(null);
   const [canvas, setCanvas] = useState(null);
 
   const [width, setWidth] = useState(DEFAULT_WIDTH);
   const [color, setColor] = useState(DEFAULT_COLOR);
-
+  const [picker,setPicker]=useState(DEFAULT_COLOR);
   useEffect(() => {
     if (canvasEl.current === null) {
       return;
@@ -96,6 +95,17 @@ export const App = () => {
     setColor("#000000");
   };
 
+  const handleChange=(color_)=>{
+    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+    canvas.freeDrawingBrush.width = width
+    const r=parseInt(color_.rgb["r"],10).toString(16).padEnd(2,"0");
+    const g=parseInt(color_.rgb["g"],10).toString(16).padEnd(2,"0");
+    const b=parseInt(color_.rgb["b"],10).toString(16).padEnd(2,"0");
+    const colorCode=`#${r}${g}${b}`.toUpperCase();
+    canvas.freeDrawingBrush.color = colorCode;
+    setPicker(color_);
+    setColor(colorCode);
+  }
   const changeToThick = () => {
     if (canvas?.freeDrawingBrush === undefined) {
       return;
@@ -223,7 +233,7 @@ export const App = () => {
     <div >
       <div className="ToolField">
       <div class="ColorBox">
-       <div className=""><SketchPicker ></SketchPicker></div>
+       <div className=""><SketchPicker color={picker} onChange={handleChange}></SketchPicker></div>
     </div>
     <div class="ToolBox">
         <img src={border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="太くする" onClick={changeToThick}/>
