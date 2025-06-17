@@ -221,22 +221,25 @@ export const App = () => {
   // TODO:ショートカットキー対応
   return (
     <div >
+      <div className="ToolField">
       <div class="ColorBox">
-        <SketchPicker></SketchPicker>
+       <div className=""><SketchPicker ></SketchPicker></div>
+    </div>
+    <div class="ToolBox">
         <img src={border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="太くする" onClick={changeToThick}/>
         <img src={edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="細くする" onClick={changeToThin} />
-        <div className="ColorButtonGap"></div>
         <img src={ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="消しゴム" onClick={changeToEraser} />
-        <div className="ColorButtonGap"></div>
         <img src={undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="元に戻す" onClick={undo} />
-        <div className="ColorButtonGap"></div>
         <img src={redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="取り消し" onClick={redo} />
       </div>
-      <div >
+        </div>
+
+      <div>
         <canvas ref={canvasEl} width={useWindowWidth() * 0.89} height={useWindowHeight() * 0.79} />
         {/* TODO:幅整える */}
       </div></div>
   );
 };
+
 
 export default App;
