@@ -222,11 +222,7 @@ export const App = () => {
   return (
     <div >
       <div class="ColorBox">
-        <div class="ColorButton" style={{background:"red"}} onClick={changeToRed}></div>
-        <div class="ColorButton" style={{background:"blue"}} onClick={changeToBlue}></div>
-        <div class="ColorButton" style={{background:"yellow"}} onClick={changeToYellow}></div>
-        <div class="ColorButton" style={{background:"green"}} onClick={changeToGreen}></div>
-        <div class="ColorButton" style={{background:"black"}} onClick={changeToBlack}></div>
+        <SketchPicker></SketchPicker>
         <img src={border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="太くする" onClick={changeToThick}/>
         <img src={edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="細くする" onClick={changeToThin} />
         <div className="ColorButtonGap"></div>
