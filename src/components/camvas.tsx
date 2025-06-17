@@ -3,6 +3,7 @@ import * as fabric from "fabric";
 import { EraserBrush } from "@erase2d/fabric";
 import "../assets/css/Canvas.css"
 import useWindowWidth from "../hooks/pageWidth.ts"
+import { SketchPicker } from 'react-color';
 import edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
 import border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg"
 import ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
@@ -220,11 +221,8 @@ export const App = () => {
   return (
     <div >
       <div class="ColorBox">
-        <div class="ColorButton" style={{background:"red"}} onClick={changeToRed}></div>
-        <div class="ColorButton" style={{background:"blue"}} onClick={changeToBlue}></div>
-        <div class="ColorButton" style={{background:"yellow"}} onClick={changeToYellow}></div>
-        <div class="ColorButton" style={{background:"green"}} onClick={changeToGreen}></div>
-        <div class="ColorButton" style={{background:"black"}} onClick={changeToBlack}></div>
+        <SketchPicker></SketchPicker>
+
         <img src={border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="太くする" onClick={changeToThick}/>
         <img src={edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="細くする" onClick={changeToThin} />
         <img src={ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="消しゴム" onClick={changeToEraser} />
