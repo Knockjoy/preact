@@ -234,7 +234,7 @@ export const App = () => {
     <div class="CanvasMenu">
 
       <div class="canvas">
-        <canvas ref={canvasEl} width={useWindowWidth() * 0.75} height={useWindowHeight() * 0.79} />
+        <canvas ref={canvasEl} width={useWindowWidth() * 0.5} height={useWindowHeight() * 0.5} />
         {/* TODO:幅整える */}
       </div>
 

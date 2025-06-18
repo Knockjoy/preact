@@ -30,13 +30,13 @@ const Drawing = () => {
           <div class="card-slider">
             <div class="arrow" onClick="scrollCards(-1)">&#8592;</div>
             <div class="cards-container" id="cardsContainer">
-              <div class="card">cards</div>
               <Card cardSize={200}></Card>
-              <div class="card"></div>
-              <div class="card"></div>
-              <div class="card"></div>
-              <div class="card"></div>
-              <div class="card"></div>
+              <Card cardSize={200}></Card>
+              <Card cardSize={200}></Card>
+              <Card cardSize={200}></Card>
+              <Card cardSize={200}></Card>
+              <Card cardSize={200}></Card>
+              
             </div>
             <div class="arrow" onClick="scrollCards(1)">&#8594;</div>
           </div>
