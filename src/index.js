@@ -5,14 +5,14 @@ import reportWebVitals from './reportWebVitals';
 import {createRoot} from "react-dom/client"
 import { BrowserRouter } from 'react-router-dom';
 import { AppRoutes } from './AppRoutes.jsx';
-import {serverSocket} from "./hooks/Serverconnection.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const serversocket = ReactDOM.createRoot(document.getElementById('ServerSocket'));
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
     <AppRoutes/>
-    <serverSocket/>
     </BrowserRouter>
   </React.StrictMode>
 );

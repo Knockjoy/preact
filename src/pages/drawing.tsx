@@ -3,6 +3,8 @@ import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import App from "../components/camvas.tsx";
 import "../assets/css/Drawing.css"
 import "../assets/css/Cards.css"
+import "../components/Card.tsx"
+import Card from "../components/Card.tsx";
 
 const Drawing = () => {
 
@@ -26,16 +28,17 @@ const Drawing = () => {
       <div class="undermenubox">
         <div class="undermenu">
           <div class="card-slider">
-            <div class="arrow" onclick="scrollCards(-1)">&#8592;</div>
+            <div class="arrow" onClick="scrollCards(-1)">&#8592;</div>
             <div class="cards-container" id="cardsContainer">
               <div class="card">cards</div>
+              <Card cardSize={200}></Card>
               <div class="card"></div>
               <div class="card"></div>
               <div class="card"></div>
               <div class="card"></div>
               <div class="card"></div>
             </div>
-            <div class="arrow" onclick="scrollCards(1)">&#8594;</div>
+            <div class="arrow" onClick="scrollCards(1)">&#8594;</div>
           </div>
           <div class="gotobattlebox" onClick={changePage}>
             <span>Go to Battle</span>
