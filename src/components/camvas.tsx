@@ -63,7 +63,7 @@ export const App = () => {
       quality:1,
     });
     // TODO:画像の送信
-    console.log(dataURL);
+    
   };
 
   const handleChange = (color_) => {
@@ -202,7 +202,7 @@ export const App = () => {
   // TODO:ショートカットキー対応
   return (
     <div class="CanvasMenu">
-
+      
       <div class="canvas">
         <canvas ref={canvasEl} width={useWindowHeight() * 0.6} height={useWindowHeight() * 0.6} />
         {/* TODO:幅整える */}

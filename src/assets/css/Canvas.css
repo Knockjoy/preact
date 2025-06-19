@@ -1,7 +1,3 @@
-body{
-    margin: 0;
-    padding: 0;
-}
 
 .canvas_ {
     width: 100%;
@@ -59,7 +55,6 @@ body{
 
 .undermenubox {
     width: 100vw;
-
 }
 
 .gotobattlebox {

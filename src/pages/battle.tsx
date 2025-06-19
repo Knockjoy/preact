@@ -3,6 +3,9 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Home from "./home";
 import "../assets/css/Battle.css"
 import "../assets/css/Cards.css"
+import Card from "../components/Card.tsx";
+import Cardbox from "../components/CardBox.tsx";
+import EnemyCard from "../components/EnemyCard.tsx";
 
 const Battle = () => {
     const location = useLocation();
@@ -14,31 +17,49 @@ const Battle = () => {
         return (<Navigate to={"/home"} replace />);
     }
     return (
-        <div>
-            <h1>battle</h1>
-            <button onClick={changePage}>go to result</button>
+        <div class="Battle">
+            {/* <h1>battle</h1> */}
+            {/* <button onClick={changePage}>go to result</button> */}
+            <div className="BattleLeft">
+                {/* <div>
+                    <span>対戦相手の名前</span>
+                    <span>thinking...</span>
+                </div> */}
+                <div className="card-slider">
+                    <EnemyCard cardSize={200}></EnemyCard>
+                    <EnemyCard></EnemyCard>
+                    <EnemyCard></EnemyCard>
+                    <EnemyCard></EnemyCard>
+                    <EnemyCard></EnemyCard>
 
-            <div class="canvas">
-                <div class="battle-status">
-                    敵：スライム (HP: 50) ｜ プレイヤー：勇者 (HP: 80)
                 </div>
-                <div class="characters">
-                    <div class="character">スライム</div>
-                    <div class="character">VS</div>
-                    <div class="character">勇者</div>
+                <div class="battle-field">
+                    <Cardbox></Cardbox>
+                </div>
+
+                <div class="card-slider">
+                    <div class="arrow" onclick="scrollCards(-1)">&#8592;</div>
+                    <Card cardSize={200}></Card>
+                    <Card cardSize={200}></Card>
+                    <Card cardSize={200}></Card>
+                    <Card cardSize={200}></Card>
+                    <Card cardSize={200}></Card>
+
+                    <div class="arrow" onclick="scrollCards(1)">&#8594;</div>
                 </div>
             </div>
-
-            <div class="card-slider">
-                <div class="arrow" onclick="scrollCards(-1)">&#8592;</div>
-                <div class="cards-container" id="cardsContainer">
-                    <div class="card" onclick="selectCard('たたかう')">たたかう</div>
-                    <div class="card" onclick="selectCard('まほう')">まほう</div>
-                    <div class="card" onclick="selectCard('アイテム')">アイテム</div>
-                    <div class="card" onclick="selectCard('ぼうぎょ')">ぼうぎょ</div>
-                    <div class="card" onclick="selectCard('にげる')">にげる</div>
+            <div class="BattleMenubox">
+                <div className="BattleMenu">
+                    <div>
+                    <Card></Card>
+                    <span>skill</span>
+                    <div><span>skill1</span><div>説明文</div></div>
+                    <div><span>skill2</span><div>説明文</div></div>
+                    <div><span>skill3</span><div>説明文</div></div>
+                    <div>target</div>
+                    <div>決定</div>
+                    </div>
                 </div>
-                <div class="arrow" onclick="scrollCards(1)">&#8594;</div>
             </div>
 
         </div>
