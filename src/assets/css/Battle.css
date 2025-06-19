@@ -45,9 +45,9 @@
     background-color: white;
     border-radius: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    /* display: flex; */
+    display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     font-size: 24px;
     padding: 5px;
   }
@@ -72,7 +72,7 @@
 
   .BattleMenu{
     width: 85%;
-    height: 90%;
+    height: 95%;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -82,4 +82,35 @@
   .Battle {
     display: flex;
     flex-direction: row;
+  }
+
+  .Battle-fieldCard{
+    width: 20%;
+  }
+  .SkillButton{
+    /* background-color: red; */
+    padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+  }
+  .TargetSelecter{
+    padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+    border: 1px solid;
+    background-color: #eee;
+    flex-direction: row;
+    display: flex;
+  }
+  .decision{
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 10px;
+    margin-top: 30px;
+    border-radius: 10px;
+    background-color: #4169e1;
+  }
+  .SkillName{
+    font-size: 1.1em;
+    font-weight: 400;
   }

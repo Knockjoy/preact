@@ -6,6 +6,12 @@ import "../assets/css/card.css"
 const Card = (props) => {
   // Destructure cardSize from props, with a default of 'medium'
   const { cardSize = 300 } = props;
+  const {name="name"}=props;
+  const {type="Attack"}=props;
+  const {hp=51}=props;
+  const {attack=52}=props;
+  const {defence=53}=props;
+  const {speed=54}=props;
 
 
   // Define an inline style object to apply the dynamic max-width
@@ -27,24 +33,24 @@ const Card = (props) => {
           </div>
         </div>
         <div className="text-content">
-          <span class="price">Name</span>
+          <span class="price">{name}</span>
           <br />
           <span class="price">Type : </span>
-          <span>Attacker</span>
+          <span>{type}</span>
           <br />
           <span class="status">HP </span>
-          <span>51</span>
+          <span>{hp}</span>
           <br />
           <span class="status">Attack </span>
-          <span>52</span>
+          <span>{attack}</span>
           <br />
 
           <span class="status">Defence </span>
-          <span>53</span>
+          <span>{defence}</span>
 
           <br />
           <span class="status">Speed </span>
-          <span>54</span>
+          <span>{speed}</span>
 
         </div>
       </motion.div>

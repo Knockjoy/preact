@@ -6,6 +6,7 @@ import "../assets/css/Cards.css"
 import Card from "../components/Card.tsx";
 import Cardbox from "../components/CardBox.tsx";
 import EnemyCard from "../components/EnemyCard.tsx";
+import arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg"
 
 const Battle = () => {
     const location = useLocation();
@@ -34,7 +35,27 @@ const Battle = () => {
 
                 </div>
                 <div class="battle-field">
-                    <Cardbox></Cardbox>
+                    <div class="Battle-fieldCard">
+                        <span>Your Card</span>
+                        <Card cardSize={250}
+                        style={{width:2}}
+                        ></Card>
+                    </div>
+                    <div>VS</div>
+                    <div class="Battle-fieldCard">
+                        <span>Enemy's Card</span>
+                        <Card
+                            cardSize={250}
+                            style={{width:2}}
+                            type="?" 
+                            // hp="?"
+                            attack="?"
+                            defence="?"
+                            speed="?"
+                            ></Card>
+                    </div>
+
+                    {/* <Cardbox></Cardbox> */}
                 </div>
 
                 <div class="card-slider">
@@ -51,13 +72,14 @@ const Battle = () => {
             <div class="BattleMenubox">
                 <div className="BattleMenu">
                     <div>
-                    <Card></Card>
-                    <span>skill</span>
-                    <div><span>skill1</span><div>説明文</div></div>
-                    <div><span>skill2</span><div>説明文</div></div>
-                    <div><span>skill3</span><div>説明文</div></div>
-                    <div>target</div>
-                    <div>決定</div>
+                        <Card></Card>
+                        <span>skills</span>
+                        <div class="SkillButton" style={{background:"#95E1D3"}}><span class="SkillName">skill1</span><div>説明文</div></div>
+                        <div class="SkillButton" style={{background:"#EAFFD0"}}><span class="SkillName">skill1</span><div>説明文</div></div>
+                        <div class="SkillButton" style={{background:"#FCE38A"}}><span class="SkillName">skill2</span><div>説明文</div></div>
+                        <div class="SkillButton" style={{background:"#F38181"}}><span class="SkillName">skill3</span><div>説明文</div></div>
+                        <div class="TargetSelecter"><div><img src={arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="" /></div>target</div>
+                        <div class="decision">決定</div>
                     </div>
                 </div>
             </div>
