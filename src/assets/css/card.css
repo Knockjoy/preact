@@ -1,0 +1,115 @@
+          /* Universal box-sizing for consistent layout */
+          *, *::before, *::after {
+            box-sizing: border-box;
+          }
+
+          body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0; /* Light gray background */
+            padding: 20px; /* Add some overall padding for smaller screens */
+          }
+
+          .app-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* width: 100%; */
+            /* No direct padding here, handled by body and card */
+          }
+
+          .polaroid-card {
+            background-color: #fff;
+            border-radius: 10px; /* Slightly more rounded corners for the card */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* More pronounced, softer shadow */
+            padding: 10px 25px; /* Generous inner padding for the white frame effect */
+            width: 100%; /* Make it responsive */
+            text-align: left;
+            overflow: hidden; /* Ensure rounded corners clip content */
+          }
+
+          .image-container {
+            width: 100%;
+            padding-top: 100%; /* 1:1 Aspect Ratio (creates a square) */
+            position: relative;
+            background-color: #e0e0e0; /* Gray background for placeholder */
+            border-radius: 10px; /* Slightly more rounded corners for the image area */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 6px; /* Increased space below image to match visual */
+            overflow: hidden; /* Ensure rounded corners clip content */
+            /* Subtle inner shadow for definition, mimicking the image */
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+          }
+
+          .image-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #b0b0b0; /* Light gray for icon */
+          }
+
+          .image-placeholder svg {
+            width: 60px;
+            height: 60px;
+          }
+
+          .text-content h3 {
+            font-size: 1.3em; /* Larger title */
+            font-weight: 700; /* Bolder */
+            margin: 0 0 8px 0; /* Adjusted margin */
+            color: #333;
+          }
+
+          .text-content .price {
+            font-size: 1.1em; /* Prominent price */
+            font-weight: 600;
+            margin: 0 0 10px 0; /* Adjusted margin */
+            color: #222;
+          }
+
+          .status{
+            font-size:1.0em;
+            font-weight: 500;
+          }
+
+          .text-content p {
+            font-size: 0.95em; /* Slightly smaller body text */
+            margin: 0; /* Remove default margin */
+            color: #555;
+            line-height: 1.4; /* Improve readability */
+          }
+
+          /* Responsive adjustments */
+          @media (max-width: 600px) {
+            .polaroid-card {
+              max-width: 90%; /* Smaller max-width on smaller screens */
+              padding: 20px; /* Adjust padding for smaller screens */
+              border-radius: 12px;
+            }
+            .image-container {
+              margin-bottom: 15px; /* Adjust margin for smaller screens */
+            }
+            .text-content h3 {
+              font-size: 1.2em;
+              margin-bottom: 6px;
+            }
+            .text-content .price {
+              font-size: 1.1em;
+              margin-bottom: 10px;
+            }
+            .image-placeholder svg {
+              width: 50px;
+              height: 50px;
+            }
+          }

@@ -56,44 +56,14 @@ export const App = () => {
     setColor("#ff0000");
   };
 
-  const changeToBlue = () => {
-    if (canvas?.freeDrawingBrush === undefined) {
-      return;
-    }
-    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-    canvas.freeDrawingBrush.color = "#0000ff";
-    canvas.freeDrawingBrush.width = width;
-    setColor("#0000ff");
-  };
-
-  const changeToYellow = () => {
-    if (canvas?.freeDrawingBrush === undefined) {
-      return;
-    }
-    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-    canvas.freeDrawingBrush.color = "#ffff00";
-    canvas.freeDrawingBrush.width = width;
-    setColor("#ffff00");
-  };
-
-  const changeToGreen = () => {
-    if (canvas?.freeDrawingBrush === undefined) {
-      return;
-    }
-    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-    canvas.freeDrawingBrush.color = "#008000";
-    canvas.freeDrawingBrush.width = width;
-    setColor("#008000");
-  };
-
-  const changeToBlack = () => {
-    if (canvas?.freeDrawingBrush === undefined) {
-      return;
-    }
-    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-    canvas.freeDrawingBrush.color = "#000000";
-    canvas.freeDrawingBrush.width = width;
-    setColor("#000000");
+  const Download2img=()=>{
+    console.log(canvas);
+    const dataURL=canvas.toDataURL({
+      format:"png",
+      quality:1,
+    });
+    // TODO:画像の送信
+    console.log(dataURL);
   };
 
   const handleChange = (color_) => {
@@ -234,7 +204,7 @@ export const App = () => {
     <div class="CanvasMenu">
 
       <div class="canvas">
-        <canvas ref={canvasEl} width={useWindowWidth() * 0.5} height={useWindowHeight() * 0.5} />
+        <canvas ref={canvasEl} width={useWindowHeight() * 0.6} height={useWindowHeight() * 0.6} />
         {/* TODO:幅整える */}
       </div>
 
@@ -251,8 +221,10 @@ export const App = () => {
             <img src={redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="取り消し" onClick={redo} />
           </div>
         </div>
-      <div>
+      <div class="CreateCardButtonBox" onClick={Download2img}>
+        <div class="CreateCardButton">
         カードを作成
+        </div>
       </div>
       </div>
 

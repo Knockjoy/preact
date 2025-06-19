@@ -1,4 +1,4 @@
-  .canvas {
+  /* .canvas {
       width: 90%;
       height: 73vh;
       margin-top: 20px;
@@ -9,7 +9,7 @@
       flex-direction: column;
       justify-content: space-between;
       padding: 20px;
-    }
+    } */
 
     .battle-status {
       font-size: 20px;

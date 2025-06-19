@@ -1,3 +1,8 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
 .canvas_ {
     width: 100%;
     height: 100%;
@@ -54,14 +59,12 @@
 
 .undermenubox {
     width: 100vw;
-    height: 20vh;
-    flex-direction: row;
-    display: flex;
+
 }
 
 .gotobattlebox {
     width: 15%;
-    background-color: aqua;
+    background-color: #4169e1;
     margin: 20px 0px 20px 20px;
     border-radius: 10px;
     display: flex;
@@ -106,4 +109,26 @@
     justify-content: space-between;
     align-items: center;
     margin-left: 20px;
+}
+
+.CreateCardButtonBox{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.CreateCardButton{
+    width: 90%;
+    height: 80%;
+    margin: 10px;
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    /* padding: 10px; */
+    background: #4169e1;
+    border-radius: 10px;
+    font-size: 1.2em;
+    font-weight: 500;
 }
