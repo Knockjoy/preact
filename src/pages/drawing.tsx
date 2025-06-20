@@ -6,6 +6,7 @@ import "../assets/css/Drawing.css"
 import "../assets/css/Cards.css"
 import "../components/Card.tsx"
 import Card from "../components/Card.tsx";
+import SmallCard from "../components/SmallCard.tsx";
 
 const Drawing = () => {
 
@@ -31,12 +32,12 @@ const Drawing = () => {
             <div class="card-slider">
               <div class="arrow" onClick="scrollCards(-1)">&#8592;</div>
               <div class="cards-container" id="cardsContainer">
-                <Card cardSize={()=>{return 200}}></Card>
-                <Card cardSize={200}></Card>
-                <Card cardSize={200}></Card>
-                <Card cardSize={200}></Card>
-                <Card cardSize={200}></Card>
-                <Card cardSize={200}></Card>
+                <SmallCard cardSize={()=>{return 200}}></SmallCard>
+                <SmallCard cardSize={200}></SmallCard>
+                <SmallCard cardSize={200}></SmallCard>
+                <SmallCard cardSize={200}></SmallCard>
+                <SmallCard cardSize={200}></SmallCard>
+                <SmallCard cardSize={200}></SmallCard>
               </div>
               <div class="arrow" onClick="scrollCards(1)">&#8594;</div>
             </div>

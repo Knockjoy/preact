@@ -4,11 +4,12 @@ import "../assets/css/card.css"
 import sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20.svg";
 import sword from "../assets/icons/sword.png";
 import shield from "../assets/icons/shield (1).png";
-import Bar from "../components/Bar.tsx";
+import heart from "../assets/icons/heart.png";
+import boots from "../assets/icons/boot.png";
 
 
 // Main App component
-const Card = (props) => {
+const SmallCard = (props) => {
   // Destructure cardSize from props, with a default of 'medium'
   const { cardSize = 300 } = props;
   const { name = "name" } = props;
@@ -25,7 +26,7 @@ const Card = (props) => {
   };
 
   return (
-    <div className="app-container">
+    <div className="app-container" style={{width:"20%"}}>
       <motion.div
         whileHover={{ y: -10 }}
         className="polaroid-card" style={cardStyle}>
@@ -40,31 +41,26 @@ const Card = (props) => {
           </div>
         </div>
         <div className="text-content">
-          {/* <span class="price">{name}</span> */}
-          <div class="statusBox">
-            <span class="status">HP </span>
-            {/* <span>{hp}</span> */}
-            <Bar width={100} color='darkgreen'></Bar>
+          <span class="price">{name}</span>
+          <div>
+            <img src={heart} alt="" />
+            {/* <span class="status">HP </span> */}
+            <span>{hp}</span>
           </div>
-          <div class="statusBox">
-            {/* <img src={sword} alt="" /> */}
-            <span class="status">ATK </span>
-            {/* <span>{attack}</span> */}
-            <Bar width={100}></Bar>
-
+          <div>
+            <img src={sword} alt="" />
+            {/* <span class="status">ATK </span> */}
+            <span>{attack}</span>
           </div>
-          <div class="statusBox">
-            {/* <img src={shield} alt="" /> */}
-            <span class="status">DEF </span>
-            {/* <span>{defence}</span> */}
-            <Bar width={100}></Bar>
-
+          <div>
+            <img src={shield} alt="" />
+            {/* <span class="status">DEF </span> */}
+            <span>{defence}</span>
           </div>
-          <div class="statusBox">
-            <span class="status">SPD </span>
-            {/* <span>{speed}</span> */}
-            <Bar width={100}></Bar>
-
+          <div>
+            <img src={boots} alt="" />
+            {/* <span class="status">SPD </span> */}
+            <span>{speed}</span>
           </div>
         </div>
       </motion.div>
@@ -72,4 +68,4 @@ const Card = (props) => {
   );
 };
 
-export default Card;
+export default SmallCard;

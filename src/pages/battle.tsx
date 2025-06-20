@@ -7,6 +7,7 @@ import Card from "../components/Card.tsx";
 import Cardbox from "../components/CardBox.tsx";
 import EnemyCard from "../components/EnemyCard.tsx";
 import arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg"
+import SmallCard from "../components/SmallCard.tsx";
 
 const Battle = () => {
     const location = useLocation();
@@ -60,11 +61,11 @@ const Battle = () => {
 
                 <div class="card-slider">
                     <div class="arrow" onclick="scrollCards(-1)">&#8592;</div>
-                    <Card cardSize={200}></Card>
-                    <Card cardSize={200}></Card>
-                    <Card cardSize={200}></Card>
-                    <Card cardSize={200}></Card>
-                    <Card cardSize={200}></Card>
+                    <SmallCard cardSize={200}></SmallCard>
+                    <SmallCard cardSize={200}></SmallCard>
+                    <SmallCard cardSize={200}></SmallCard>
+                    <SmallCard cardSize={200}></SmallCard>
+                    <SmallCard cardSize={200}></SmallCard>
 
                     <div class="arrow" onclick="scrollCards(1)">&#8594;</div>
                 </div>

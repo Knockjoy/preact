@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from "framer-motion";
 import "../assets/css/card.css"
+import Bar from '../components/Bar.tsx';
 
 // Main App component
 const EnemyCard = (props) => {
@@ -14,7 +15,7 @@ const EnemyCard = (props) => {
     };
 
     return (
-        <div className="app-container">
+        <div className="app-container" style={{width:"13%"}}>
             <motion.div
                 whileHover={{ y: -10 }}
                 className="polaroid-card" style={cardStyle}>
@@ -30,8 +31,8 @@ const EnemyCard = (props) => {
                     <span class="price">Name</span>
                     <br />
 
-                    <span class="status">HP </span>
-                    <span>51</span>
+                    {/* <span class="status">HP </span> */}
+                    <Bar width={100} widthp={100} color='darkgreen'></Bar>
                 </div>
             </motion.div>
         </div>
