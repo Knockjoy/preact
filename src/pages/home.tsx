@@ -1,16 +1,19 @@
 import react from "react";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 import { BrowserRouter, useNavigate } from "react-router-dom";
 import "../assets/css/Home.css"
 import "../assets/fonts/Handlee.css"
 import pencil from "../assets/icons/pencil.png";
-import {ServerSocket} from "../hooks/Serverconnection.ts";
+import { ServerSocket } from "../hooks/Serverconnection.ts";
+import { ScrollImages } from "../components/ScrollImages.tsx";
+import Card from "../components/Card.tsx";
+import "../assets/fonts/Huninn.css";
 
 const Home = () => {
     const navigate = useNavigate();
     const changePage = () => {
-        ws.send("drawing");
-        navigate("/drawing", { state: { frombutton: true } })
+        // ws.send("drawing");
+        navigate("/rules", { state: { frombutton: true } })
     };
     // ServerSocket();  
     return (
@@ -22,14 +25,18 @@ const Home = () => {
                 </span>
                 <img src={pencil} alt="pencil" class="titleIcon" />
             </div>
-        <div className="Gallery"></div>
-        <motion.div
-        whileHover={{y:10}}
-className="DrawingButtonBox">
-            <div className="DrawingButton" onClick={changePage}>
-                <span>Let's Drawing</span>
-            </div>
-                    {/* <button onClick={changePage}>let's drawing</button> */}
+            <motion.div
+
+            className="Gallery">
+
+            </motion.div>
+            <motion.div
+                whileHover={{ y: 10 }}
+                className="DrawingButtonBox">
+                <div className="DrawingButton" onClick={changePage}>
+                    <span class="huninn-regular">Let's Drawing</span>
+                </div>
+                {/* <button onClick={changePage}>let's drawing</button> */}
             </motion.div>
         </div>);
 };

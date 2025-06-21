@@ -49,3 +49,6 @@
     .cards-container::-webkit-scrollbar {
       display: none;
     }
+    .drawing_cards{
+      height: 25vh;
+    }

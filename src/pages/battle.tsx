@@ -8,6 +8,7 @@ import Cardbox from "../components/CardBox.tsx";
 import EnemyCard from "../components/EnemyCard.tsx";
 import arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg"
 import SmallCard from "../components/SmallCard.tsx";
+import "../assets/fonts/Huninn.css"
 
 const Battle = () => {
     const location = useLocation();
@@ -19,7 +20,7 @@ const Battle = () => {
         return (<Navigate to={"/home"} replace />);
     }
     return (
-        <div class="Battle">
+        <div class="Battle huninn-regular">
             {/* <h1>battle</h1> */}
             {/* <button onClick={changePage}>go to result</button> */}
             <div className="BattleLeft">
@@ -27,7 +28,7 @@ const Battle = () => {
                     <span>対戦相手の名前</span>
                     <span>thinking...</span>
                 </div> */}
-                <div className="card-slider">
+                <div className="card-slider" style={{"justify-content":"space-evenly"}}>
                     <EnemyCard cardSize={200}></EnemyCard>
                     <EnemyCard></EnemyCard>
                     <EnemyCard></EnemyCard>
@@ -39,21 +40,21 @@ const Battle = () => {
                     <div class="Battle-fieldCard">
                         <span>Your Card</span>
                         <Card cardSize={250}
-                        style={{width:2}}
+                            style={{ width: 2 }}
                         ></Card>
                     </div>
                     <div>VS</div>
-                    <div class="Battle-fieldCard">
+                    <div class="Battle-fieldCard enemymenu">
                         <span>Enemy's Card</span>
                         <Card
                             cardSize={250}
-                            style={{width:2}}
-                            type="?" 
+                            style={{ width: 2 }}
+                            type="?"
                             // hp="?"
                             attack="?"
                             defence="?"
                             speed="?"
-                            ></Card>
+                        ></Card>
                     </div>
 
                     {/* <Cardbox></Cardbox> */}
@@ -72,20 +73,42 @@ const Battle = () => {
             </div>
             <div class="BattleMenubox">
                 <div className="BattleMenu">
+                    <Card></Card>
+                    <span style={{ 'font-weight': "500", "font-size": "1.1em", "margin": "10px 0" }}>skills</span>
                     <div>
-                        <Card></Card>
-                        <span>skills</span>
-                        <div class="SkillButton" style={{background:"#95E1D3"}}><span class="SkillName">skill1</span><div>説明文</div></div>
-                        <div class="SkillButton" style={{background:"#EAFFD0"}}><span class="SkillName">skill1</span><div>説明文</div></div>
-                        <div class="SkillButton" style={{background:"#FCE38A"}}><span class="SkillName">skill2</span><div>説明文</div></div>
-                        <div class="SkillButton" style={{background:"#F38181"}}><span class="SkillName">skill3</span><div>説明文</div></div>
+                        <input type="radio" name="skill" id="SelectSkill1" checked />
+                        <div class="SkillButton" style={{ background: "#95E1D3" }}>
+                            <span class="SkillName">skill1</span>
+                            <div>説明文</div></div>
+                        <input type="radio" name="skill" id="SelectSkill2" />
+                        <div class="SkillButton" style={{ background: "#EAFFD0" }}>
+                            
+                            <span class="SkillName">skill1</span>
+                            <div>説明文</div>
+                        </div>
+                        <input type="radio" name="skill" id="SelectSkill3" />
+                        <div class="SkillButton" style={{ background: "#FCE38A" }}>
+                            
+                            <span class="SkillName">skill2</span>
+                            <div>説明文</div>
+                        </div>
+                        <input type="radio" name="skill" id="SelectSkill4" />
+                        <div class="SkillButton" style={{ background: "#F38181" }}>
+                            
+                            <span class="SkillName">skill3</span>
+                            <div>説明文</div>
+                        </div>
+                    </div>
+                    <div>
+
                         <div class="TargetSelecter"><div><img src={arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="" /></div>target</div>
                         <div class="decision">決定</div>
+
                     </div>
                 </div>
             </div>
-
         </div>
+
     );
 }
 

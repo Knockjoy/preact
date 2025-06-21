@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from "framer-motion";
+import React,{FC} from 'react';
+import { AnimatePresence,motion }from "framer-motion";
 import "../assets/css/card.css"
 import sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20.svg";
 import sword from "../assets/icons/sword.png";
@@ -27,7 +27,7 @@ const Card = (props) => {
   return (
     <div className="app-container">
       <motion.div
-        whileHover={{ y: -10 }}
+        // whileHover={{ y: -10 }}
         className="polaroid-card" style={cardStyle}>
         <div className="image-container">
           {/* Placeholder SVG for the image */}
@@ -44,13 +44,13 @@ const Card = (props) => {
           <div class="statusBox">
             <span class="status">HP </span>
             {/* <span>{hp}</span> */}
-            <Bar width={100} color='darkgreen'></Bar>
+            <Bar width={100} color='#A4DD00'></Bar>
           </div>
           <div class="statusBox">
             {/* <img src={sword} alt="" /> */}
             <span class="status">ATK </span>
             {/* <span>{attack}</span> */}
-            <Bar width={100}></Bar>
+            <Bar width={100} color='#D84040'></Bar>
 
           </div>
           <div class="statusBox">
@@ -63,11 +63,12 @@ const Card = (props) => {
           <div class="statusBox">
             <span class="status">SPD </span>
             {/* <span>{speed}</span> */}
-            <Bar width={100}></Bar>
+            <Bar width={100} color='#0D92F4'></Bar>
 
           </div>
         </div>
       </motion.div>
+
     </div>
   );
 };

@@ -17,7 +17,7 @@ const EnemyCard = (props) => {
     return (
         <div className="app-container" style={{width:"13%"}}>
             <motion.div
-                whileHover={{ y: -10 }}
+               
                 className="polaroid-card" style={cardStyle}>
                 <div className="image-container">
                     {/* Placeholder SVG for the image */}
@@ -32,7 +32,7 @@ const EnemyCard = (props) => {
                     <br />
 
                     {/* <span class="status">HP </span> */}
-                    <Bar width={100} widthp={100} color='darkgreen'></Bar>
+                    <Bar width={100} widthp={100} color='#A4DD00'></Bar>
                 </div>
             </motion.div>
         </div>

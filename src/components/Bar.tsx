@@ -15,10 +15,11 @@ const BarInnter = styled.div`
   border-radius:5px;
   `
 
-const Bar = ({ width,widthp=70,color="darkslateblue" }) => {
+const Bar = ({ width,widthp=70,color="darkslateblue",point=0 }) => {
     
     return (
-        <BarContainer style={{width:`${widthp}%`}}>
+        <BarContainer style={{display:"flex",width:`${widthp}%`,"align-items":"center"}}>
+            <span style={{position:"absolute",right:"0","z-index":"3",padding:"2px","font-size":"0.9em"}}>{point}</span>
             <BarInnter style={{ width: `${width}%`,background:`${color}` }} />
         </BarContainer>
     )

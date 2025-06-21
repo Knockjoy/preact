@@ -19,7 +19,7 @@ const Drawing = () => {
     return <Navigate to={"/home"} replace />
   }
   return (
-    <div class="boxbox">
+    <div class="boxbox .huninn-regular">
       <div className="SideGap"></div>
       <div class="box">
         {/* <button onClick={changePage}>go to battle</button> */}
@@ -31,13 +31,13 @@ const Drawing = () => {
           <div class="undermenu">
             <div class="card-slider">
               <div class="arrow" onClick="scrollCards(-1)">&#8592;</div>
-              <div class="cards-container" id="cardsContainer">
-                <SmallCard cardSize={()=>{return 200}}></SmallCard>
+              <div class="cards-container drawing_cards" id="cardsContainer">
+                {/* <SmallCard cardSize={()=>{return 200}}></SmallCard>
                 <SmallCard cardSize={200}></SmallCard>
                 <SmallCard cardSize={200}></SmallCard>
                 <SmallCard cardSize={200}></SmallCard>
                 <SmallCard cardSize={200}></SmallCard>
-                <SmallCard cardSize={200}></SmallCard>
+                <SmallCard cardSize={200}></SmallCard> */}
               </div>
               <div class="arrow" onClick="scrollCards(1)">&#8594;</div>
             </div>

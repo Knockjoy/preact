@@ -61,15 +61,15 @@
     align-items: center;
   }
 
-  .BattleMenubox {
+.BattleMenubox {
     width: 30vw;
     height: 100vh;
     display: flex;
-    align-items: center;
-    align-content: center;
+    /* align-items: center; */
     justify-content: center;
-  }
-
+    flex-direction: column;
+    align-content: center;
+}
   .BattleMenu{
     width: 85%;
     height: 95%;
@@ -114,3 +114,16 @@
     font-size: 1.1em;
     font-weight: 400;
   }
+
+  element.style {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.SkillButtonInput input{
+  display: none;
+}
+input[type=radio]:checked ~ #SkillButton1{
+  /* background-color: red; */
+  border: 1px solid #4169e1;
+}

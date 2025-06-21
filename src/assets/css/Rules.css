@@ -1,0 +1,17 @@
+.RuleTitle{
+font-size: 5em;
+}
+
+.ruleex{
+    
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}

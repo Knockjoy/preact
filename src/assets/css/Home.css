@@ -27,7 +27,10 @@ flex-direction: column;
 }
 
 .Gallery{
-    height: 30vh;
+    height: 35vh;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
 }
 
 .DrawingButton{
