@@ -1,20 +1,35 @@
+import React, { useEffect, useState } from "react";
 import "../assets/css/UserSettings.css";
 import { useNavigate } from "react-router-dom";
-// import { WebSocketProvider } from "../hooks/Serverconnection.ts";
+import { useWebSocketContext } from "../hooks/WebSocketManager.tsx"
 
 const UserSettings = () => {
     const navigate = useNavigate();
-    const changePage = () => {
+    const [nickname, setNickname] = useState("");
+
+    const { sendMessage, isConnected,userID } = useWebSocketContext();
+    // useEffect(() => {
+    //     if (isConnected) {
+    //         sendMessage('connect');
+    //     }
+    // }, [isConnected]);
+
+    const ChangePage = () => {
         // ws.send("drawing");
-        navigate("/drawing", { state: { frombutton: true } })
+        
+        if (nickname.trim() && isConnected) {
+            sendMessage(JSON.stringify({status:"usersetup",userid:userID,nickname:nickname}));
+            navigate("/drawing", { state: { frombutton: true } })
+        };
     };
+
 
     return (
         <div class="usersettingsBox huninn-regular">
             {/* <WebSocketProvider> */}
-                <div style={{"font-size":"3em"}}><span>ニックネームを入力</span><span>✨</span></div>
-                <input type="text" />
-                <div onClick={changePage}>決定 </div>
+            <div style={{ "font-size": "3em" }}><span>ニックネームを入力</span><span>✨</span></div>
+            <input type="text" onChange={(event) => { setNickname(event.target.value) }} id="nickname" />
+            <div onClick={ChangePage}>決定 </div>
             {/* </WebSocketProvider> */}
         </div>
     );

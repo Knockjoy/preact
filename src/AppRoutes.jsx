@@ -5,17 +5,20 @@ import Drawing from "./pages/drawing.tsx"
 import Battle from "./pages/battle.tsx"
 import UserSettings from "./pages/userSetting.tsx";
 import Rules from "./pages/rules.tsx";
+import { WebSocketProvider } from "./hooks/WebSocketManager.tsx";
 
 export const AppRoutes = () => {
     return (
-        <Routes>
-            <Route path="/" element={<Home/>}/>
-            <Route path="/rules" element={<Rules/>}/>
-            <Route path="/usersettings" element={<UserSettings/>}/>
-            <Route path="/home" element={<Home/>} />
-            <Route path="/result" element={<Result/>} />
-            <Route path="/drawing" element={<Drawing/>}/>
-            <Route path="/battle" element={<Battle/>}/>
-        </Routes>
+            <WebSocketProvider>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/rules" element={<Rules />} />
+                    <Route path="/usersettings" element={<UserSettings />} />
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/result" element={<Result />} />
+                    <Route path="/drawing" element={<Drawing />} />
+                    <Route path="/battle" element={<Battle />} />
+                </Routes>
+            </WebSocketProvider>
     )
 };

@@ -39,12 +39,27 @@ const SmallCard = (props) => {
     width:100vw;
     height:100vh;
     background:rgba(0,0,0,0.7);
-    
+    margin:0;
+    padding:0;
     }
   `;
+      const item = {
+        hidden: {
+            y: 15
+        },
+        show: {
+            y: [15, 0],
+            transition: {
+                duration: 0.4,
+                ease: "easeInOut"
+            }
+        }
+    };
 
   return (
-    <div className="app-container" style={{ width: "20%" }}>
+    <motion.div 
+    variants={item}
+    className="app-container" style={{ width: "20%" }}>
       <motion.button
         class="Mbutton polaroid-card"
         style={cardStyle}
@@ -87,7 +102,7 @@ const SmallCard = (props) => {
         <button 
         popovertarget={`detailMenu${id}`}
         popovertargetaction="hidden"
-        style={{position:"absolute",width:"100vw",height:"100vh","z-index":"0","background":"none"}}>
+        style={{position:"absolute",width:"100vw",height:"100vh","z-index":"0","background":"none",padding:0,margin:0}}>
 
         </button>
         <div className="detailMenu">
@@ -132,7 +147,7 @@ const SmallCard = (props) => {
           </div>
         </div>
       </DetailMenu>
-    </div>
+    </motion.div>
   );
 };
 

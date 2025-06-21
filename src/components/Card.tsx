@@ -1,10 +1,11 @@
-import React,{FC} from 'react';
-import { AnimatePresence,motion }from "framer-motion";
+import React, { FC, useState } from 'react';
+import { AnimatePresence, m, motion } from "framer-motion";
 import "../assets/css/card.css"
 import sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20.svg";
 import sword from "../assets/icons/sword.png";
 import shield from "../assets/icons/shield (1).png";
 import Bar from "../components/Bar.tsx";
+import { wait } from '@testing-library/user-event/dist/utils/index';
 
 
 // Main App component
@@ -23,9 +24,38 @@ const Card = (props) => {
   const cardStyle = {
     maxWidth: `${cardSize}px`,
   };
+  const game_motion = {
+    wait: {},
+    receive: {
+      duration: 0.05,
+      rotate: [5, 0, -5, 0, 5, 0, -5, 0, 5, 0, -5, 0,]
+    },
+    attack: {
+      duration: 0.3,
+      x: [0, 15, 30, 0],
+      y: [0, -15, 0, 0,]
+    }
+  };
 
+  const [motionState, setMotionState] = useState("wait");
   return (
-    <div className="app-container">
+    <motion.div
+      variants={game_motion}
+      initial="wait"
+      animate={() => {
+
+        if (motionState === "attack") {
+          setMotionState("wait")
+          return "attack";
+        }
+        if (motionState === "receive") {
+          setMotionState("wait")
+          return "receive";
+        }
+
+      }}
+      // animate="attack_motion"
+      className="app-container">
       <motion.div
         // whileHover={{ y: -10 }}
         className="polaroid-card" style={cardStyle}>
@@ -69,7 +99,7 @@ const Card = (props) => {
         </div>
       </motion.div>
 
-    </div>
+    </motion.div>
   );
 };
 

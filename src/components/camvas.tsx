@@ -11,16 +11,20 @@ import border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons
 import ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
 import redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
 import undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
+import { useWebSocketContext } from "../hooks/WebSocketManager.tsx";
 
 const DEFAULT_COLOR = "#000000";
 const DEFAULT_WIDTH = 10;
 export const App = () => {
+  const { sendMessage, isConnected, userID } = useWebSocketContext();
+
   const canvasEl = useRef(null);
   const [canvas, setCanvas] = useState(null);
-
   const [width, setWidth] = useState(DEFAULT_WIDTH);
   const [color, setColor] = useState(DEFAULT_COLOR);
   const [picker, setPicker] = useState(DEFAULT_COLOR);
+  const [cardslen, setCardslen] = useState(0);
+
   useEffect(() => {
     if (canvasEl.current === null) {
       return;
@@ -56,14 +60,20 @@ export const App = () => {
     setColor("#ff0000");
   };
 
-  const Download2img=()=>{
-    console.log(canvas);
-    const dataURL=canvas.toDataURL({
-      format:"png",
-      quality:1,
+  const Download2img = () => {
+    const dataURL = canvas.toDataURL({
+      format: "png",
+      quality: 1,
     });
-    // TODO:画像の送信
-    
+    sendMessage(JSON.stringify({ status: "createCard", userID: userID, sketch: dataURL }))
+    setCardslen(cardslen + 1);
+    //init
+    setHistories({
+      undo: [],
+      redo: [],
+    });
+    canvas.clear();
+
   };
 
   const handleChange = (color_) => {
@@ -202,7 +212,7 @@ export const App = () => {
   // TODO:ショートカットキー対応
   return (
     <div class="CanvasMenu">
-      
+
       <div class="canvas">
         <canvas ref={canvasEl} width={useWindowHeight() * 0.6} height={useWindowHeight() * 0.6} />
         {/* TODO:幅整える */}
@@ -221,11 +231,11 @@ export const App = () => {
             <img src={redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="取り消し" onClick={redo} />
           </div>
         </div>
-      <div class="CreateCardButtonBox" onClick={Download2img}>
-        <div class="CreateCardButton">
-        カードを作成
+        <div class="CreateCardButtonBox" onClick={Download2img}>
+          <div class="CreateCardButton">
+            カードを作成
+          </div>
         </div>
-      </div>
       </div>
 
     </div>

@@ -1,4 +1,4 @@
-import react from "react";
+import React,{ReactNode} from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Home from "./home";
 import "../assets/css/Battle.css"
@@ -8,6 +8,8 @@ import Cardbox from "../components/CardBox.tsx";
 import EnemyCard from "../components/EnemyCard.tsx";
 import SmallCard from "../components/SmallCard.tsx";
 import "../assets/fonts/Huninn.css"
+import { Show } from "@chakra-ui/react";
+import { motion, animate, stagger } from "framer-motion";
 
 const Battle = () => {
     const location = useLocation();
@@ -18,8 +20,35 @@ const Battle = () => {
     if (!location.state?.frombutton) {
         return (<Navigate to={"/home"} replace />);
     }
-    const enemyCardSize=180;
-    const myCardsize=200;
+    const container = {
+        hidden: {
+            y: 200
+        },
+        show: {
+            y: 0,
+            transition: {
+                duration: 0,
+                staggerChildren: 0.1
+            }
+        }
+    }
+
+
+    const CardWrapper = ({className, children}:{className?:string,children?:ReactNode}) => {
+        return (
+            <motion.div
+                variants={container}
+                initial="hidden"
+                whileInView="show"
+                className={`${className}`}
+            >
+                {children}
+            </motion.div>
+        );
+    }
+
+    const enemyCardSize = 180;
+    const myCardsize = 200;
     return (
         <div class="Battle huninn-regular">
             {/* <h1>battle</h1> */}
@@ -61,20 +90,24 @@ const Battle = () => {
                     {/* <Cardbox></Cardbox> */}
                 </div>
 
-                <div class="card-slider">
+                <div class="card-slider" style={{
+                    height: "30vh",
+                    display: "flex",
+                    "justify-content": "space-between"
+                }}>
                     <div class="arrow" onclick="scrollCards(-1)">&#8592;</div>
-                    <SmallCard id={1}  cardSize={myCardsize}></SmallCard>
-                    <SmallCard id={1}  cardSize={myCardsize}></SmallCard>
-                    <SmallCard id={2}  cardSize={myCardsize}></SmallCard>
-                    <SmallCard id={3}  cardSize={myCardsize}></SmallCard>
-                    <SmallCard id={4}  cardSize={myCardsize}></SmallCard>
-                    <SmallCard id={5}  cardSize={myCardsize}></SmallCard>
-
+                    <CardWrapper className="CardsSlider">
+                        <SmallCard id={1} cardSize={myCardsize}></SmallCard>
+                        <SmallCard id={2} cardSize={myCardsize}></SmallCard>
+                        <SmallCard id={3} cardSize={myCardsize}></SmallCard>
+                        <SmallCard id={4} cardSize={myCardsize}></SmallCard>
+                        <SmallCard id={5} cardSize={myCardsize}></SmallCard>
+                    </CardWrapper>
                     <div class="arrow" onclick="scrollCards(1)">&#8594;</div>
                 </div>
             </div>
-            
-        </div>
+
+        </div >
 
     );
 }

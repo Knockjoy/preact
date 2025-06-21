@@ -15,11 +15,16 @@ const BarInnter = styled.div`
   border-radius:5px;
   `
 
-const Bar = ({ width,widthp=70,color="darkslateblue",point=0 }) => {
-    
+const Bar = ({ width,widthp=70,color="darkslateblue",point=-1 }) => {
+    let pointStr="";
+    pointStr=point.toString()
+    if (point==-1){
+        pointStr="-";
+    }
+
     return (
         <BarContainer style={{display:"flex",width:`${widthp}%`,"align-items":"center"}}>
-            <span style={{position:"absolute",right:"0","z-index":"3",padding:"2px","font-size":"0.9em"}}>{point}</span>
+            <span style={{position:"absolute",right:"0","z-index":"3",padding:"2px","font-size":"0.9em"}}>{pointStr}</span>
             <BarInnter style={{ width: `${width}%`,background:`${color}` }} />
         </BarContainer>
     )

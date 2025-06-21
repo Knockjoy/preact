@@ -128,3 +128,12 @@ input[type=radio]:checked ~ #SkillButton1{
   /* background-color: red; */
   border: 1px solid #4169e1;
 }
+
+.CardsSlider {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+}
