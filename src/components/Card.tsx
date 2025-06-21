@@ -40,7 +40,7 @@ const Card = (props) => {
           </div>
         </div>
         <div className="text-content">
-          {/* <span class="price">{name}</span> */}
+          <span class="price">{name}</span>
           <div class="statusBox">
             <span class="status">HP </span>
             {/* <span>{hp}</span> */}

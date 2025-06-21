@@ -29,10 +29,10 @@ const EnemyCard = (props) => {
                 </div>
                 <div className="text-content">
                     <span class="price">Name</span>
-                    <br />
+                    {/* <br /> */}
 
                     {/* <span class="status">HP </span> */}
-                    <Bar width={100} widthp={100} color='#A4DD00'></Bar>
+                    <Bar width={100} widthp={70} color='#A4DD00'></Bar>
                 </div>
             </motion.div>
         </div>
