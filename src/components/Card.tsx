@@ -79,21 +79,21 @@ const Card = (props) => {
           <div class="statusBox">
             {/* <img src={sword} alt="" /> */}
             <span class="status">ATK </span>
-            {/* <span>{attack}</span> */}
-            <Bar width={100} color='#D84040'></Bar>
+            <span>{attack}</span>
+            {/* <Bar width={100} color='#D84040'></Bar> */}
 
           </div>
           <div class="statusBox">
             {/* <img src={shield} alt="" /> */}
             <span class="status">DEF </span>
-            {/* <span>{defence}</span> */}
-            <Bar width={100}></Bar>
+            <span>{defence}</span>
+            {/* <Bar width={100}></Bar> */}
 
           </div>
           <div class="statusBox">
             <span class="status">SPD </span>
-            {/* <span>{speed}</span> */}
-            <Bar width={100} color='#0D92F4'></Bar>
+            <span>{speed}</span>
+            {/* <Bar width={100} color='#0D92F4'></Bar> */}
 
           </div>
         </div>

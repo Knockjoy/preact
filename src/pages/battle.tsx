@@ -12,6 +12,11 @@ import { Show } from "@chakra-ui/react";
 import { motion, animate, stagger } from "framer-motion";
 
 const Battle = () => {
+    // TODO:自動遷移
+    //TODO:技選択、実行の実装
+    //TODO:技を受けた時の実装
+    //TODO:敵の画像と体力ロード
+    // TODO:マインドコントロールの時はどう表示するのか
     const location = useLocation();
     const navigate = useNavigate()
     const changePage = () => {

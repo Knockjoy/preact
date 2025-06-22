@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useWebSocketContext } from "../hooks/WebSocketManager.tsx"
 
 const UserSettings = () => {
+    // TODO:エラー表示の作成
+    //TODO:直リンク防止
     const navigate = useNavigate();
     const [nickname, setNickname] = useState("");
 

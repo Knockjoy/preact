@@ -1,34 +1,41 @@
 // WebSocketContext.tsx
-import React, { createContext, useContext, useRef, useEffect, useState} from 'react';
+import React, { createContext, useContext, useRef, useEffect, useState } from 'react';
+type MessageHandler = (message: MessageEvent) => void;
+
 type WebSocketContextType = {
   socket: WebSocket | null;
   sendMessage: (msg: string) => void;
   isConnected: boolean;
+  subscribe: (handler: MessageHandler) => void;
+  unsubscribe: (handler: MessageHandler) => void;
 };
 
+export const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);
 
-export const WebSocketContext = createContext(undefined);
-
-export const WebSocketProvider= ({ children }) => {
+export const WebSocketProvider = ({ children }) => {
   const socketRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
-  const [userID,setUserID]=useState(-1);
+  const [userID, setUserID] = useState(-1);
+  const messageHandlersRef = useRef<Set<MessageHandler>>(new Set())
   useEffect(() => {
-    const socket = new WebSocket('ws://localhost:19009/ws');
+    const socket = new WebSocket('ws://192.168.1.201:19004/ws');
     socketRef.current = socket;
 
-    socket.onopen = () => {setIsConnected(true);sendMessage(JSON.stringify({status:"::connect::"}));}
+    socket.onopen = () => { setIsConnected(true); sendMessage(JSON.stringify({ status: "::connect::" })); }
     socket.onclose = () => setIsConnected(false);
     socket.onerror = (e) => console.error(e);
     socket.onmessage = (e) => {
-      if(!e.data.trim()) return;
-      const data=JSON.parse(e.data);
-      const status=data["status"];
-      if (status=="firstConnect"){
+      if (!e.data.trim()) return;
+      const data = JSON.parse(e.data);
+      const status = data["status"];
+      if (status == "firstConnect") {
         setUserID(data["userid"]);
       }
-      
-      console.log('Received:', e.data);};
+
+      messageHandlersRef.current.forEach((handler) => handler(data))
+
+      console.log('Received:', e.data);
+    };
 
     return () => socket.close();
   }, []);
@@ -38,11 +45,20 @@ export const WebSocketProvider= ({ children }) => {
       socketRef.current.send(msg);
     }
   };
+  const subscribe = (handler: MessageHandler) => {
+    console.log("add torigger")
+    messageHandlersRef.current.add(handler);
+  };
+
+  const unsubscribe = (handler: MessageHandler) => {
+    messageHandlersRef.current.delete(handler);
+  };
+
   return (
-    <WebSocketContext.Provider value= {{ socket: socketRef.current, sendMessage, isConnected,userID }}>
-  { children }
-  </WebSocketContext.Provider>
-);
+    <WebSocketContext.Provider value={{ socket: socketRef.current, sendMessage, isConnected, userID,subscribe,unsubscribe }}>
+      {children}
+    </WebSocketContext.Provider>
+  );
 };
 
 export const useWebSocketContext = () => {
