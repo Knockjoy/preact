@@ -65,7 +65,7 @@ export const App = () => {
       format: "png",
       quality: 1,
     });
-    sendMessage(JSON.stringify({ status: "createCard", userID: userID, sketch: dataURL }))
+    sendMessage(JSON.stringify({ status: "createCard", userID: userID,charaname:"sample", sketch: dataURL }))
     setCardslen(cardslen + 1);
     //init
     setHistories({
