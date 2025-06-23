@@ -37,6 +37,7 @@ const Drawing = () => {
   const [cardslen, setCardslen] = useState(0);
   const [windowWidth, setWindowWidth] = useState();
   const [cardsEle, setCardsEle] = useState([]);
+  const [cardids,setCardids]=useState([]);
   useEffect(() => {
     const handler = (e) => {
       const data = e
@@ -45,7 +46,7 @@ const Drawing = () => {
       const status = data["status"]
       if (status == "cardCreated" && data["careateStatus"] == "success") {
         console.log(data["cardid"])
-
+        setCardids([...cardids,data["cardid"]])
         setCardsEle([...cardsEle, { id: data["cardid"], name:data["charaname"],sketch:data["sketch"],status: data["cardstatus"] }])
       };
     }
@@ -245,6 +246,7 @@ const Drawing = () => {
 
   const navigate = useNavigate();
   const changePage = () => {
+    sendMessage(JSON.stringify({"status":"battle_in","cardids":cardids}))
     navigate("/battle", { state: { frombutton: true } })
   };
   const location = useLocation();
