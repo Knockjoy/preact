@@ -20,15 +20,16 @@ import border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons
 import ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
 import redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
 import undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
-import { useWebSocketContext } from "../hooks/WebSocketManager.tsx";
+import { useWebSocketContext } from "../components/WebSocketManager.tsx";
 import DrawingSmallCard from "../components/DrawingSmallCard.tsx";
+import { useBattleManagerContext } from "../components/BattleManager.tsx";
 const DEFAULT_COLOR = "#000000";
 const DEFAULT_WIDTH = 10;
 
 
 const Drawing = () => {
-  const { sendMessage, isConnected, userID, subscribe, unsubscribe } = useWebSocketContext();
-
+  const { sendMessage, isConnected, subscribe, unsubscribe } = useWebSocketContext();
+  const { userid ,setMycards} = useBattleManagerContext()
   const canvasEl = useRef(null);
   const [canvas, setCanvas] = useState(null);
   const [width, setWidth] = useState(DEFAULT_WIDTH);
@@ -37,7 +38,7 @@ const Drawing = () => {
   const [cardslen, setCardslen] = useState(0);
   const [windowWidth, setWindowWidth] = useState();
   const [cardsEle, setCardsEle] = useState([]);
-  const [cardids,setCardids]=useState([]);
+  const [cardids, setCardids] = useState([]);
   useEffect(() => {
     const handler = (e) => {
       const data = e
@@ -46,8 +47,8 @@ const Drawing = () => {
       const status = data["status"]
       if (status == "cardCreated" && data["careateStatus"] == "success") {
         console.log(data["cardid"])
-        setCardids([...cardids,data["cardid"]])
-        setCardsEle([...cardsEle, { id: data["cardid"], name:data["charaname"],sketch:data["sketch"],status: data["cardstatus"] }])
+        setCardids([...cardids, data["cardid"]])
+        setCardsEle([...cardsEle, { id: data["cardid"], name: data["charaname"], sketch: data["sketch"], status: data["cardstatus"] }])
       };
     }
     subscribe(handler);
@@ -95,7 +96,7 @@ const Drawing = () => {
       format: "png",
       quality: 1,
     });
-    sendMessage(JSON.stringify({ status: "createCard", userID: userID, charaname: "sample", sketch: dataURL }))
+    sendMessage(JSON.stringify({ status: "createCard", userID: userid, charaname: "sample", sketch: dataURL }))
     setCardslen(cardslen + 1);
     //init
     setHistories({
@@ -246,8 +247,9 @@ const Drawing = () => {
 
   const navigate = useNavigate();
   const changePage = () => {
-    sendMessage(JSON.stringify({"status":"battle_in","cardids":cardids}))
-    navigate("/battle", { state: { frombutton: true } })
+    sendMessage(JSON.stringify({ "status": "battle_in", "cardids": cardids }))
+    setMycards(cardsEle)
+    navigate("/loading", { state: { frombutton: true } })
   };
   const location = useLocation();
   if (!location.state?.frombutton) {
@@ -298,6 +300,7 @@ const Drawing = () => {
                 {
                   cardsEle.map((item, index) => (
                     <DrawingSmallCard
+                      name={item.name}
                       hp={item.status["hp"]}
                       attack={item.status["attack"]}
                       defence={item.status["defence"]}
@@ -305,7 +308,7 @@ const Drawing = () => {
                       types={item.status["role"]}
                       cardSize={200}
                       img={item.sketch}
-                      ></DrawingSmallCard>
+                    ></DrawingSmallCard>
                   ))
                 }
 

@@ -1,5 +1,5 @@
-import React,{ReactNode} from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import React, { ReactNode, useState, useEffect } from "react";
+import { data, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Home from "./home";
 import "../assets/css/Battle.css"
 import "../assets/css/Cards.css"
@@ -10,6 +10,8 @@ import SmallCard from "../components/SmallCard.tsx";
 import "../assets/fonts/Huninn.css"
 import { Show } from "@chakra-ui/react";
 import { motion, animate, stagger } from "framer-motion";
+import { useWebSocketContext } from "../components/WebSocketManager.tsx";
+import { useBattleManagerContext } from "../components/BattleManager.tsx";
 
 const Battle = () => {
     // TODO:自動遷移
@@ -19,12 +21,23 @@ const Battle = () => {
     // TODO:マインドコントロールの時はどう表示するのか
     const location = useLocation();
     const navigate = useNavigate()
+    const { sendMessage, isConnected, subscribe, unsubscribe } = useWebSocketContext();
+    const {userid,battleid,mycards,opponetcards} =useBattleManagerContext();
+    const [battleopponetcards, setBattleOpponentcards] = useState([]);
+    const [battlemycards, setBattleMycards] = useState([]);
+    useEffect(() => {
+        setBattleOpponentcards(opponetcards[1])
+        setBattleMycards(mycards)
+    }, [mycards,opponetcards])
+
+
     const changePage = () => {
         navigate("/result", { state: { frombutton: true } })
     };
     if (!location.state?.frombutton) {
         return (<Navigate to={"/home"} replace />);
     }
+
     const container = {
         hidden: {
             y: 200
@@ -39,7 +52,7 @@ const Battle = () => {
     }
 
 
-    const CardWrapper = ({className, children}:{className?:string,children?:ReactNode}) => {
+    const CardWrapper = ({ className, children }: { className?: string, children?: ReactNode }) => {
         return (
             <motion.div
                 variants={container}
@@ -64,11 +77,21 @@ const Battle = () => {
                     <span>thinking...</span>
                 </div> */}
                 <div className="card-slider" style={{ "justify-content": "space-evenly" }}>
+                    {
+                        battleopponetcards.map((item, index) => (
+                            <EnemyCard
+                                cardSize={enemyCardSize}
+                                img={item["img"]}
+                                hp={item["hp"]}
+                                name={item["charaname"]}
+                            ></EnemyCard>
+                        ))
+                    }
+                    {/* <EnemyCard cardSize={enemyCardSize}></EnemyCard>
                     <EnemyCard cardSize={enemyCardSize}></EnemyCard>
                     <EnemyCard cardSize={enemyCardSize}></EnemyCard>
                     <EnemyCard cardSize={enemyCardSize}></EnemyCard>
-                    <EnemyCard cardSize={enemyCardSize}></EnemyCard>
-                    <EnemyCard cardSize={enemyCardSize}></EnemyCard>
+                    <EnemyCard cardSize={enemyCardSize}></EnemyCard> */}
 
                 </div>
                 <div class="battle-field">
@@ -102,11 +125,25 @@ const Battle = () => {
                 }}>
                     <div class="arrow" onclick="scrollCards(-1)">&#8592;</div>
                     <CardWrapper className="CardsSlider">
-                        <SmallCard id={1} cardSize={myCardsize}></SmallCard>
+                        {battlemycards.map((item,index)=>(
+                            <SmallCard 
+                            id={item.id}
+                            name={item.name}
+                            img={item.sketch}
+                            hp={item.status["hp"]}
+                            attack={item.status["attack"]}
+                            defence={item.status["defence"]}
+                            speed={item.status["speed"]}
+                            types={item.status["role"]}
+                            cardSize={myCardsize}
+                            
+                            ></SmallCard>
+                        ))}
+                        {/* <SmallCard id={1} cardSize={myCardsize}></SmallCard>
                         <SmallCard id={2} cardSize={myCardsize}></SmallCard>
                         <SmallCard id={3} cardSize={myCardsize}></SmallCard>
                         <SmallCard id={4} cardSize={myCardsize}></SmallCard>
-                        <SmallCard id={5} cardSize={myCardsize}></SmallCard>
+                        <SmallCard id={5} cardSize={myCardsize}></SmallCard> */}
                     </CardWrapper>
                     <div class="arrow" onclick="scrollCards(1)">&#8594;</div>
                 </div>

@@ -4,7 +4,6 @@ import { BrowserRouter, useNavigate } from "react-router-dom";
 import "../assets/css/Home.css"
 import "../assets/fonts/Handlee.css"
 import pencil from "../assets/icons/pencil.png";
-import { ServerSocket } from "../hooks/Serverconnection.ts";
 import { ScrollImages } from "../components/ScrollImages.tsx";
 import Card from "../components/Card.tsx";
 import "../assets/fonts/Huninn.css";

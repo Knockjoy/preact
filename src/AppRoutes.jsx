@@ -5,20 +5,26 @@ import Drawing from "./pages/drawing.tsx"
 import Battle from "./pages/battle.tsx"
 import UserSettings from "./pages/userSetting.tsx";
 import Rules from "./pages/rules.tsx";
-import { WebSocketProvider } from "./hooks/WebSocketManager.tsx";
+import { WebSocketProvider } from "./components/WebSocketManager.tsx";
+import { BattleManagerProvider } from "./components/BattleManager.tsx";
+import Waiting from "./pages/maching_wait.tsx";
 
 export const AppRoutes = () => {
     return (
+        <BattleManagerProvider>
             <WebSocketProvider>
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/rules" element={<Rules />} />
                     <Route path="/usersettings" element={<UserSettings />} />
                     <Route path="/home" element={<Home />} />
+                    <Route path="/loading" element={<Waiting />} />
                     <Route path="/result" element={<Result />} />
                     <Route path="/drawing" element={<Drawing />} />
                     <Route path="/battle" element={<Battle />} />
                 </Routes>
             </WebSocketProvider>
+        </BattleManagerProvider>
+
     )
 };

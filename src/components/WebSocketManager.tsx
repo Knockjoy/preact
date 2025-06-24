@@ -1,5 +1,6 @@
 // WebSocketContext.tsx
 import React, { createContext, useContext, useRef, useEffect, useState } from 'react';
+import {BattleManagerContext, useBattleManagerContext} from "./BattleManager.tsx"
 type MessageHandler = (message: MessageEvent) => void;
 
 type WebSocketContextType = {
@@ -12,11 +13,15 @@ type WebSocketContextType = {
 
 export const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);
 
+interface Dictionary<T> {
+  [key: string]: T;
+}
+
 export const WebSocketProvider = ({ children }) => {
   const socketRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
-  const [userID, setUserID] = useState(-1);
   const messageHandlersRef = useRef<Set<MessageHandler>>(new Set())
+  const {setUserid,setOpponentcards,setBattleid}=useBattleManagerContext();
   useEffect(() => {
     const socket = new WebSocket('ws://192.168.1.201:19004/ws');
     socketRef.current = socket;
@@ -29,7 +34,16 @@ export const WebSocketProvider = ({ children }) => {
       const data = JSON.parse(e.data);
       const status = data["status"];
       if (status == "firstConnect") {
-        setUserID(data["userid"]);
+        setUserid(data["userid"]);
+      }
+      if (status == "match_found") {
+        const opinfo = [
+          data["opponet"], // userid
+          data["opponetcards"] //[cardid]
+        ];
+        setBattleid(data["battleid"])
+        setOpponentcards(opinfo)
+
       }
 
       messageHandlersRef.current.forEach((handler) => handler(data))
@@ -55,7 +69,7 @@ export const WebSocketProvider = ({ children }) => {
   };
 
   return (
-    <WebSocketContext.Provider value={{ socket: socketRef.current, sendMessage, isConnected, userID,subscribe,unsubscribe }}>
+    <WebSocketContext.Provider value={{ socket: socketRef.current, sendMessage, isConnected, subscribe, unsubscribe }}>
       {children}
     </WebSocketContext.Provider>
   );
