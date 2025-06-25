@@ -7,6 +7,7 @@ import pencil from "../assets/icons/pencil.png";
 import { ScrollImages } from "../components/ScrollImages.tsx";
 import Card from "../components/Card.tsx";
 import "../assets/fonts/Huninn.css";
+import SmallCard from "../components/SmallCard.tsx";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Home = () => {
             <motion.div
 
             className="Gallery">
-
+                <SmallCard skills={[{"nickname":"aaa","ex":"aaa"}]}></SmallCard>
             </motion.div>
             <motion.div
                 whileHover={{ y: 10 }}

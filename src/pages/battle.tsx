@@ -136,7 +136,7 @@ const Battle = () => {
                             speed={item.status["speed"]}
                             types={item.status["role"]}
                             cardSize={myCardsize}
-                            
+                            skills={item.status["skills"]}
                             ></SmallCard>
                         ))}
                         {/* <SmallCard id={1} cardSize={myCardsize}></SmallCard>

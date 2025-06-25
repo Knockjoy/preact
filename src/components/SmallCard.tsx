@@ -29,6 +29,7 @@ const SmallCard = (props) => {
   const { speed = 54 } = props;
   const { id = -1 } = props;
   const { img = "" } = props;
+  const { skills = [] } = props;
   const [role, setRole] = useState(null);
 
   // Define an inline style object to apply the dynamic max-width
@@ -145,12 +146,12 @@ const SmallCard = (props) => {
       </motion.button>
 
       <DetailMenu class="BattleMenubox" id={`detailMenu${id}`} popover="auto">
-        <button
+        {/* <button
           popovertarget={`detailMenu${id}`}
           popovertargetaction="hidden"
           style={{ position: "absolute", width: "100vw", height: "100vh", "z-index": "0", "background": "none", padding: 0, margin: 0 }}>
 
-        </button>
+        </button> */}
         <div className="detailMenu">
           <div className="BattleMenu">
             <Card
@@ -164,33 +165,17 @@ const SmallCard = (props) => {
             ></Card>
             <span style={{ 'font-weight': "500", "font-size": "1.1em", "margin": "10px 0" }}>skills</span>
             <div>
-              <input type="radio" name="skill" id="SelectSkill1" checked />
-              {/* <div class="SkillButton" style={{ background: "#95E1D3" }}> */}
-              <div class="SkillButton" style={{ background: "#eeeeee" }}>
-
-                <span class="SkillName">skill1</span>
-                <div>説明文</div></div>
-              <input type="radio" name="skill" id="SelectSkill2" />
-              {/* <div class="SkillButton" style={{ background: "#EAFFD0" }}> */}
-              <div class="SkillButton" style={{ background: "#eeeeee" }}>
-
-                <span class="SkillName">skill1</span>
-                <div>説明文</div>
-              </div>
-              <input type="radio" name="skill" id="SelectSkill3" />
-              {/* <div class="SkillButton" style={{ background: "#FCE38A" }}> */}
-              <div class="SkillButton" style={{ background: "#eeeeee" }}>
-
-                <span class="SkillName">skill2</span>
-                <div>説明文</div>
-              </div>
-              <input type="radio" name="skill" id="SelectSkill4" />
-              {/* <div class="SkillButton" style={{ background: "#F38181" }}> */}
-              <div class="SkillButton" style={{ background: "#eeeeee" }}>
-
-                <span class="SkillName">skill3</span>
-                <div>説明文</div>
-              </div>
+              {skills.map((item, index) => (
+                // TODO:選択肢の作成
+                <div>
+                  {/* <div class="SkillButton" style={{ background: "#EAFFD0" }}> */}
+                  <div class="SkillButton" style={{ background: "#eeeeee" }}>
+                    <input type="radio" name="skill" id={`select${id}${index}`} />
+                    <span class="SkillName">{item["nickname"]}</span>
+                    <div>{item["ex"]}</div>
+                  </div>
+                </div>
+              ))}
             </div>
             <div>
 
