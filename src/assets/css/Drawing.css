@@ -48,3 +48,17 @@
       margin: 0
       ;
     }
+
+    .toolIconBox{
+      /* width: 16px;
+      height: 16px; */
+      padding: 5px;
+      margin: 5px;
+      
+    }
+
+    .toolIconBox:hover{
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 50%;
+      /* box-shadow: rgba(0, 0, 0, 0.7); */
+    }

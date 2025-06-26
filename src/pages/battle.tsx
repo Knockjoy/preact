@@ -22,14 +22,26 @@ const Battle = () => {
     const location = useLocation();
     const navigate = useNavigate()
     const { sendMessage, isConnected, subscribe, unsubscribe } = useWebSocketContext();
-    const {userid,battleid,mycards,opponetcards} =useBattleManagerContext();
+    const { userid, battleid, mycards, opponetcards } = useBattleManagerContext();
     const [battleopponetcards, setBattleOpponentcards] = useState([]);
     const [battlemycards, setBattleMycards] = useState([]);
+    const [alltargetcards,setAlltargetcards]=useState([])
     useEffect(() => {
         setBattleOpponentcards(opponetcards[1])
         setBattleMycards(mycards)
-    }, [mycards,opponetcards])
+        // setAllcards(battlemycards.concat(battleopponetcards))
+    }, [mycards, opponetcards])
+    useEffect(()=>{
+        console.log(battlemycards)
+        console.log(battleopponetcards)
 
+        const allcards=[...battlemycards,...battleopponetcards]
+        for(let i=0;i<allcards.length;i++){
+            // if(allcards[i]["status"]) 
+            // TODO:死んでいない場合は追加
+            setAlltargetcards([...alltargetcards,allcards[i]])  
+        }
+    },[battlemycards,battleopponetcards])
 
     const changePage = () => {
         navigate("/result", { state: { frombutton: true } })
@@ -125,18 +137,19 @@ const Battle = () => {
                 }}>
                     <div class="arrow" onclick="scrollCards(-1)">&#8592;</div>
                     <CardWrapper className="CardsSlider">
-                        {battlemycards.map((item,index)=>(
-                            <SmallCard 
-                            id={item.id}
-                            name={item.name}
-                            img={item.sketch}
-                            hp={item.status["hp"]}
-                            attack={item.status["attack"]}
-                            defence={item.status["defence"]}
-                            speed={item.status["speed"]}
-                            types={item.status["role"]}
-                            cardSize={myCardsize}
-                            skills={item.status["skills"]}
+                        {battlemycards.map((item, index) => (
+                            <SmallCard
+                                id={item.id}
+                                name={item.name}
+                                img={item.sketch}
+                                hp={item.status["hp"]}
+                                attack={item.status["attack"]}
+                                defence={item.status["defence"]}
+                                speed={item.status["speed"]}
+                                types={item.status["role"]}
+                                cardSize={myCardsize}
+                                skills={item.status["skills"]}
+                                targets={alltargetcards}
                             ></SmallCard>
                         ))}
                         {/* <SmallCard id={1} cardSize={myCardsize}></SmallCard>

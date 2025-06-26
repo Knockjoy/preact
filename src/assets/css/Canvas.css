@@ -69,10 +69,13 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 
 }
+.gotobattlebox:hover{
+    filter: brightness(0.8);
+}
 
 .gotobattleButton {
     border-radius: 10px;
-    background: blue;
+    background: #4169e1;
     /* height: 40%; */
     text-align: center;
     display: flex;
@@ -126,4 +129,8 @@
     border-radius: 10px;
     font-size: 1.2em;
     font-weight: 500;
+}
+
+.CreateCardButton:hover{
+    filter:brightness(0.8)
 }

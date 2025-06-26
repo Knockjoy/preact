@@ -32,11 +32,14 @@ const SmallCard = (props) => {
   const { img = "" } = props;
   const { skills = [] } = props;
   const [role, setRole] = useState(null);
+  const { targets = [] } = props;
 
   // Define an inline style object to apply the dynamic max-width
   const cardStyle = {
     maxWidth: `${cardSize}px`,
   };
+
+  useEffect(()=>(console.log(targets)))
 
   const DetailMenu = styled.div`
   &#detailMenu${id}{
@@ -155,7 +158,23 @@ const SmallCard = (props) => {
         </button> */}
         <div className="detailMenu">
           <div className="BattleMenu">
-            <img src={close_16dp_000000_FILL0_wght400_GRAD0_opsz20} alt="" />
+            <div style={{
+              "display": "flex",
+              "flex-direction": " row-reverse"
+            }}>
+              <button
+                popovertarget={`detailMenu${id}`}
+                popovertargetaction="hidden"
+                style={{
+                  "background": "none",
+                  "padding": "0",
+                  "margin": "0",
+                  "border": "0"
+                }}
+              >
+                <img src={close_16dp_000000_FILL0_wght400_GRAD0_opsz20} alt="" style={{ scale: "2" }} />
+              </button>
+            </div>
 
             <Card
               name={name}
@@ -174,7 +193,7 @@ const SmallCard = (props) => {
                   return (
                     <div style={{ "display": "flex", "width": "100%" }}>
                       <input value={index} type="radio" name="skill" id={`radio-${id}-${index}`} />
-                      <label style={{ background: "#eeeeee" }} class="SkillButton" id={`select-${id}-${index}`} for={`radio-${id}-${index}`}>{item["nickname"]}
+                      <label class="SkillButton" id={`select-${id}-${index}`} for={`radio-${id}-${index}`}>{item["nickname"]}
                         <div style={{ "color": "#3e3e3e" }}>{item["ex"]}</div>
                       </label>
                     </div>
@@ -182,8 +201,8 @@ const SmallCard = (props) => {
                 } else {
                   return (
                     <div style={{ "display": "flex", "width": "100%" }}>
-                      <input value={index} type="radio" name="skill" id={`radio-${id}-${index}`}  />
-                      <label style={{ background: "#eeeeee" }} class="SkillButton" id={`select-${id}-${index}`} for={`radio-${id}-${index}`}>{item["nickname"]}
+                      <input value={index} type="radio" name="skill" id={`radio-${id}-${index}`} />
+                      <label class="SkillButton" id={`select-${id}-${index}`} for={`radio-${id}-${index}`}>{item["nickname"]}
                         <div style={{ "color": "#3e3e3e" }}>{item["ex"]}</div>
                       </label>
                     </div>
@@ -192,23 +211,19 @@ const SmallCard = (props) => {
                 }
               })}
             </div>
-            <div>
-              <select name="target" style={{ "width": "100%" }}>
+            <div class="select TargetSelecter">
+              <select name="target" class="item" style={{ "width": "100%" }}>
                 <option value="" style={{ "width": "100%" }}>targetを選択</option>
-                <option value="target1" style={{ "width": "100%" }}>target1</option>
-                <option value="target2" style={{ "width": "100%" }}>target2</option>
-                <option value="target2" style={{ "width": "100%" }}>target2</option>
-                <option value="target2" style={{ "width": "100%" }}>target2</option>
-                <option value="target2" style={{ "width": "100%" }}>target2</option>
-                <option value="target2" style={{ "width": "100%" }}>target2</option>
-                <option value="target2" style={{ "width": "100%" }}>target2</option>
-                <option value="target2" style={{ "width": "100%" }}>target2</option>
+                {/* {targets.map((item,index)=>(
+                  <option value={item.cardid} style={{"width":"100%"}}>{item.name}</option>
+                ))} */}
 
               </select>
               {/* <div class="TargetSelecter"><div><img src={arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="" /></div>target</div> */}
-              <button class="decision Mbutton" style={{ width: "100%" }} popovertarget={`detailMenu${id}`} popovertargetaction="hidden">決定</button>
 
             </div>
+            <button class="decision Mbutton" style={{ width: "100%" }} popovertarget={`detailMenu${id}`} popovertargetaction="hidden">決定</button>
+
           </div>
         </div>
       </DetailMenu>

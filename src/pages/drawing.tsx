@@ -276,11 +276,21 @@ const Drawing = () => {
                 <div className=""><SketchPicker color={picker} onChange={handleChange}></SketchPicker></div>
               </div>
               <div class="ToolBox">
-                <img src={border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="太くする" onClick={changeToThick} />
-                <img src={edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="細くする" onClick={changeToThin} />
-                <img src={ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="消しゴム" onClick={changeToEraser} />
-                <img src={undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="元に戻す" onClick={undo} />
-                <img src={redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="取り消し" onClick={redo} />
+                <div class="toolIconBox" onClick={changeToThick}>
+                <img src={border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="太くする"  />
+                </div>
+                <div class="toolIconBox" onClick={changeToThin}>
+                <img src={edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="細くする"  />
+                </div>
+                <div class="toolIconBox" onClick={changeToEraser}>
+                <img src={ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="消しゴム"  />
+                </div>
+                <div class="toolIconBox" onClick={undo}>
+                <img src={undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="元に戻す"  />
+                </div>
+                <div class="toolIconBox" onClick={redo}>
+                <img src={redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="取り消し"  />
+                </div>
               </div>
             </div>
             <div class="CreateCardButtonBox" onClick={Download2img}>
