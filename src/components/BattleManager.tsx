@@ -7,6 +7,8 @@ export const BattleManagerProvider=({children})=>{
     const [battleid,setBattleid]=useState(null);
     const [mycards,setMycards]=useState([]);
     const [opponetcards,setOpponentcards]=useState([]);
+    const [thisturnskillindex,setThisturnindex]=useState("");
+    const [thisturntarget,setThisturntarget]=useState("");
 
     return (
         <BattleManagerContext.Provider value={{userid,setUserid,battleid,setBattleid,mycards,setMycards,opponetcards,setOpponentcards}}>

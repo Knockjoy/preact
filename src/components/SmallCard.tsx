@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, createRef } from 'react';
 import { motion } from "framer-motion";
 import "../assets/css/card.css";
 import sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20.svg";
@@ -33,13 +33,14 @@ const SmallCard = (props) => {
   const { skills = [] } = props;
   const [role, setRole] = useState(null);
   const { targets = [] } = props;
+  const targetselect = useRef<HTMLSelectElement>(null);
+
 
   // Define an inline style object to apply the dynamic max-width
   const cardStyle = {
     maxWidth: `${cardSize}px`,
   };
-
-  useEffect(()=>(console.log(targets)))
+  useEffect(() => (console.log(targets)))
 
   const DetailMenu = styled.div`
   &#detailMenu${id}{
@@ -88,6 +89,14 @@ const SmallCard = (props) => {
         ease: "easeInOut"
       }
     }
+  };
+
+  const handleSendSkill = () => {
+    const skill = document.querySelector<HTMLInputElement>("input[name='skill']:checked")?.value;
+    const target = targetselect.current.value
+    console.log(skill)
+    console.log(targetselect.current.value)
+    // TODO:thisturn系に登録
   };
 
   return (
@@ -188,41 +197,37 @@ const SmallCard = (props) => {
             <span style={{ 'font-weight': "500", "font-size": "1.1em", "margin": "10px 0" }}>skills</span>
             <div class="skill_choice">
               {skills.map((item, index) => {
-                // TODO:選択肢の作成
-                if (index == 0) {
-                  return (
-                    <div style={{ "display": "flex", "width": "100%" }}>
-                      <input value={index} type="radio" name="skill" id={`radio-${id}-${index}`} />
-                      <label class="SkillButton" id={`select-${id}-${index}`} for={`radio-${id}-${index}`}>{item["nickname"]}
-                        <div style={{ "color": "#3e3e3e" }}>{item["ex"]}</div>
-                      </label>
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div style={{ "display": "flex", "width": "100%" }}>
-                      <input value={index} type="radio" name="skill" id={`radio-${id}-${index}`} />
-                      <label class="SkillButton" id={`select-${id}-${index}`} for={`radio-${id}-${index}`}>{item["nickname"]}
-                        <div style={{ "color": "#3e3e3e" }}>{item["ex"]}</div>
-                      </label>
-                    </div>
-                  );
-
-                }
+                return (
+                  <div style={{ "display": "flex", "width": "100%" }}>
+                    <input value={index} type="radio" name="skill" id={`radio-${id}-${index}`} />
+                    <label class="SkillButton" id={`select-${id}-${index}`} for={`radio-${id}-${index}`}>{item["nickname"]}
+                      <div style={{ "color": "#3e3e3e" }}>{item["ex"]}</div>
+                    </label>
+                  </div>
+                );
               })}
             </div>
             <div class="select TargetSelecter">
-              <select name="target" class="item" style={{ "width": "100%" }}>
+              <select name="target" class="item" style={{ "width": "100%" }} ref={targetselect} >
                 <option value="" style={{ "width": "100%" }}>targetを選択</option>
-                {/* {targets.map((item,index)=>(
-                  <option value={item.cardid} style={{"width":"100%"}}>{item.name}</option>
-                ))} */}
+                {targets.map((item, index) => (
+                  <option value={item[0]} style={{ "width": "100%" }}>{`${item[1]}`}</option>
+                ))}
+                <option value="aaa" style={{ "width": "100%" }}>aaa</option>
 
               </select>
               {/* <div class="TargetSelecter"><div><img src={arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="" /></div>target</div> */}
 
             </div>
-            <button class="decision Mbutton" style={{ width: "100%" }} popovertarget={`detailMenu${id}`} popovertargetaction="hidden">決定</button>
+            <button
+              class="decision Mbutton"
+              style={{ width: "100%" }}
+              popovertarget={`detailMenu${id}`}
+              popovertargetaction="hidden"
+              onClick={handleSendSkill}
+            >
+              決定
+            </button>
 
           </div>
         </div>

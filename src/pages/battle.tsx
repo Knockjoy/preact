@@ -17,31 +17,31 @@ const Battle = () => {
     // TODO:自動遷移
     //TODO:技選択、実行の実装
     //TODO:技を受けた時の実装
-    //TODO:敵の画像と体力ロード
-    // TODO:マインドコントロールの時はどう表示するのか
     const location = useLocation();
     const navigate = useNavigate()
     const { sendMessage, isConnected, subscribe, unsubscribe } = useWebSocketContext();
     const { userid, battleid, mycards, opponetcards } = useBattleManagerContext();
     const [battleopponetcards, setBattleOpponentcards] = useState([]);
     const [battlemycards, setBattleMycards] = useState([]);
-    const [alltargetcards,setAlltargetcards]=useState([])
+    const [alltargetcards, setAlltargetcards] = useState([])
     useEffect(() => {
         setBattleOpponentcards(opponetcards[1])
         setBattleMycards(mycards)
         // setAllcards(battlemycards.concat(battleopponetcards))
     }, [mycards, opponetcards])
-    useEffect(()=>{
-        console.log(battlemycards)
-        console.log(battleopponetcards)
+    useEffect(() => {
 
-        const allcards=[...battlemycards,...battleopponetcards]
-        for(let i=0;i<allcards.length;i++){
-            // if(allcards[i]["status"]) 
-            // TODO:死んでいない場合は追加
-            setAlltargetcards([...alltargetcards,allcards[i]])  
+        const cards:any[]=[]
+        for (let i = 0; i < battlemycards.length; i++) {
+            const card = battlemycards[i]
+            cards.push([card["id"], card["name"], "my"])
         }
-    },[battlemycards,battleopponetcards])
+        for (let i = 0; i < battleopponetcards.length; i++) {
+            const card = battleopponetcards[i]
+            cards.push([card["cardid"], card["charaname"], "op"])
+        }
+        setAlltargetcards(cards);
+    }, [battlemycards, battleopponetcards])
 
     const changePage = () => {
         navigate("/result", { state: { frombutton: true } })
@@ -108,6 +108,7 @@ const Battle = () => {
                 </div>
                 <div class="battle-field">
                     <div class="Battle-fieldCard">
+                        {/* TODO:thisturn系を監視 */}
                         <span>Your Card</span>
                         <Card cardSize={250}
                             style={{ width: 2 }}

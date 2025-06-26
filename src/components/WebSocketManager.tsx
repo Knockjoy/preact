@@ -23,7 +23,7 @@ export const WebSocketProvider = ({ children }) => {
   const messageHandlersRef = useRef<Set<MessageHandler>>(new Set())
   const {setUserid,setOpponentcards,setBattleid}=useBattleManagerContext();
   useEffect(() => {
-    const socket = new WebSocket('ws://127.0.0.1:55239/ws');
+    const socket = new WebSocket('ws://192.168.1.201:19004/ws');
     socketRef.current = socket;
 
     socket.onopen = () => { setIsConnected(true); sendMessage(JSON.stringify({ status: "::connect::" })); }
@@ -43,8 +43,8 @@ export const WebSocketProvider = ({ children }) => {
         ];
         setBattleid(data["battleid"])
         setOpponentcards(opinfo)
-
       }
+      // TODO:技実行されたらthisturn系をリセット
 
       messageHandlersRef.current.forEach((handler) => handler(data))
 
