@@ -16,7 +16,8 @@ import science_16dp_48752C_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/scie
 import shield_16dp_2854C5_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/shield_16dp_2854C5_FILL0_wght400_GRAD0_opsz20.svg";
 import sprint_16dp_2854C5_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/sprint_16dp_2854C5_FILL0_wght400_GRAD0_opsz20.svg";
 import star_shine_16dp_321D71_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/star_shine_16dp_321D71_FILL0_wght400_GRAD0_opsz20.svg";
-import question_mark_16dp_434343_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/question_mark_16dp_434343_FILL0_wght400_GRAD0_opsz20.svg"
+import question_mark_16dp_434343_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/question_mark_16dp_434343_FILL0_wght400_GRAD0_opsz20.svg";
+import close_16dp_000000_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/close_16dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
 // Main App component
 const SmallCard = (props) => {
   // Destructure cardSize from props, with a default of 'medium'
@@ -154,6 +155,8 @@ const SmallCard = (props) => {
         </button> */}
         <div className="detailMenu">
           <div className="BattleMenu">
+            <img src={close_16dp_000000_FILL0_wght400_GRAD0_opsz20} alt="" />
+
             <Card
               name={name}
               types={types}
@@ -164,22 +167,45 @@ const SmallCard = (props) => {
               img={img}
             ></Card>
             <span style={{ 'font-weight': "500", "font-size": "1.1em", "margin": "10px 0" }}>skills</span>
-            <div>
-              {skills.map((item, index) => (
+            <div class="skill_choice">
+              {skills.map((item, index) => {
                 // TODO:選択肢の作成
-                <div>
-                  {/* <div class="SkillButton" style={{ background: "#EAFFD0" }}> */}
-                  <div class="SkillButton" style={{ background: "#eeeeee" }}>
-                    <input type="radio" name="skill" id={`select${id}${index}`} />
-                    <span class="SkillName">{item["nickname"]}</span>
-                    <div>{item["ex"]}</div>
-                  </div>
-                </div>
-              ))}
+                if (index == 0) {
+                  return (
+                    <div style={{ "display": "flex", "width": "100%" }}>
+                      <input value={index} type="radio" name="skill" id={`radio-${id}-${index}`} />
+                      <label style={{ background: "#eeeeee" }} class="SkillButton" id={`select-${id}-${index}`} for={`radio-${id}-${index}`}>{item["nickname"]}
+                        <div style={{ "color": "#3e3e3e" }}>{item["ex"]}</div>
+                      </label>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div style={{ "display": "flex", "width": "100%" }}>
+                      <input value={index} type="radio" name="skill" id={`radio-${id}-${index}`}  />
+                      <label style={{ background: "#eeeeee" }} class="SkillButton" id={`select-${id}-${index}`} for={`radio-${id}-${index}`}>{item["nickname"]}
+                        <div style={{ "color": "#3e3e3e" }}>{item["ex"]}</div>
+                      </label>
+                    </div>
+                  );
+
+                }
+              })}
             </div>
             <div>
+              <select name="target" style={{ "width": "100%" }}>
+                <option value="" style={{ "width": "100%" }}>targetを選択</option>
+                <option value="target1" style={{ "width": "100%" }}>target1</option>
+                <option value="target2" style={{ "width": "100%" }}>target2</option>
+                <option value="target2" style={{ "width": "100%" }}>target2</option>
+                <option value="target2" style={{ "width": "100%" }}>target2</option>
+                <option value="target2" style={{ "width": "100%" }}>target2</option>
+                <option value="target2" style={{ "width": "100%" }}>target2</option>
+                <option value="target2" style={{ "width": "100%" }}>target2</option>
+                <option value="target2" style={{ "width": "100%" }}>target2</option>
 
-              <div class="TargetSelecter"><div><img src={arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="" /></div>target</div>
+              </select>
+              {/* <div class="TargetSelecter"><div><img src={arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="" /></div>target</div> */}
               <button class="decision Mbutton" style={{ width: "100%" }} popovertarget={`detailMenu${id}`} popovertargetaction="hidden">決定</button>
 
             </div>

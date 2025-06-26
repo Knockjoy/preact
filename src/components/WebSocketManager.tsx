@@ -23,7 +23,7 @@ export const WebSocketProvider = ({ children }) => {
   const messageHandlersRef = useRef<Set<MessageHandler>>(new Set())
   const {setUserid,setOpponentcards,setBattleid}=useBattleManagerContext();
   useEffect(() => {
-    const socket = new WebSocket('ws://192.168.1.201:19004/ws');
+    const socket = new WebSocket('ws://127.0.0.1:55239/ws');
     socketRef.current = socket;
 
     socket.onopen = () => { setIsConnected(true); sendMessage(JSON.stringify({ status: "::connect::" })); }
