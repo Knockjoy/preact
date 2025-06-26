@@ -18,10 +18,12 @@ import sprint_16dp_2854C5_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/sprin
 import star_shine_16dp_321D71_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/star_shine_16dp_321D71_FILL0_wght400_GRAD0_opsz20.svg";
 import question_mark_16dp_434343_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/question_mark_16dp_434343_FILL0_wght400_GRAD0_opsz20.svg";
 import close_16dp_000000_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/close_16dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
+import { useBattleManagerContext } from './BattleManager.tsx';
 // Main App component
 const SmallCard = (props) => {
   // Destructure cardSize from props, with a default of 'medium'
   const { cardSize = 300 } = props;
+  const { mycard=null}=props;
   const { name = "name" } = props;
   const { types = "Attack" } = props;
   const { hp = 51 } = props;
@@ -34,6 +36,7 @@ const SmallCard = (props) => {
   const [role, setRole] = useState(null);
   const { targets = [] } = props;
   const targetselect = useRef<HTMLSelectElement>(null);
+  const {setThisturnskillindex,setThisturntarget,setThisturn,setThisturncard}=useBattleManagerContext();
 
 
   // Define an inline style object to apply the dynamic max-width
@@ -96,7 +99,10 @@ const SmallCard = (props) => {
     const target = targetselect.current.value
     console.log(skill)
     console.log(targetselect.current.value)
-    // TODO:thisturn系に登録
+    setThisturnskillindex(skill)
+    setThisturntarget(target)
+    setThisturn(true)
+    setThisturncard(mycard)
   };
 
   return (
@@ -213,8 +219,6 @@ const SmallCard = (props) => {
                 {targets.map((item, index) => (
                   <option value={item[0]} style={{ "width": "100%" }}>{`${item[1]}`}</option>
                 ))}
-                <option value="aaa" style={{ "width": "100%" }}>aaa</option>
-
               </select>
               {/* <div class="TargetSelecter"><div><img src={arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="" /></div>target</div> */}
 

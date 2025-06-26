@@ -28,7 +28,7 @@ const Home = () => {
             <motion.div
 
             className="Gallery">
-                <SmallCard skills={[{"nickname":"aaa","ex":"基礎解析学のテストは難しかったけど、点数が上がった"},{"nickname":"aaa","ex":"aaa"},{"nickname":"aaa","ex":"aaa"},{"nickname":"aaa","ex":"aaa"}]}></SmallCard>
+                {/* <SmallCard skills={[{"nickname":"aaa","ex":"基礎解析学のテストは難しかったけど、点数が上がった"},{"nickname":"aaa","ex":"aaa"},{"nickname":"aaa","ex":"aaa"},{"nickname":"aaa","ex":"aaa"}]}></SmallCard> */}
             </motion.div>
             <motion.div
                 whileHover={{ y: 10 }}

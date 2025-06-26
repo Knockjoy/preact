@@ -20,10 +20,37 @@ const Battle = () => {
     const location = useLocation();
     const navigate = useNavigate()
     const { sendMessage, isConnected, subscribe, unsubscribe } = useWebSocketContext();
-    const { userid, battleid, mycards, opponetcards } = useBattleManagerContext();
+    const { userid, battleid, mycards, opponetcards,thisturn,thisturncard,thisturnskillindex,thisturntarget } = useBattleManagerContext();
+    // 敵カード
     const [battleopponetcards, setBattleOpponentcards] = useState([]);
+    // myカード
     const [battlemycards, setBattleMycards] = useState([]);
-    const [alltargetcards, setAlltargetcards] = useState([])
+    // smallcardsに渡す用
+    const [alltargetcards, setAlltargetcards] = useState([]);
+    // field card用
+    const [fieldcardStatus,setFieldcardstatus]=useState();
+    useEffect(()=>{
+        if(thisturn&&isConnected){
+            setFieldcardstatus(thisturncard)
+            console.log(JSON.stringify({
+                "status":"set_skill",
+                "userid":userid,
+                "battleid":battleid,
+                "cardid":thisturncard.id,
+                "skillnum":thisturnskillindex,
+                "targetcardid":thisturntarget
+            }))
+            sendMessage(JSON.stringify({
+                "status":"set_skill",
+                "userid":userid,
+                "battleid":battleid,
+                "cardid":thisturncard.id,
+                "skillnum":thisturnskillindex,
+                "targetcardid":thisturntarget
+            }))
+        }
+    },[thisturn])
+    
     useEffect(() => {
         setBattleOpponentcards(opponetcards[1])
         setBattleMycards(mycards)
@@ -112,6 +139,12 @@ const Battle = () => {
                         <span>Your Card</span>
                         <Card cardSize={250}
                             style={{ width: 2 }}
+                            // name={fieldcardStatus.name?fieldcardStatus.name:"Card name"}
+                            // type={fieldcardStatus.status["role"]?fieldcardStatus.status["role"]:null}
+                            // hp={fieldcardStatus.status["hp"]?fieldcardStatus.status["hp"]:null}
+                            // attack={fieldcardStatus.status["attack"]?fieldcardStatus.status["attack"]:"?"}
+                            // defence={fieldcardStatus.status["defence"]?fieldcardStatus.status["defence"]:"?"}
+                            // speed={fieldcardStatus.status["speed"]?fieldcardStatus.status["speed"]:"?"}
                         ></Card>
                     </div>
                     <div>VS</div>
@@ -140,6 +173,7 @@ const Battle = () => {
                     <CardWrapper className="CardsSlider">
                         {battlemycards.map((item, index) => (
                             <SmallCard
+                                mycard={item}
                                 id={item.id}
                                 name={item.name}
                                 img={item.sketch}
