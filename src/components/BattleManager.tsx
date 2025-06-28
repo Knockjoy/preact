@@ -1,6 +1,5 @@
-import React, { createContext, useContext, useEffect, useState, useRef } from "../../node_modules/react"
+import React, { createContext, useContext, useEffect, useState, useRef } from "react"
 import { useWebSocketContext } from "./WebSocketManager";
-
 
 export const BattleManagerContext = createContext(undefined);
 
@@ -9,7 +8,7 @@ export const BattleManagerProvider = ({ children }) => {
 
     const { sendMessage, isConnected, subscribe, unsubscribe } = useWebSocketContext();
 
-    const [userid, setUserid] = useState(null);
+    const [userid, setUserid] = useState("");
     const [battleid, setBattleid] = useState(null);
     const [mycards, setMycards] = useState([]);
     const [opponetcards, setOpponentcards] = useState([]);
@@ -21,6 +20,7 @@ export const BattleManagerProvider = ({ children }) => {
     const [thisturnHistory, setThisturnHistory] = useState([]);
 
     // TODO:型
+    const [aaa, setAaa] = useState(100)
     const [battle,setBattle]=useState<Battle.State|null>(null);
     useEffect(() => {
         const handler = (e) => {
