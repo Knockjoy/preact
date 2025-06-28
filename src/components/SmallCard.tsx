@@ -22,24 +22,64 @@ import { useBattleManagerContext } from './BattleManager.tsx';
 // Main App component
 const SmallCard = (props) => {
   // Destructure cardSize from props, with a default of 'medium'
-  const { cardSize = 300 } = props;
-  const { mycard=null}=props;
-  const { name = "name" } = props;
-  const { types = "Attack" } = props;
-  const { hp = 51 } = props;
-  const { attack = 52 } = props;
-  const { defence = 53 } = props;
-  const { speed = 54 } = props;
-  const { id = -1 } = props;
-  const { img = "" } = props;
-  const { skills = [] } = props;
-  const [role, setRole] = useState(null);
-  const { targets = [] } = props;
+  let { cardSize = 300 } = props;
+  let { mycard = null } = props;
+  let { name = "name" } = props;
+  let { types = "Attack" } = props;
+  let { hp = 51 } = props;
+  let { attack = 52 } = props;
+  let { defence = 53 } = props;
+  let { speed = 54 } = props;
+  let { id = -1 } = props;
+  let { img = "" } = props;
+  let { skills = [] } = props;
+  let { targets = [] } = props;
+  let { nouse = false } = props;
   const targetselect = useRef<HTMLSelectElement>(null);
-  const {setThisturnskillindex,setThisturntarget,setThisturn,setThisturncard}=useBattleManagerContext();
+  const [role, setRole] = useState(null);
+  const { setThisturnskillindex, setThisturntarget, setThisturn, setThisturncard } = useBattleManagerContext();
 
-
-  // Define an inline style object to apply the dynamic max-width
+  
+  if (cardSize==null||cardSize==""||cardSize==-1){
+    cardSize = 300
+  }
+    if (mycard==null||mycard==""||mycard==-1){
+    mycard = null
+  }
+    if (name==null||name==""||name==-1){
+    name = "name"
+  }
+    if (types==null||types==""||types==-1){
+    types = "Attack"
+  }
+    if (hp==null||hp==""||hp==-1){
+    hp = 51
+  }
+    if (attack==null||attack==""||attack==-1){
+    attack = 52
+  }
+    if (defence==null||defence==""||defence==-1){
+    defence = 53
+  }
+    if (speed==null||speed==""||speed==-1){
+    speed = 54
+  }
+    if (id==null||id==""||id==-1){
+    id = -1
+  }
+    if (img==null||img==""||img==-1){
+    img = ""
+  }
+    if (skills==null||skills==""||skills==-1){
+    skills = []
+  }
+    if (targets==null||targets==""||targets==-1){
+    targets = []
+  }
+    if (nouse==null||nouse==""||nouse==-1){
+    nouse = false
+  }
+    // Define an inline style object to apply the dynamic max-width
   const cardStyle = {
     maxWidth: `${cardSize}px`,
   };
@@ -115,6 +155,7 @@ const SmallCard = (props) => {
         whileHover={{ y: -10 }}
         popovertarget={`detailMenu${id}`}
         popovertargetaction="show"
+        disable={nouse}
       >
         <div className="image-container">
           {/* Placeholder SVG for the image */}

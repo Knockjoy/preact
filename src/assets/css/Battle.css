@@ -187,3 +187,19 @@ select:focus{
   border: none;
 }
 
+.battle-msgbox{
+    height: 100%;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+.battle-msgVS{
+    height: 80%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useEffect } from "react";
+import React, { ReactNode, useState, useEffect } from "../../node_modules/react";
 import { data, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Home from "./home";
 import "../assets/css/Battle.css"
@@ -14,13 +14,11 @@ import { useWebSocketContext } from "../components/WebSocketManager.tsx";
 import { useBattleManagerContext } from "../components/BattleManager.tsx";
 
 const Battle = () => {
-    // TODO:自動遷移
-    //TODO:技選択、実行の実装
     //TODO:技を受けた時の実装
     const location = useLocation();
     const navigate = useNavigate()
     const { sendMessage, isConnected, subscribe, unsubscribe } = useWebSocketContext();
-    const { userid, battleid, mycards, opponetcards,thisturn,thisturncard,thisturnskillindex,thisturntarget } = useBattleManagerContext();
+    const { userid, battleid, mycards, opponetcards, thisturn, thisturncard, thisturnskillindex, thisturntarget, game_continue, thisturnHistory } = useBattleManagerContext();
     // 敵カード
     const [battleopponetcards, setBattleOpponentcards] = useState([]);
     // myカード
@@ -28,54 +26,118 @@ const Battle = () => {
     // smallcardsに渡す用
     const [alltargetcards, setAlltargetcards] = useState([]);
     // field card用
-    const [fieldcardStatus,setFieldcardstatus]=useState();
-    useEffect(()=>{
-        if(thisturn&&isConnected){
+    const [fieldcardStatus, setFieldcardstatus] = useState(null);
+
+    const [gamefield_msgindex, setGamefield_msgindex] = useState(-1);
+    const [gamefield_msg, setGamefield_msg] = useState("");
+
+    // 画面遷移
+    useEffect(() => {
+        const changePage = () => {
+            navigate("/result", { state: { frombutton: true } })
+        };
+        if (!location.state?.frombutton) {
+            return (<Navigate to={"/home"} replace />);
+        }
+        if (!game_continue) {
+            changePage()
+        }
+    }, [game_continue])
+
+    // 技送信
+    useEffect(() => {
+        if (thisturn && isConnected) {
             setFieldcardstatus(thisturncard)
-            console.log(JSON.stringify({
-                "status":"set_skill",
-                "userid":userid,
-                "battleid":battleid,
-                "cardid":thisturncard.id,
-                "skillnum":thisturnskillindex,
-                "targetcardid":thisturntarget
-            }))
+
             sendMessage(JSON.stringify({
-                "status":"set_skill",
-                "userid":userid,
-                "battleid":battleid,
-                "cardid":thisturncard.id,
-                "skillnum":thisturnskillindex,
-                "targetcardid":thisturntarget
+                "status": "set_skill",
+                "userid": userid,
+                "battleid": battleid,
+                "cardid": thisturncard.id,
+                "skillnum": thisturnskillindex,
+                "targetcardid": thisturntarget
             }))
         }
-    },[thisturn])
-    
+    }, [thisturn])
+
+
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setGamefield_msgindex(prev => {
+                if (prev < thisturnHistory.length - 1) {
+                    return prev + 1
+                } else {
+                    clearInterval(interval)
+                    setFieldcardstatus(null)
+
+                    return -1
+                }
+            });
+            // setGamefield_msg(prev=>{
+            //     if(prev<thisturnHistory.length-1 && thisturnHistory!=null){
+            //         return thisturnHistory[prev+1]["msg"]
+            //     }else{
+            //         clearInterval(interval)
+            //         setFieldcardstatus(null)
+
+            //         return ""
+            //     }
+            // })
+        }, 1000);
+
+    }, [thisturnHistory])
+    useEffect(() => {
+        if (gamefield_msgindex === -1) {
+            setGamefield_msg("")
+            return
+        }
+        console.log(thisturnHistory[gamefield_msgindex]["msg"])
+        setGamefield_msg(thisturnHistory[gamefield_msgindex]["msg"])
+    }, [gamefield_msgindex])
+
+    // 自分のカードと相手のカードの画面更新
     useEffect(() => {
         setBattleOpponentcards(opponetcards[1])
         setBattleMycards(mycards)
+
         // setAllcards(battlemycards.concat(battleopponetcards))
     }, [mycards, opponetcards])
-    useEffect(() => {
 
-        const cards:any[]=[]
+    // 自動的にカードをまとめる
+    useEffect(() => {
+        const cards: any[] = []
         for (let i = 0; i < battlemycards.length; i++) {
             const card = battlemycards[i]
             cards.push([card["id"], card["name"], "my"])
         }
         for (let i = 0; i < battleopponetcards.length; i++) {
             const card = battleopponetcards[i]
-            cards.push([card["cardid"], card["charaname"], "op"])
+            console.log(card["cardid"])
+            if (typeof card["cardid"] == "string") {
+                cards.push([card["cardid"], card["charaname"], "op"])
+            } else {
+                cards.push([card["cardid"].toString(), card["charaname"], "op"])
+            }
         }
         setAlltargetcards(cards);
     }, [battlemycards, battleopponetcards])
 
-    const changePage = () => {
-        navigate("/result", { state: { frombutton: true } })
-    };
-    if (!location.state?.frombutton) {
-        return (<Navigate to={"/home"} replace />);
-    }
+    useEffect(() => {
+        if(gamefield_msgindex){
+            return
+        }
+        console.log(battleopponetcards)
+        const opcard: any[] = [...battleopponetcards]
+        opcard.map((item, index) => {
+            console.log(item)
+            console.log(thisturnHistory[gamefield_msgindex]["cards"]["player2"][index]["charactorStatus"]["hp"])
+            item["hp"] = thisturnHistory[gamefield_msgindex]["cards"]["player2"][index]["charactorStatus"]["hp"]
+        })
+        console.log(opcard)
+        setBattleOpponentcards(opcard)
+        // gamefield_msg=thisturnHistory[i][]
+    }, [gamefield_msgindex])
 
     const container = {
         hidden: {
@@ -126,11 +188,6 @@ const Battle = () => {
                             ></EnemyCard>
                         ))
                     }
-                    {/* <EnemyCard cardSize={enemyCardSize}></EnemyCard>
-                    <EnemyCard cardSize={enemyCardSize}></EnemyCard>
-                    <EnemyCard cardSize={enemyCardSize}></EnemyCard>
-                    <EnemyCard cardSize={enemyCardSize}></EnemyCard>
-                    <EnemyCard cardSize={enemyCardSize}></EnemyCard> */}
 
                 </div>
                 <div class="battle-field">
@@ -139,15 +196,27 @@ const Battle = () => {
                         <span>Your Card</span>
                         <Card cardSize={250}
                             style={{ width: 2 }}
-                            // name={fieldcardStatus.name?fieldcardStatus.name:"Card name"}
-                            // type={fieldcardStatus.status["role"]?fieldcardStatus.status["role"]:null}
-                            // hp={fieldcardStatus.status["hp"]?fieldcardStatus.status["hp"]:null}
-                            // attack={fieldcardStatus.status["attack"]?fieldcardStatus.status["attack"]:"?"}
-                            // defence={fieldcardStatus.status["defence"]?fieldcardStatus.status["defence"]:"?"}
-                            // speed={fieldcardStatus.status["speed"]?fieldcardStatus.status["speed"]:"?"}
+                            name={(fieldcardStatus != null) ? fieldcardStatus.name : ""}
+                            types={fieldcardStatus != null ? fieldcardStatus.status["role"] : ""}
+                            hp={fieldcardStatus != null ? fieldcardStatus.status["hp"] : ""}
+                            attack={fieldcardStatus != null ? fieldcardStatus.status["attack"] : ""}
+                            defence={fieldcardStatus != null ? fieldcardStatus.status["defence"] : ""}
+                            speed={fieldcardStatus != null ? fieldcardStatus.status["speed"] : ""}
+                            img={fieldcardStatus != null ? fieldcardStatus.sketch : ""}
                         ></Card>
                     </div>
-                    <div>VS</div>
+                    <div class="battle-msgbox">
+                        <div class="battle-msgVS">
+                            <span>
+                                VS
+                                {/* <div class="arrow">&#8592;</div> */}
+                            </span>
+                        </div>
+                        <div>
+                            <span>{(thisturnHistory != null && gamefield_msgindex != -1) ? thisturnHistory[gamefield_msgindex]["msg"] : ""}</span>
+                            {/* <span>Aの攻撃！AはBにXXダメージを与えた</span> */}
+                        </div>
+                    </div>
                     <div class="Battle-fieldCard enemymenu">
                         <span>Enemy's Card</span>
                         <Card
@@ -169,7 +238,7 @@ const Battle = () => {
                     display: "flex",
                     "justify-content": "space-between"
                 }}>
-                    <div class="arrow" onclick="scrollCards(-1)">&#8592;</div>
+                    {/* <div class="arrow" onclick="scrollCards(-1)">&#8592;</div> */}
                     <CardWrapper className="CardsSlider">
                         {battlemycards.map((item, index) => (
                             <SmallCard
@@ -185,6 +254,7 @@ const Battle = () => {
                                 cardSize={myCardsize}
                                 skills={item.status["skills"]}
                                 targets={alltargetcards}
+                                nouse={thisturn}
                             ></SmallCard>
                         ))}
                         {/* <SmallCard id={1} cardSize={myCardsize}></SmallCard>
@@ -193,7 +263,7 @@ const Battle = () => {
                         <SmallCard id={4} cardSize={myCardsize}></SmallCard>
                         <SmallCard id={5} cardSize={myCardsize}></SmallCard> */}
                     </CardWrapper>
-                    <div class="arrow" onclick="scrollCards(1)">&#8594;</div>
+                    {/* <div class="arrow" onclick="scrollCards(1)">&#8594;</div */}
                 </div>
             </div>
 

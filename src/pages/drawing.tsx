@@ -1,6 +1,6 @@
 // import react,{useState} from "react";
 import { useLocation, Navigate, useNavigate } from "react-router-dom";
-import App from "../components/camvas.tsx";
+// import App from "../components/camvas.tsx";
 // import useWindowWidth from "../hooks/pageWidth.ts";
 import "../assets/css/Drawing.css"
 import "../assets/css/Cards.css"
@@ -305,7 +305,7 @@ const Drawing = () => {
         <div class="undermenubox">
           <div class="undermenu">
             <div class="card-slider">
-              <div class="arrow" onClick="scrollCards(-1)">&#8592;</div>
+              {/* <div class="arrow" onClick="scrollCards(-1)">&#8592;</div> */}
               <div class="cards-container drawing_cards" id="cardsContainer">
                 {
                   cardsEle.map((item, index) => (
@@ -323,7 +323,7 @@ const Drawing = () => {
                 }
 
               </div>
-              <div class="arrow" onClick="scrollCards(1)">&#8594;</div>
+              {/* <div class="arrow" onClick="scrollCards(1)">&#8594;</div> */}
             </div>
             <div class="gotobattlebox" onClick={changePage}>
               <span>Go to Battle</span>

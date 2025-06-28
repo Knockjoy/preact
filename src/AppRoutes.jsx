@@ -10,21 +10,21 @@ import { BattleManagerProvider } from "./components/BattleManager.tsx";
 import Waiting from "./pages/maching_wait.tsx";
 
 export const AppRoutes = () => {
-    return (
+    return (<WebSocketProvider>
         <BattleManagerProvider>
-            <WebSocketProvider>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/rules" element={<Rules />} />
-                    <Route path="/usersettings" element={<UserSettings />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/loading" element={<Waiting />} />
-                    <Route path="/result" element={<Result />} />
-                    <Route path="/drawing" element={<Drawing />} />
-                    <Route path="/battle" element={<Battle />} />
-                </Routes>
-            </WebSocketProvider>
-        </BattleManagerProvider>
+
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/rules" element={<Rules />} />
+                <Route path="/usersettings" element={<UserSettings />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/loading" element={<Waiting />} />
+                <Route path="/result" element={<Result />} />
+                <Route path="/drawing" element={<Drawing />} />
+                <Route path="/battle" element={<Battle />} />
+            </Routes>        </BattleManagerProvider>
+
+    </WebSocketProvider>
 
     )
 };

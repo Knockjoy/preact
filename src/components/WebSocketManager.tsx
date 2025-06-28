@@ -1,6 +1,6 @@
 // WebSocketContext.tsx
 import React, { createContext, useContext, useRef, useEffect, useState } from 'react';
-import {BattleManagerContext, useBattleManagerContext} from "./BattleManager.tsx"
+import { BattleManagerContext, useBattleManagerContext } from "./BattleManager.tsx"
 type MessageHandler = (message: MessageEvent) => void;
 
 type WebSocketContextType = {
@@ -21,7 +21,6 @@ export const WebSocketProvider = ({ children }) => {
   const socketRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
   const messageHandlersRef = useRef<Set<MessageHandler>>(new Set())
-  const {setUserid,setOpponentcards,setBattleid}=useBattleManagerContext();
   useEffect(() => {
     const socket = new WebSocket('ws://192.168.1.201:19004/ws');
     socketRef.current = socket;
@@ -32,22 +31,7 @@ export const WebSocketProvider = ({ children }) => {
     socket.onmessage = (e) => {
       if (!e.data.trim()) return;
       const data = JSON.parse(e.data);
-      const status = data["status"];
-      if (status == "firstConnect") {
-        setUserid(data["userid"]);
-      }
-      if (status == "match_found") {
-        const opinfo = [
-          data["opponet"], // userid
-          data["opponetcards"] //[cardid]
-        ];
-        setBattleid(data["battleid"])
-        setOpponentcards(opinfo)
-      }
-      // TODO:技実行されたらthisturn系をリセット
-
       messageHandlersRef.current.forEach((handler) => handler(data))
-
       console.log('Received:', e.data);
     };
 
