@@ -101,12 +101,12 @@ const SmallCard = (props: Props) => {
   const handleSendSkill = () => {
     detailHandler()
     const skill = document.querySelector<HTMLInputElement>("input[name='skill']:checked")!.value;
-    const target = targetselect?.current?.value
+    const target= document.querySelector<HTMLSelectElement>(`#selectbox-${mycard.id}`);
     const skillIndex=parseInt(skill)
     console.log(skill)
-    console.log(targetselect?.current?.value)
+    console.log(target?.value)
     if(!thisTurn.set){
-    SetSkill(mycard,skillIndex,targets.find((item)=>item.id==target)!)
+    SetSkill(mycard,skillIndex,targets.find((item)=>item.id==target?.value)!)
     }else{
       // TODO:技をせっていできなかった時
     }
@@ -227,7 +227,7 @@ const SmallCard = (props: Props) => {
               })}
             </div>
             <div className="select TargetSelecter">
-              <select name="target" className="item" style={{ "width": "100%" }} ref={targetselect} >
+              <select name="target" className="item" style={{ "width": "100%" }} id={`selectbox-${mycard.id}`} >
                 <option value="" style={{ "width": "100%" }}>targetを選択</option>
                 {targets.map((item, index) => (
                   <option value={item.id} style={{ "width": "100%" }}>{`${item.name}`}</option>

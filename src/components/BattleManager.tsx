@@ -195,7 +195,7 @@ export const BattleManagerProvider = ({ children }) => {
             "battleid": battle.id,
             "cardid": turn.card.id,
             "skillnum": turn.skill_num,
-            "targetcardid": turn.card.id
+            "targetcardid": turn.targetCard.id
         }))
 
     }
