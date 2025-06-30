@@ -4,10 +4,10 @@ import { BrowserRouter, useNavigate } from "react-router-dom";
 import "../assets/css/Home.css"
 import "../assets/fonts/Handlee.css"
 import pencil from "../assets/icons/pencil.png";
-import { ScrollImages } from "../components/ScrollImages.tsx";
-import Card from "../components/Card.tsx";
+import { ScrollImages } from "../components/ScrollImages";
+import Card from "../components/Card";
 import "../assets/fonts/Huninn.css";
-import SmallCard from "../components/SmallCard.tsx";
+import SmallCard from "../components/SmallCard";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -17,13 +17,13 @@ const Home = () => {
     };
     // ServerSocket();  
     return (
-        <div class="home">
-            <div class="HeaderBox"><div>Settings</div></div>
-            <div class="TitleBox">
-                <span class="Title handlee-regular">
+        <div className="home">
+            <div className="HeaderBox"><div>Settings</div></div>
+            <div className="TitleBox">
+                <span className="Title handlee-regular">
                     Let's start Sketch Card Battle
                 </span>
-                <img src={pencil} alt="pencil" class="titleIcon" />
+                <img src={pencil} alt="pencil" className="titleIcon" />
             </div>
             <motion.div
 
@@ -34,7 +34,7 @@ const Home = () => {
                 whileHover={{ y: 10 }}
                 className="DrawingButtonBox">
                 <div className="DrawingButton" onClick={changePage}>
-                    <span class="huninn-regular">Let's Drawing</span>
+                    <span className="huninn-regular">Let's Drawing</span>
                 </div>
                 {/* <button onClick={changePage}>let's drawing</button> */}
             </motion.div>

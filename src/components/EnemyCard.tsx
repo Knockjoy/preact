@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from "framer-motion";
 import "../assets/css/card.css"
-import Bar from '../components/Bar.tsx';
+import Bar from '../components/Bar';
 
 // Main App component
 const EnemyCard = (props) => {
@@ -33,7 +33,7 @@ const EnemyCard = (props) => {
                     </div>
                 </div>
                 <div className="text-content">
-                    <span class="price">{name}</span>
+                    <span className="price">{name}</span>
                     {/* <br /> */}
 
                     {/* <span class="status">HP </span> */}

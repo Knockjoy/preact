@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef, createRef } from 'react';
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useRef, createRef, useContext } from 'react';
+import { motion, Variants } from "framer-motion";
+import Modal from "react-modal";
 import "../assets/css/card.css";
 import sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20.svg";
 import sword from "../assets/icons/sword.png";
@@ -18,75 +19,35 @@ import sprint_16dp_2854C5_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/sprin
 import star_shine_16dp_321D71_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/star_shine_16dp_321D71_FILL0_wght400_GRAD0_opsz20.svg";
 import question_mark_16dp_434343_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/question_mark_16dp_434343_FILL0_wght400_GRAD0_opsz20.svg";
 import close_16dp_000000_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/close_16dp_000000_FILL0_wght400_GRAD0_opsz20.svg";
-import { useBattleManagerContext } from './BattleManager.tsx';
+import { BattleManagerContext, useBattleManagerContext } from './BattleManager';
+import { wait } from '@testing-library/user-event/dist/utils';
 // Main App component
-const SmallCard = (props) => {
-  // Destructure cardSize from props, with a default of 'medium'
-  let { cardSize = 300 } = props;
-  let { mycard = null } = props;
-  let { name = "name" } = props;
-  let { types = "Attack" } = props;
-  let { hp = 51 } = props;
-  let { attack = 52 } = props;
-  let { defence = 53 } = props;
-  let { speed = 54 } = props;
-  let { id = -1 } = props;
-  let { img = "" } = props;
-  let { skills = [] } = props;
-  let { targets = [] } = props;
-  let { nouse = false } = props;
-  const targetselect = useRef<HTMLSelectElement>(null);
-  const [role, setRole] = useState(null);
-  const { setThisturnskillindex, setThisturntarget, setThisturn, setThisturncard } = useBattleManagerContext();
-
-  
-  if (cardSize==null||cardSize==""||cardSize==-1){
+interface Props {
+  cardSize: number;
+  mycard: Card.MyCard;
+  targets: (Card.MyCard | Card.OpponentCard)[];
+}
+const SmallCard = (props: Props) => {
+  let cardSize = props.cardSize
+  const mycard = props.mycard
+  const targets = props.targets
+  const targetselect = useRef<HTMLSelectElement | null>(null);
+  const [role, setRole] = useState<string>("");
+  const [showDetail,setShowDetail]=useState(false)
+  const { SetSkill} = useContext(BattleManagerContext);
+  const { thisTurn,battle } = useContext(BattleManagerContext)
+  if (cardSize == null || cardSize == undefined || cardSize == -1) {
     cardSize = 300
   }
-    if (mycard==null||mycard==""||mycard==-1){
-    mycard = null
-  }
-    if (name==null||name==""||name==-1){
-    name = "name"
-  }
-    if (types==null||types==""||types==-1){
-    types = "Attack"
-  }
-    if (hp==null||hp==""||hp==-1){
-    hp = 51
-  }
-    if (attack==null||attack==""||attack==-1){
-    attack = 52
-  }
-    if (defence==null||defence==""||defence==-1){
-    defence = 53
-  }
-    if (speed==null||speed==""||speed==-1){
-    speed = 54
-  }
-    if (id==null||id==""||id==-1){
-    id = -1
-  }
-    if (img==null||img==""||img==-1){
-    img = ""
-  }
-    if (skills==null||skills==""||skills==-1){
-    skills = []
-  }
-    if (targets==null||targets==""||targets==-1){
-    targets = []
-  }
-    if (nouse==null||nouse==""||nouse==-1){
-    nouse = false
-  }
-    // Define an inline style object to apply the dynamic max-width
+
+  // Define an inline style object to apply the dynamic max-width
   const cardStyle = {
     maxWidth: `${cardSize}px`,
   };
-  useEffect(() => (console.log(targets)))
 
   const DetailMenu = styled.div`
-  &#detailMenu${id}{
+  &#detailMenu${mycard.id}{
+    // position:absolute;  
     // left: 50%;
     // top:50%;
     border:none;
@@ -95,33 +56,35 @@ const SmallCard = (props) => {
     background:rgba(0,0,0,0.7);
     margin:0;
     padding:0;
+    z-index:100;
+    display:none;
     }
   `;
 
   useEffect(() => {
-    if (types == "Attacker") {
+    if (mycard.role == "Attacker") {
       setRole(sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20)
       return
     }
-    if (types == "Guard") {
+    if (mycard.role == "Guard") {
       setRole(shield_16dp_2854C5_FILL0_wght400_GRAD0_opsz20)
       return
     }
-    if (types == "Healer") {
+    if (mycard.role == "Healer") {
       setRole(science_16dp_48752C_FILL0_wght400_GRAD0_opsz20)
       return
     }
-    if (types == "Speeder") {
+    if (mycard.role == "Speeder") {
       setRole(sprint_16dp_2854C5_FILL0_wght400_GRAD0_opsz20)
       return
     }
-    if (types == "Magician") {
+    if (mycard.role == "Magician") {
       setRole(star_shine_16dp_321D71_FILL0_wght400_GRAD0_opsz20)
       return
     }
     setRole(question_mark_16dp_434343_FILL0_wght400_GRAD0_opsz20)
-  }, [types, setRole])
-  const item = {
+  }, [mycard.role, setRole])
+  const item: Variants = {
     hidden: {
       y: 15
     },
@@ -131,96 +94,105 @@ const SmallCard = (props) => {
         duration: 0.4,
         ease: "easeInOut"
       }
-    }
+    },
+    wait:{}
   };
-
+  const detailHandler=()=>setShowDetail(!showDetail)
   const handleSendSkill = () => {
-    const skill = document.querySelector<HTMLInputElement>("input[name='skill']:checked")?.value;
-    const target = targetselect.current.value
+    detailHandler()
+    const skill = document.querySelector<HTMLInputElement>("input[name='skill']:checked")!.value;
+    const target = targetselect?.current?.value
+    const skillIndex=parseInt(skill)
     console.log(skill)
-    console.log(targetselect.current.value)
-    setThisturnskillindex(skill)
-    setThisturntarget(target)
-    setThisturn(true)
-    setThisturncard(mycard)
+    console.log(targetselect?.current?.value)
+    if(!thisTurn.set){
+    SetSkill(mycard,skillIndex,targets.find((item)=>item.id==target)!)
+    }else{
+      // TODO:技をせっていできなかった時
+    }
   };
 
   return (
     <motion.div
+    // TODO:技更新時にアニメーションしない
       variants={item}
       className="app-container" style={{ width: "20%" }}>
       <motion.button
-        class="Mbutton polaroid-card"
+        className="Mbutton polaroid-card"
         style={cardStyle}
         whileHover={{ y: -10 }}
-        popovertarget={`detailMenu${id}`}
-        popovertargetaction="show"
-        disable={nouse}
+        onClick={detailHandler}
+      // popoverTarget={`detailMenu${mycard.id}`}
+      // popoverTargetAction="hide"
+      // disabled={thisTurn.set}/
       >
         <div className="image-container">
-          {/* Placeholder SVG for the image */}
           <div className="image-placeholder">
-            <img src={role} class="typeIcon" alt="" />
-            <img src={img} alt="" style={{ "width": "100%" }} />
-            {/* <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M15 12V6a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM2 5a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H2zm3.5-3.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.496 7.422a.5.5 0 0 0-.8-.11l-3.23 2.923L2.5 7.644a.5.5 0 0 0-.646.002L.892 9.02a.5.5 0 0 0-.002.646L4 13.5l1.646-1.492a.5.5 0 0 0 .646-.002l3.23-2.923L13.108 14a.5.5 0 0 0 .798-.11l1.5-3a.5.5 0 0 0-.8-.11L13 9.422l-3.504-2.113z" />
-            </svg> */}
+            <img src={role} className="typeIcon" alt="" />
+            <img src={mycard.img} alt="" style={{ "width": "100%" }} />
           </div>
         </div>
         <div className="text-content smallName">
-          <span class="name">{name}</span>
+          <span className="name">{mycard.name}</span>
           <div style={{ "display": "flex" }}>
             <div style={{
               width: "50%",
               display: "flex",
-              "flex-direction": "column",
-              "align-items": "flex-start"
+              'flexDirection': "column",
+              'alignItems': "flex-start"
             }}>
               {/* TODO:数字と文字の間に空白 */}
-              <div class="smallStatus" >
+              <div className="smallStatus" >
                 <img src={heart} alt="" />
-                <span>{hp}</span>
+                <span>{mycard.hp.toString()}</span>
               </div>
-              <div class="smallStatus">
+              <div className="smallStatus">
                 <img src={sword} alt="" />
-                <span>{attack}</span>
+                <span>{mycard.attack.toString()}</span>
               </div>
             </div>
             <div style={{
               width: "50%",
               display: "flex",
-              "flex-direction": "column",
-              "align-items": "flex-start"
+              'flexDirection': "column",
+              'alignItems': "flex-start"
             }}>
-              <div class="smallStatus">
+              <div className="smallStatus">
                 <img src={shield} alt="" />
-                <span>{defence}</span>
+                <span>{mycard.defence.toString()}</span>
               </div>
-              <div class="smallStatus">
+              <div className="smallStatus">
                 <img src={boots} alt="" />
-                <span>{speed}</span>
+                <span>{mycard.speed.toString()}</span>
               </div>
             </div>
           </div>
         </div>
       </motion.button>
 
-      <DetailMenu class="BattleMenubox" id={`detailMenu${id}`} popover="auto">
-        {/* <button
+      {/* <DetailMenu className="BattleMenubox"> */}
+      {/* <Modal isOpen={true}  */}
+      {/* // className="BattleMenuBox" */}
+      {/* > */}
+      {/* <Modal  className="BattleMenubox"> */}
+      {/* <button
           popovertarget={`detailMenu${id}`}
           popovertargetaction="hidden"
           style={{ position: "absolute", width: "100vw", height: "100vh", "z-index": "0", "background": "none", padding: 0, margin: 0 }}>
 
         </button> */}
-        <div className="detailMenu">
+      <Modal style={{ "zIndex": "100" }} className="detailMenu" overlayClassName="overlay" isOpen={showDetail}>
+        <DetailMenu className='BattleMenuBox'>
+
           <div className="BattleMenu">
             <div style={{
               "display": "flex",
-              "flex-direction": " row-reverse"
+              'flexDirection': "row-reverse"
             }}>
               <button
-                popovertarget={`detailMenu${id}`}
-                popovertargetaction="hidden"
+              onClick={detailHandler}
+                // popoverTarget={`detailMenu${mycard.id}`}
+                // popoverTargetAction="hide"
                 style={{
                   "background": "none",
                   "padding": "0",
@@ -233,51 +205,52 @@ const SmallCard = (props) => {
             </div>
 
             <Card
-              name={name}
-              types={types}
-              hp={hp}
-              attack={attack}
-              defence={defence}
-              speed={speed}
-              img={img}
+              name={mycard.name}
+              types={mycard.role}
+              hp={mycard.hp.toString()}
+              attack={mycard.attack.toString()}
+              defence={mycard.defence.toString()}
+              speed={mycard.speed.toString()}
+              img={mycard.img}
             ></Card>
-            <span style={{ 'font-weight': "500", "font-size": "1.1em", "margin": "10px 0" }}>skills</span>
-            <div class="skill_choice">
-              {skills.map((item, index) => {
+            <span style={{ 'fontWeight': "500", 'fontSize': "1.1em", "margin": "10px 0" }}>skills</span>
+            <div className="skill_choice">
+              {mycard.skills.map((item, index) => {
                 return (
                   <div style={{ "display": "flex", "width": "100%" }}>
-                    <input value={index} type="radio" name="skill" id={`radio-${id}-${index}`} />
-                    <label class="SkillButton" id={`select-${id}-${index}`} for={`radio-${id}-${index}`}>{item["nickname"]}
-                      <div style={{ "color": "#3e3e3e" }}>{item["ex"]}</div>
+                    <input value={index} type="radio" name="skill" id={`radio-${mycard.id}-${index}`} />
+                    <label className="SkillButton" id={`select-${mycard.id}-${index}`} htmlFor={`radio-${mycard.id}-${index}`}>{item.nickname}
+                      <div style={{ "color": "#3e3e3e" }}>{item.ex}</div>
                     </label>
                   </div>
                 );
               })}
             </div>
-            <div class="select TargetSelecter">
-              <select name="target" class="item" style={{ "width": "100%" }} ref={targetselect} >
+            <div className="select TargetSelecter">
+              <select name="target" className="item" style={{ "width": "100%" }} ref={targetselect} >
                 <option value="" style={{ "width": "100%" }}>targetを選択</option>
                 {targets.map((item, index) => (
-                  <option value={item[0]} style={{ "width": "100%" }}>{`${item[1]}`}</option>
+                  <option value={item.id} style={{ "width": "100%" }}>{`${item.name}`}</option>
                 ))}
               </select>
-              {/* <div class="TargetSelecter"><div><img src={arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="" /></div>target</div> */}
 
             </div>
             <button
-              class="decision Mbutton"
+              className="decision Mbutton"
               style={{ width: "100%" }}
-              popovertarget={`detailMenu${id}`}
-              popovertargetaction="hidden"
               onClick={handleSendSkill}
             >
               決定
             </button>
 
           </div>
-        </div>
-      </DetailMenu>
-    </motion.div>
+        </DetailMenu>
+
+      </Modal>
+      {/* </div> */}
+      {/* </DetailMenu> */}
+      {/* </Modal> */}
+    </motion.div >
   );
 };
 

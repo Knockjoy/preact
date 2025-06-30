@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import "../assets/css/card.css";
 import sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/sports_mma_16dp_BB271A_FILL0_wght400_GRAD0_opsz20.svg";
 import shield_16dp_2854C5_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/shield_16dp_2854C5_FILL0_wght400_GRAD0_opsz20.svg";
@@ -12,7 +12,7 @@ import sword from "../assets/icons/sword.png";
 import shield from "../assets/icons/shield (1).png";
 import heart from "../assets/icons/heart.png";
 import boots from "../assets/icons/boot.png";
-import Card from '../components/Card.tsx';
+import Card from '../components/Card';
 import arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/arrow_drop_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
 import "../assets/css/smallCard.css";
 import "../assets/css/Battle.css";
@@ -31,7 +31,7 @@ const DrawingSmallCard = (props) => {
   const { defence = 53 } = props;
   const { speed = 54 } = props;
   const { id = -1 } = props;
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState("");
   const { img } = props;
   // Define an inline style object to apply the dynamic max-width
   const cardStyle = {
@@ -66,7 +66,7 @@ const DrawingSmallCard = (props) => {
     padding:0;
     }
   `;
-  const item = {
+  const item:Variants = {
     hidden: {
       y: 15
     },
@@ -84,11 +84,9 @@ const DrawingSmallCard = (props) => {
       variants={item}
       className="app-container" style={{ width: "20%" }}>
       <motion.button
-        class="Mbutton polaroid-card"
+        className="Mbutton polaroid-card"
         style={cardStyle}
         whileHover={{ y: -10 }}
-        popovertarget={`detailMenu${id}`}
-        popovertargetaction="show"
       >
         <div className="image-container">
           {/* Placeholder SVG for the image */}
@@ -96,7 +94,7 @@ const DrawingSmallCard = (props) => {
             <img src={
               role
             }
-              class="typeIcon" alt="" />
+              className="typeIcon" alt="" />
             <img src={img} alt="" style={{ "width": "100%" }} />
             {/* <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
               <path d="M15 12V6a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM2 5a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H2zm3.5-3.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.496 7.422a.5.5 0 0 0-.8-.11l-3.23 2.923L2.5 7.644a.5.5 0 0 0-.646.002L.892 9.02a.5.5 0 0 0-.002.646L4 13.5l1.646-1.492a.5.5 0 0 0 .646-.002l3.23-2.923L13.108 14a.5.5 0 0 0 .798-.11l1.5-3a.5.5 0 0 0-.8-.11L13 9.422l-3.504-2.113z" />
@@ -104,20 +102,20 @@ const DrawingSmallCard = (props) => {
           </div>
         </div>
         <div className="text-content smallName">
-          <span class="name">{name}</span>
+          <span className="name">{name}</span>
           <div style={{ "display": "flex" }}>
             <div style={{
               width: "50%",
               display: "flex",
-              "flex-direction": "column",
-              "align-items": "flex-start"
+              'flexDirection': "column",
+              'alignItems': "flex-start"
             }}>
               {/* TODO:数字と文字の間に空白 */}
-              <div class="smallStatus" >
+              <div className="smallStatus" >
                 <img src={heart} alt="" />
                 <span>{hp}</span>
               </div>
-              <div class="smallStatus">
+              <div className="smallStatus">
                 <img src={sword} alt="" />
                 <span>{attack}</span>
               </div>
@@ -125,14 +123,14 @@ const DrawingSmallCard = (props) => {
             <div style={{
               width: "50%",
               display: "flex",
-              "flex-direction": "column",
-              "align-items": "flex-start"
+              'flexDirection': "column",
+              'alignItems': "flex-start"
             }}>
-              <div class="smallStatus">
+              <div className="smallStatus">
                 <img src={shield} alt="" />
                 <span>{defence}</span>
               </div>
-              <div class="smallStatus">
+              <div className="smallStatus">
                 <img src={boots} alt="" />
                 <span>{speed}</span>
               </div>

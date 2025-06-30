@@ -6,7 +6,7 @@ const Cardbox=(props)=>{
         maxwidth:`${cardsize}px`
     };
 return (
-    <div class="app-container">
+    <div className="app-container">
     </div>
 );
 };

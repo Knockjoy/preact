@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../assets/css/UserSettings.css";
 import { useNavigate } from "react-router-dom";
-import { useWebSocketContext } from "../components/WebSocketManager.tsx"
-import { useBattleManagerContext } from "../components/BattleManager.tsx";
+import { useWebSocketContext } from "../components/WebSocketManager"
+import { useBattleManagerContext } from "../components/BattleManager";
 
 const UserSettings = () => {
     // TODO:エラー表示の作成
@@ -23,8 +23,8 @@ const UserSettings = () => {
 
 
     return (
-        <div class="usersettingsBox huninn-regular">
-            <div style={{ "font-size": "3em" }}><span>ニックネームを入力</span><span>✨</span></div>
+        <div className="usersettingsBox huninn-regular">
+            <div style={{ "fontSize": "3em" }}><span>ニックネームを入力</span><span>✨</span></div>
             <input type="text" onChange={(event) => { setNickname(event.target.value) }} id="nickname" />
             <div onClick={ChangePage}>決定 </div>
         </div>

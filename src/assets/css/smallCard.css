@@ -1,19 +1,21 @@
-.detailMenu{
-        display: flex;
+.detailMenu {
+    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     align-content: center;
-height: 100%;
-z-index: 3;
-/* width: 50%; */
+    height: 100%;
+    z-index: 100;
+    border-radius: 10px;
+    /* width: 50%; */
 }
-.Mbutton{
+
+.Mbutton {
     border: none;
     border-radius: 10px;
 }
 
-.name{
+.name {
     font-size: 1.5em;
     font-weight: 600;
     margin: 0 0 10px 0;
@@ -27,6 +29,6 @@ z-index: 3;
     font-size: 1.2em;
 }
 
-.smallName{
+.smallName {
     margin: 10px 0;
 }

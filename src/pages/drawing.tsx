@@ -7,7 +7,7 @@ import "../assets/css/Cards.css"
 import "../components/Card.tsx"
 import Card from "../components/Card.tsx";
 import SmallCard from "../components/SmallCard.tsx";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useContext } from "react";
 import * as fabric from "fabric";
 import { EraserBrush } from "@erase2d/fabric";
 import "../assets/css/Canvas.css";
@@ -22,39 +22,50 @@ import redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/redo_24
 import undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
 import { useWebSocketContext } from "../components/WebSocketManager.tsx";
 import DrawingSmallCard from "../components/DrawingSmallCard.tsx";
-import { useBattleManagerContext } from "../components/BattleManager.tsx";
+import { BattleManagerContext, useBattleManagerContext } from "../components/BattleManager.tsx";
 const DEFAULT_COLOR = "#000000";
 const DEFAULT_WIDTH = 10;
 
 
 const Drawing = () => {
   const { sendMessage, isConnected, subscribe, unsubscribe } = useWebSocketContext();
-  const { userid ,setMycards} = useBattleManagerContext()
+  const { userid, myCards: myCards ,battle_in} = useContext(BattleManagerContext)
   const canvasEl = useRef(null);
   const [canvas, setCanvas] = useState(null);
   const [width, setWidth] = useState(DEFAULT_WIDTH);
   const [color, setColor] = useState(DEFAULT_COLOR);
   const [picker, setPicker] = useState(DEFAULT_COLOR);
   const [cardslen, setCardslen] = useState(0);
+  const [drawingCards,setDrawingCards]=useState([...myCards])
   const [windowWidth, setWindowWidth] = useState();
   const [cardsEle, setCardsEle] = useState([]);
   const [cardids, setCardids] = useState([]);
-  useEffect(() => {
-    const handler = (e) => {
-      const data = e
-      console.log("receive data")
-      console.log(e)
-      const status = data["status"]
-      if (status == "cardCreated" && data["careateStatus"] == "success") {
-        console.log(data["cardid"])
-        setCardids([...cardids, data["cardid"]])
-        setCardsEle([...cardsEle, { id: data["cardid"], name: data["charaname"], sketch: data["sketch"], status: data["cardstatus"] }])
-      };
-    }
-    subscribe(handler);
-    return () => unsubscribe(handler);
 
-  }, [subscribe, unsubscribe, cardsEle]);
+  //画面更新用
+  useEffect(()=>{console.log(myCards);setDrawingCards(myCards);},[myCards]);
+  // useEffect(()=>{
+  //   const handler=(e)=>{
+  //     setDrawingCards(myCards)
+  //   }
+  //   subscribe(handler)
+  //   return ()=>unsubscribe(handler)
+  // },[subscribe,unsubscribe])
+  // useEffect(() => {
+  //   const handler = (e) => {
+  //     // const data = e
+  //     // console.log("receive data")
+  //     // console.log(e)
+  //     // const status = data["status"]
+  //     // if (status == "cardCreated" && data["careateStatus"] == "success") {
+  //     //   console.log(data["cardid"])
+  //     //   setCardids([...cardids, data["cardid"]])
+  //     //   setCardsEle([...cardsEle, { id: data["cardid"], name: data["charaname"], sketch: data["sketch"], status: data["cardstatus"] }])
+  //     // };
+  //   }
+  //   subscribe(handler);
+  //   return () => unsubscribe(handler);
+
+  // }, [subscribe, unsubscribe, cardsEle]);
   useEffect(() => {
     if (canvasEl.current === null) {
       return;
@@ -157,7 +168,12 @@ const Drawing = () => {
     canvas.freeDrawingBrush.width = 20;
   };
 
-  const [histories, setHistories] = useState({
+  interface brushHistory {
+    undo: any[],
+    redo: any[]
+  }
+
+  const [histories, setHistories] = useState<brushHistory>({
     undo: [],
     redo: [],
   });
@@ -247,8 +263,7 @@ const Drawing = () => {
 
   const navigate = useNavigate();
   const changePage = () => {
-    sendMessage(JSON.stringify({ "status": "battle_in", "cardids": cardids }))
-    setMycards(cardsEle)
+    battle_in()
     navigate("/loading", { state: { frombutton: true } })
   };
   const location = useLocation();
@@ -257,44 +272,44 @@ const Drawing = () => {
   }
 
   return (
-    <div class="boxbox .huninn-regular">
+    <div className="boxbox .huninn-regular">
       <div className="SideGap"></div>
-      <div class="box">
+      <div className="box">
         {/* <button onClick={changePage}>go to battle</button> */}
         {/* <link rel="stylesheet" href="../assets/css/Drawing.css" /> */}
 
-        <div class="CanvasMenu">
+        <div className="CanvasMenu">
 
-          <div class="canvas">
+          <div className="canvas">
             <canvas ref={canvasEl} width={500} height={500} />
             {/* TODO:幅整える */}
           </div>
 
           <div className="RightMenu">
             <div className="ToolField">
-              <div class="ColorBox">
+              <div className="ColorBox">
                 <div className=""><SketchPicker color={picker} onChange={handleChange}></SketchPicker></div>
               </div>
-              <div class="ToolBox">
-                <div class="toolIconBox" onClick={changeToThick}>
-                <img src={border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="太くする"  />
+              <div className="ToolBox">
+                <div className="toolIconBox" onClick={changeToThick}>
+                  <img src={border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="太くする" />
                 </div>
-                <div class="toolIconBox" onClick={changeToThin}>
-                <img src={edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="細くする"  />
+                <div className="toolIconBox" onClick={changeToThin}>
+                  <img src={edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="細くする" />
                 </div>
-                <div class="toolIconBox" onClick={changeToEraser}>
-                <img src={ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="消しゴム"  />
+                <div className="toolIconBox" onClick={changeToEraser}>
+                  <img src={ink_eraser_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="消しゴム" />
                 </div>
-                <div class="toolIconBox" onClick={undo}>
-                <img src={undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="元に戻す"  />
+                <div className="toolIconBox" onClick={undo}>
+                  <img src={undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="元に戻す" />
                 </div>
-                <div class="toolIconBox" onClick={redo}>
-                <img src={redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="取り消し"  />
+                <div className="toolIconBox" onClick={redo}>
+                  <img src={redo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24} alt="取り消し" />
                 </div>
               </div>
             </div>
-            <div class="CreateCardButtonBox" onClick={Download2img}>
-              <div class="CreateCardButton">
+            <div className="CreateCardButtonBox" onClick={Download2img}>
+              <div className="CreateCardButton">
                 カードを作成
               </div>
             </div>
@@ -302,30 +317,30 @@ const Drawing = () => {
 
         </div>
 
-        <div class="undermenubox">
-          <div class="undermenu">
-            <div class="card-slider">
-              {/* <div class="arrow" onClick="scrollCards(-1)">&#8592;</div> */}
-              <div class="cards-container drawing_cards" id="cardsContainer">
+        <div className="undermenubox">
+          <div className="undermenu">
+            <div className="card-slider">
+              {/* <div className="arrow" onClick="scrollCards(-1)">&#8592;</div> */}
+              <div className="cards-container drawing_cards" id="cardsContainer">
                 {
-                  cardsEle.map((item, index) => (
+                  drawingCards.map((item, index) => (
                     <DrawingSmallCard
                       name={item.name}
-                      hp={item.status["hp"]}
-                      attack={item.status["attack"]}
-                      defence={item.status["defence"]}
-                      speed={item.status["speed"]}
-                      types={item.status["role"]}
+                      hp={item.hp}
+                      attack={item.attack}
+                      defence={item.defence}
+                      speed={item.speed}
+                      types={item.role}
                       cardSize={200}
-                      img={item.sketch}
+                      img={item.img}
                     ></DrawingSmallCard>
                   ))
                 }
 
               </div>
-              {/* <div class="arrow" onClick="scrollCards(1)">&#8594;</div> */}
+              {/* <div className="arrow" onClick="scrollCards(1)">&#8594;</div> */}
             </div>
-            <div class="gotobattlebox" onClick={changePage}>
+            <div className="gotobattlebox" onClick={changePage}>
               <span>Go to Battle</span>
             </div>
           </div>

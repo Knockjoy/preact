@@ -23,8 +23,8 @@ const Bar = ({ width,widthp=70,color="darkslateblue",point=-1 }) => {
     }
 
     return (
-        <BarContainer style={{display:"flex",width:`${widthp}%`,"align-items":"center"}}>
-            <span style={{position:"absolute",right:"0","z-index":"3",padding:"2px","font-size":"0.9em"}}>{pointStr}</span>
+        <BarContainer style={{zIndex:0,display:"flex",width:`${widthp}%`,'alignItems':"center"}}>
+            <span style={{position:"absolute",right:"0",'zIndex':"1",padding:"2px",'fontSize':"0.9em"}}>{pointStr}</span>
             <BarInnter style={{ width: `${width}%`,background:`${color}` }} />
         </BarContainer>
     )

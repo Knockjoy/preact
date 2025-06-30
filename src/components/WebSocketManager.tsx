@@ -1,6 +1,6 @@
 // WebSocketContext.tsx
 import React, { createContext, useContext, useRef, useEffect, useState } from 'react';
-import { BattleManagerContext, useBattleManagerContext } from "./BattleManager.tsx"
+import { BattleManagerContext, useBattleManagerContext } from "./BattleManager"
 type MessageHandler = (message: MessageEvent) => void;
 
 type WebSocketContextType = {
@@ -18,7 +18,7 @@ interface Dictionary<T> {
 }
 
 export const WebSocketProvider = ({ children }) => {
-  const socketRef = useRef(null);
+  const socketRef = useRef<WebSocket|null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const messageHandlersRef = useRef<Set<MessageHandler>>(new Set())
   useEffect(() => {

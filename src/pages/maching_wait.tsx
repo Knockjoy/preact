@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useWebSocketContext } from "../components/WebSocketManager.tsx";
+import { useWebSocketContext } from "../components/WebSocketManager";
 import { useLocation, Navigate, useNavigate } from 'react-router-dom';
 
 

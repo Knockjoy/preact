@@ -11,9 +11,9 @@ const Rules = () => {
         navigate("/usersettings", { state: { frombutton: true } })
     };
     return (
-        <div class="box">
-            <div class="RuleTitle"><span class="handlee-regular" style={{"font-weight":"550"}}>Rules</span><span>💡</span></div>
-            <div class="ruleex zen-maru-gothic-regular">
+        <div className="box">
+            <div className="RuleTitle"><span className="handlee-regular" style={{"fontWeight":"550"}}>Rules</span><span>💡</span></div>
+            <div className="ruleex zen-maru-gothic-regular">
                 <span>このゲームは絵を描いて自分だけのカードを作成して、バトルをする新感覚ゲームです。</span>
                 <br />
                 <span>1. このゲームのカードには4つの役職のうちの一つが割り当てられます！</span>

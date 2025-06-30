@@ -72,6 +72,8 @@
     background: black;
 }
   .BattleMenu{
+    z-index: 100;
+
     width: 40vw;
     height: 95%;
     background-color: #fff;
