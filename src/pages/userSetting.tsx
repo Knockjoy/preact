@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../assets/css/UserSettings.css";
 import { useNavigate } from "react-router-dom";
 import { useWebSocketContext } from "../components/WebSocketManager"
-import { useBattleManagerContext } from "../components/BattleManager";
+import { BattleManagerContext, useBattleManagerContext } from "../components/BattleManager";
 import { motion } from "framer-motion";
 import "../assets/css/inputs.css";
 import chevron_right_24dp_0F0F0F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/chevron_right_24dp_0F0F0F_FILL0_wght400_GRAD0_opsz24.svg"
@@ -15,14 +15,20 @@ const UserSettings = () => {
     const [nickname, setNickname] = useState("");
 
     const { sendMessage, isConnected } = useWebSocketContext();
-    const { userid } = useBattleManagerContext()
-
+    const { userid } = useContext(BattleManagerContext)
+    const [errormsg,setErrormsg]=useState("")
     const ChangePage = () => {
 
         if (nickname.trim() && isConnected) {
             sendMessage(JSON.stringify({ status: "usersetup", userid: userid, nickname: nickname }));
             navigate("/drawing", { state: { frombutton: true } })
         };
+        if (!isConnected){
+            setErrormsg("No connection to the Server.")
+        }
+        if (!nickname.trim()){
+            setErrormsg("名前を入力してください。")
+        }
     };
 
 
@@ -39,7 +45,12 @@ const UserSettings = () => {
             <motion.div whileHover={{ y: 10 }}
                 style={{ display: "flex", color: Colors.light.text }}
 
-                className="DrawingButton" onClick={ChangePage}>決定 <img src={chevron_right_24dp_0F0F0F_FILL0_wght400_GRAD0_opsz24} alt="" /></motion.div >
+                className="DrawingButton" onClick={ChangePage}>決定 <img src={chevron_right_24dp_0F0F0F_FILL0_wght400_GRAD0_opsz24} alt="" />
+                
+                </motion.div >
+        <div>
+            <span>{errormsg}</span>
+        </div>
         </div>
     );
 }

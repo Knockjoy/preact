@@ -255,7 +255,7 @@ const SmallCard = (props: Props) => {
                 <option value="" style={{ "width": "100%" }}>targetを選択</option>
                 {targets.map((item, index) => {
                   if (item.hp > 0) {
-                    return <option value={item.id} style={{ "width": "100%" }}>{`${item.name}`}</option>
+                    return <option value={item.id} style={{ "width": "100%" }}>{`${item.type=="my"?"(Mycard) ":""}${item.name}`}</option>
                   }
                 })}
               </select>

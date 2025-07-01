@@ -53,7 +53,8 @@ export const BattleManagerProvider = ({ children }) => {
                     myCards: myCards,
                     opponentCards: data["opponentcards"].map((item) =>({
                         ...item,
-                        hpmax:item["hp"]
+                        hpmax:item["hp"],
+                        type:"op"
                     }as Card.OpponentCard)),
                     opponentId: data["opponent"],
                     thisTurnHistory: [],
@@ -188,7 +189,8 @@ export const BattleManagerProvider = ({ children }) => {
             "speed": data["cardstatus"]["speed"],
             "skills": data["cardstatus"]["skills"],
             "role": data["cardstatus"]["role"],
-            "hpmax": data["cardstatus"]["hp"]
+            "hpmax": data["cardstatus"]["hp"],
+            "type":"my"
         }
         setMyCards(prev => [...prev, temp_card])
     }

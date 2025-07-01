@@ -1,6 +1,7 @@
 
 declare namespace Card {
     interface MyCard {
+        type:"my";
         img: string,
         name: string,
         id: string,
@@ -13,6 +14,7 @@ declare namespace Card {
         skills:Skill[]
         }
     interface OpponentCard{
+        type:"op";
         id:string,
         name:string,
         username:string,
