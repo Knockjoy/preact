@@ -22,7 +22,8 @@ export const WebSocketProvider = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const messageHandlersRef = useRef<Set<MessageHandler>>(new Set())
   useEffect(() => {
-    const socket = new WebSocket('ws://localhost:19004/ws');
+    const uri=window.location.hostname
+    const socket = new WebSocket(`ws://${uri}:19004/ws`);
     socketRef.current = socket;
 
     socket.onopen = () => { setIsConnected(true); sendMessage(JSON.stringify({ status: "::connect::" })); }

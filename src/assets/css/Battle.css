@@ -107,6 +107,16 @@
     border-radius: 10px;
     background-color: #4169e1;
   }
+
+  .decision:disabled{
+    filter: brightness(0.9);
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 10px;
+    margin-top: 30px;
+    border-radius: 10px;
+    background-color: #4169e1;
+  }
   .SkillName{
     font-size: 1.1em;
     font-weight: 400;
@@ -205,3 +215,5 @@ select:focus{
     justify-content: center;
     align-items: center;
 }
+
+

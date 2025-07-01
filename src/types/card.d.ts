@@ -6,9 +6,10 @@ declare namespace Card {
         id: string,
         role:string,
         hp: number,
-        attack: Number,
-        defence: Number,
-        speed: Number,
+        hpmax:number,
+        attack: number,
+        defence: number,
+        speed: number,
         skills:Skill[]
         }
     interface OpponentCard{
@@ -17,16 +18,18 @@ declare namespace Card {
         username:string,
         userId:string,
         img:string,
-        hp:Number
+        hp:number,
+        hpmax:number
+
     }
     interface Skill{
         name:string,
         nickname:string,
         ex:string,
-        lookturn:Number,
-        useTimes:Number,
-        nowlooktime:Number,
-        target_exist:boolean
+        lookturn:number,
+        useTimes:number,
+        nowlooktime:number,
+        target_exist:boolean,
     }
     }
 

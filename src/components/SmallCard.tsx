@@ -33,9 +33,12 @@ const SmallCard = (props: Props) => {
   const targets = props.targets
   const targetselect = useRef<HTMLSelectElement | null>(null);
   const [role, setRole] = useState<string>("");
-  const [showDetail,setShowDetail]=useState(false)
-  const { SetSkill} = useContext(BattleManagerContext);
-  const { thisTurn,battle } = useContext(BattleManagerContext)
+  const [showDetail, setShowDetail] = useState(false)
+  const { SetSkill } = useContext(BattleManagerContext);
+  const { thisTurn, battle } = useContext(BattleManagerContext)
+  const [selection, setSelection] = useState(false)
+  const [SkillButton, setSkillButton] = useState(false)
+  const [errormsg, setErrormsg] = useState(false)
   if (cardSize == null || cardSize == undefined || cardSize == -1) {
     cardSize = 300
   }
@@ -95,33 +98,50 @@ const SmallCard = (props: Props) => {
         ease: "easeInOut"
       }
     },
-    wait:{}
+    wait: {}
   };
-  const detailHandler=()=>setShowDetail(!showDetail)
+  const detailHandler = () => { setShowDetail(!showDetail); setErrormsg(false) }
   const handleSendSkill = () => {
-    detailHandler()
-    const skill = document.querySelector<HTMLInputElement>("input[name='skill']:checked")!.value;
-    const target= document.querySelector<HTMLSelectElement>(`#selectbox-${mycard.id}`);
-    const skillIndex=parseInt(skill)
-    console.log(skill)
+    const skill = document.querySelector<HTMLInputElement>("input[name='skill']:checked");
+    const target = document.querySelector<HTMLSelectElement>(`#selectbox-${mycard.id}`);
+    console.log(skill?.value)
     console.log(target?.value)
-    if(!thisTurn.set){
-    SetSkill(mycard,skillIndex,targets.find((item)=>item.id==target?.value)!)
-    }else{
+    if (!thisTurn.set && skill?.value != null && target?.value != null) {
+      const skillIndex = parseInt(skill!.value)
+      const targetCard: (Card.MyCard | Card.OpponentCard) = targets.find((item) => item.id == target!.value)!
+      SetSkill(mycard, skillIndex, targetCard)
+      detailHandler()
+
+    } else {
+      setErrormsg(true)
       // TODO:技をせっていできなかった時
     }
   };
 
+  const selectHandle = (e) => {
+    console.log(e)
+    if (e.target.value != null || e.target.value != "") {
+      setSelection(true)
+    }
+  }
+
+  const skillbuttonHandle = (e) => {
+
+    setSkillButton(true)
+  }
+
+
   return (
     <motion.div
-    // TODO:技更新時にアニメーションしない
-      variants={item}
+      // TODO:技更新時にアニメーションしない
+      // variants={item}
       className="app-container" style={{ width: "20%" }}>
       <motion.button
-        className="Mbutton polaroid-card"
+        className={(mycard.hp <= 0) ? "Mbutton polaroid-card-disabled" : "Mbutton polaroid-card"}
         style={cardStyle}
-        whileHover={{ y: -10 }}
+        whileHover={(mycard.hp <= 0) || (thisTurn.set) ? {} : { y: -10 }}
         onClick={detailHandler}
+        disabled={(mycard.hp <= 0) || (thisTurn.set)}
       // popoverTarget={`detailMenu${mycard.id}`}
       // popoverTargetAction="hide"
       // disabled={thisTurn.set}/
@@ -190,7 +210,7 @@ const SmallCard = (props: Props) => {
               'flexDirection': "row-reverse"
             }}>
               <button
-              onClick={detailHandler}
+                onClick={detailHandler}
                 // popoverTarget={`detailMenu${mycard.id}`}
                 // popoverTargetAction="hide"
                 style={{
@@ -203,16 +223,20 @@ const SmallCard = (props: Props) => {
                 <img src={close_16dp_000000_FILL0_wght400_GRAD0_opsz20} alt="" style={{ scale: "2" }} />
               </button>
             </div>
+            <div style={{display:"flex",justifyContent:'center'}}>
+              <Card
+                style={{width:"30%"}}
+                name={mycard.name}
+                types={mycard.role}
+                hp={mycard.hp.toString()}
+                attack={mycard.attack.toString()}
+                defence={mycard.defence.toString()}
+                speed={mycard.speed.toString()}
+                img={mycard.img}
+                max={mycard.hpmax}
+              ></Card>
+            </div>
 
-            <Card
-              name={mycard.name}
-              types={mycard.role}
-              hp={mycard.hp.toString()}
-              attack={mycard.attack.toString()}
-              defence={mycard.defence.toString()}
-              speed={mycard.speed.toString()}
-              img={mycard.img}
-            ></Card>
             <span style={{ 'fontWeight': "500", 'fontSize': "1.1em", "margin": "10px 0" }}>skills</span>
             <div className="skill_choice">
               {mycard.skills.map((item, index) => {
@@ -229,9 +253,11 @@ const SmallCard = (props: Props) => {
             <div className="select TargetSelecter">
               <select name="target" className="item" style={{ "width": "100%" }} id={`selectbox-${mycard.id}`} >
                 <option value="" style={{ "width": "100%" }}>targetを選択</option>
-                {targets.map((item, index) => (
-                  <option value={item.id} style={{ "width": "100%" }}>{`${item.name}`}</option>
-                ))}
+                {targets.map((item, index) => {
+                  if (item.hp > 0) {
+                    return <option value={item.id} style={{ "width": "100%" }}>{`${item.name}`}</option>
+                  }
+                })}
               </select>
 
             </div>
@@ -242,7 +268,11 @@ const SmallCard = (props: Props) => {
             >
               決定
             </button>
-
+            <span
+              style={errormsg ? {} : { display: 'none' }}
+            >
+              {"すべての設定を完了させてください"}
+            </span>
           </div>
         </DetailMenu>
 

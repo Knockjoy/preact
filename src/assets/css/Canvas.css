@@ -25,6 +25,7 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     /* position: absolute; */
     z-index: 1;
     margin-top: 15px;
@@ -53,9 +54,7 @@
     padding: 1%;
 }
 
-.undermenubox {
-    width: 100vw;
-}
+
 
 .gotobattlebox {
     width: 15%;
@@ -100,6 +99,8 @@
 .CanvasMenu {
     display: flex;
     flex-direction: row;
+    width: 85%;
+    justify-content: space-evenly;
 }
 .RightMenu {
     display: flex;
@@ -110,14 +111,14 @@
 }
 
 .CreateCardButtonBox{
-    height: 100%;
+    height: 70%;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 .CreateCardButton{
-    width: 90%;
+    width: 100%;
     height: 80%;
     margin: 10px;
     text-align: center;

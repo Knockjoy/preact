@@ -2,18 +2,15 @@
 import { useLocation, Navigate, useNavigate } from "react-router-dom";
 // import App from "../components/camvas.tsx";
 // import useWindowWidth from "../hooks/pageWidth.ts";
-import "../assets/css/Drawing.css"
 import "../assets/css/Cards.css"
 import "../components/Card.tsx"
-import Card from "../components/Card.tsx";
-import SmallCard from "../components/SmallCard.tsx";
-import { useCallback, useEffect, useRef, useState, useContext } from "react";
+import React, { ReactNode, useCallback, useEffect, useRef, useState, useContext } from "react";
 import * as fabric from "fabric";
 import { EraserBrush } from "@erase2d/fabric";
 import "../assets/css/Canvas.css";
 import "../assets/css/Drawing.css"
-import useWindowWidth from "../hooks/pageWidth.ts";
-import useWindowHeight from "../hooks/pageHeight.ts";
+import useWindowWidth from "../hooks/pageWidth";
+import useWindowHeight from "../hooks/pageHeight";
 import { SketchPicker } from 'react-color';
 import edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/edit_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
 import border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/border_color_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg"
@@ -23,49 +20,32 @@ import undo_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/undo_24
 import { useWebSocketContext } from "../components/WebSocketManager.tsx";
 import DrawingSmallCard from "../components/DrawingSmallCard.tsx";
 import { BattleManagerContext, useBattleManagerContext } from "../components/BattleManager.tsx";
+import { Colors } from "../constants/Colors";
 const DEFAULT_COLOR = "#000000";
 const DEFAULT_WIDTH = 10;
 
 
 const Drawing = () => {
   const { sendMessage, isConnected, subscribe, unsubscribe } = useWebSocketContext();
-  const { userid, myCards: myCards ,battle_in} = useContext(BattleManagerContext)
+  const { userid, myCards: myCards, battle_in } = useContext(BattleManagerContext)
   const canvasEl = useRef(null);
-  const [canvas, setCanvas] = useState(null);
+  const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [width, setWidth] = useState(DEFAULT_WIDTH);
   const [color, setColor] = useState(DEFAULT_COLOR);
   const [picker, setPicker] = useState(DEFAULT_COLOR);
   const [cardslen, setCardslen] = useState(0);
-  const [drawingCards,setDrawingCards]=useState([...myCards])
+  const [drawingCards, setDrawingCards] = useState([...myCards])
   const [windowWidth, setWindowWidth] = useState();
   const [cardsEle, setCardsEle] = useState([]);
   const [cardids, setCardids] = useState([]);
+  const [cardNickname, setCardNickname] = useState("");
+  const [createError, setCreateError] = useState("");
 
   //画面更新用
-  useEffect(()=>{console.log(myCards);setDrawingCards(myCards);},[myCards]);
-  // useEffect(()=>{
-  //   const handler=(e)=>{
-  //     setDrawingCards(myCards)
-  //   }
-  //   subscribe(handler)
-  //   return ()=>unsubscribe(handler)
-  // },[subscribe,unsubscribe])
-  // useEffect(() => {
-  //   const handler = (e) => {
-  //     // const data = e
-  //     // console.log("receive data")
-  //     // console.log(e)
-  //     // const status = data["status"]
-  //     // if (status == "cardCreated" && data["careateStatus"] == "success") {
-  //     //   console.log(data["cardid"])
-  //     //   setCardids([...cardids, data["cardid"]])
-  //     //   setCardsEle([...cardsEle, { id: data["cardid"], name: data["charaname"], sketch: data["sketch"], status: data["cardstatus"] }])
-  //     // };
-  //   }
-  //   subscribe(handler);
-  //   return () => unsubscribe(handler);
+  useEffect(() => { console.log(myCards); setDrawingCards(myCards); }, [myCards]);
 
-  // }, [subscribe, unsubscribe, cardsEle]);
+
+
   useEffect(() => {
     if (canvasEl.current === null) {
       return;
@@ -103,29 +83,36 @@ const Drawing = () => {
   };
 
   const Download2img = () => {
-    const dataURL = canvas.toDataURL({
-      format: "png",
-      quality: 1,
-    });
-    sendMessage(JSON.stringify({ status: "createCard", userID: userid, charaname: "sample", sketch: dataURL }))
-    setCardslen(cardslen + 1);
-    //init
-    setHistories({
-      undo: [],
-      redo: [],
-    });
-    canvas.clear();
-
+    if (cardslen < 5) {
+      const dataURL = canvas!.toDataURL({
+        multiplier: 1,
+        format: "png",
+        quality: 1,
+      });
+      const nickname = cardNickname == "" ? "Untitle" : cardNickname
+      sendMessage(JSON.stringify({ status: "createCard", userID: userid, charaname: nickname, sketch: dataURL }))
+      setCardslen(pre => pre + 1);
+      //init
+      setHistories({
+        undo: [],
+        redo: [],
+      });
+      canvas!.clear();
+      clearNickname();
+    }
+    else {
+      setCreateError("カードが作成できるのは5枚までです。")
+    }
   };
 
   const handleChange = (color_) => {
-    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-    canvas.freeDrawingBrush.width = width
+    canvas!.freeDrawingBrush = new fabric.PencilBrush(canvas!);
+    canvas!.freeDrawingBrush.width = width
     const r = parseInt(color_.rgb["r"], 10).toString(16).padEnd(2, "0");
     const g = parseInt(color_.rgb["g"], 10).toString(16).padEnd(2, "0");
     const b = parseInt(color_.rgb["b"], 10).toString(16).padEnd(2, "0");
     const colorCode = `#${r}${g}${b}`.toUpperCase();
-    canvas.freeDrawingBrush.color = colorCode;
+    canvas!.freeDrawingBrush.color = colorCode;
     setPicker(color_);
     setColor(colorCode);
   }
@@ -263,28 +250,29 @@ const Drawing = () => {
 
   const navigate = useNavigate();
   const changePage = () => {
-    battle_in()
-    navigate("/loading", { state: { frombutton: true } })
+    if (myCards.length == cardslen&&myCards.length==5) {
+      battle_in()
+      navigate("/loading", { state: { frombutton: true } })
+    } else {
+      setCreateError("カードの枚数が5枚でないです。")
+    }
   };
   const location = useLocation();
   if (!location.state?.frombutton) {
     return <Navigate to={"/home"} replace />
   }
 
+  const handleNickname = (e) => setCardNickname(e.target.value);
+  const clearNickname = () => setCardNickname("");
+
   return (
-    <div className="boxbox .huninn-regular">
+    <div className="boxbox .huninn-regular" color={Colors.light.text}>
       <div className="SideGap"></div>
-      <div className="box">
+      <div className="drawingbox">
         {/* <button onClick={changePage}>go to battle</button> */}
         {/* <link rel="stylesheet" href="../assets/css/Drawing.css" /> */}
 
         <div className="CanvasMenu">
-
-          <div className="canvas">
-            <canvas ref={canvasEl} width={500} height={500} />
-            {/* TODO:幅整える */}
-          </div>
-
           <div className="RightMenu">
             <div className="ToolField">
               <div className="ColorBox">
@@ -308,12 +296,31 @@ const Drawing = () => {
                 </div>
               </div>
             </div>
-            <div className="CreateCardButtonBox" onClick={Download2img}>
+
+          </div>
+          <div className="canvas">
+            <canvas ref={canvasEl} width={window.innerHeight * 0.55} height={window.innerHeight * 0.55} />
+            {/* TODO:幅整える */}
+          </div>
+          <div style={{ width: "30%" }}>
+            <input type="text" name="" id="" value={cardNickname} onChange={handleNickname} placeholder="カードのニックネームを記入" style={{ fontSize: "1.2em", padding: "10px", height: "25%", "margin": "10px", width: "100%" }} />
+
+            <div className="CreateCardButtonBox" onClick={Download2img} >
               <div className="CreateCardButton">
                 カードを作成
               </div>
+              <div style={{
+                fontSize: " 1.2em",
+                display: "flex",
+                margin: "10px",
+                height: "1.2em",
+              }}>
+                <span>{createError}</span>
+              </div>
             </div>
           </div>
+
+
 
         </div>
 
@@ -331,7 +338,7 @@ const Drawing = () => {
                       defence={item.defence}
                       speed={item.speed}
                       types={item.role}
-                      cardSize={200}
+                      cardSize={150}
                       img={item.img}
                     ></DrawingSmallCard>
                   ))

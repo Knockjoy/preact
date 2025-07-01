@@ -29,6 +29,22 @@
             /* Ensure rounded corners clip content */
           }
 
+
+          .polaroid-card-disabled {
+            filter: brightness(0.9);
+            background-color: #fff;
+            border-radius: 10px;
+            /* Slightly more rounded corners for the card */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            /* More pronounced, softer shadow */
+            padding: 10px 25px;
+            /* Generous inner padding for the white frame effect */
+            width: 100%;
+            /* Make it responsive */
+            text-align: left;
+            overflow: hidden;
+            /* Ensure rounded corners clip content */
+          }
           .image-container {
             width: 100%;
             padding-top: 100%;
@@ -145,7 +161,7 @@
             justify-content: space-between;
             display: flex;
             flex-direction: row;
-            margin: 10px;
+            margin: 3%;
           }
 
           .overlay {

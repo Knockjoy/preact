@@ -10,7 +10,7 @@ const EnemyCard = (props) => {
     const { img } = props;
     const {hp=0}=props;
     const {name="undefind"}=props;
-    
+    const {max=100}=props;
 
 
     // Define an inline style object to apply the dynamic max-width
@@ -19,10 +19,10 @@ const EnemyCard = (props) => {
     };
 
     return (
-        <div className="app-container" style={{width:"13%"}}>
+        <div className="app-container" style={{width:"9%"}}>
             <motion.div
-               
-                className="polaroid-card" style={cardStyle}>
+                
+                className={hp<=0?"polaroid-card-disabled polaroid-card":"polaroid-card"} style={cardStyle}>
                 <div className="image-container">
                     {/* Placeholder SVG for the image */}
                     <div className="image-placeholder">
@@ -37,7 +37,7 @@ const EnemyCard = (props) => {
                     {/* <br /> */}
 
                     {/* <span class="status">HP </span> */}
-                    <Bar width={100} widthp={70} point={hp} color='#A4DD00'></Bar>
+                    <Bar width={(hp/max)*100} widthp={70} point={hp} color='#A4DD00'></Bar>
                 </div>
             </motion.div>
         </div>

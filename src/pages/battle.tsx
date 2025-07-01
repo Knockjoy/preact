@@ -51,7 +51,7 @@ const Battle = () => {
         if (!screen.continue) {
             changePage()
         }
-    }, [battle.continue])
+    }, [screen.continue])
 
 
     useEffect(() => {
@@ -138,18 +138,23 @@ const Battle = () => {
     const CardWrapper = ({ className, children }: { className?: string, children?: ReactNode }) => {
         return (
             <motion.div
-                variants={container}
-                initial="hidden"
-                whileInView="show"
+            style={{width:"100%",justifyContent:"space-evenly"}}
+                // variants={container}
+                // initial="hidden"
+                // whileInView="show"
                 className={`${className}`}
             >
                 {children}
             </motion.div>
         );
     }
+    
+    const fieldCard={
+        width:"75%"
+    }
 
     const enemyCardSize = 180;
-    const myCardsize = 200;
+    const myCardsize = 170;
     return (
         <div className="Battle huninn-regular">
             {/* <h1>battle</h1> */}
@@ -159,7 +164,7 @@ const Battle = () => {
                     <span>対戦相手の名前</span>
                     <span>thinking...</span>
                 </div> */}
-                <div className="card-slider" style={{ 'justifyContent': "space-evenly" }}>
+                <div className="card-slider" style={{ 'justifyContent': "space-evenly",width:"90%" }}>
                     {
                         screen.opponentCards.map((item) => (
                             <EnemyCard
@@ -167,6 +172,7 @@ const Battle = () => {
                                 img={item.img}
                                 hp={item.hp}
                                 name={item.name}
+                                max={item.hpmax}
                             ></EnemyCard>
                         ))
                     }
@@ -175,9 +181,11 @@ const Battle = () => {
                 <div className="battle-field">
                     <div className="Battle-fieldCard">
                         {/* TODO:thisturn系を監視 */}
-                        <span>Your Card</span>
-                        <FieldCard cardSize={250}
-                            style={{ width: 2 }}
+                        <span style={{display:"none"}}>Your Card</span>
+                        <FieldCard 
+                            style={fieldCard}
+                            // cardSize={250}
+                            // style={{ width: 2 }}
                             // name={((thisTurn.card.name==null&&typeof thisTurn.card.name!="object")&&typeof thisTurn.card.name!="undefined")?thisTurn.card.name:""}
                             // img={((thisTurn.card.img!=null&&typeof thisTurn.card.img!="object")&&typeof thisTurn.card.img!="undefined")?thisTurn.card.img:""}
                             // types={((thisTurn.card.role!=null&&typeof thisTurn.card.role!="object")&&typeof thisTurn.card.role!="undefined")?thisTurn.card.role:""}
@@ -200,12 +208,14 @@ const Battle = () => {
                         </div>
                     </div>
                     <div className="Battle-fieldCard enemymenu">
-                        <span>Enemy's Card</span>
+                        <span style={{display:"none"}}>Enemy's Card</span>
                         <Card
-                            cardSize={250}
-                            style={{ width: 2 }}
+                            className=""
+                            // cardSize={250}
+                            // style={{ width: 2 }}
+                            style={fieldCard}
                             type="?"
-                            // hp="?"
+                            hp={-1}
                             attack="?"
                             defence="?"
                             speed="?"
@@ -217,6 +227,7 @@ const Battle = () => {
 
                 <div className="card-slider" style={{
                     height: "30vh",
+                    width:"90%",
                     display: "flex",
                     'justifyContent': "space-between"
                 }}>

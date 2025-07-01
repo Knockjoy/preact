@@ -16,9 +16,10 @@ import { BattleManagerContext } from './BattleManager';
 
 // Main App component
 const Card = (props) => {
-  const {thisTurn} = useContext(BattleManagerContext)
-  // Destructure cardSize from props, with a default of 'medium'
-  const { cardSize = 300 } = props;
+  const { thisTurn } = useContext(BattleManagerContext)
+  const { className = "" } = props;
+  const { style = {} } = props;
+  // const { cardSize = 300 } = props;
   const { name = "name" } = props;
   const { types = "Attack" } = props;
   const { hp = 51 } = props;
@@ -26,7 +27,9 @@ const Card = (props) => {
   const { defence = 53 } = props;
   const { speed = 54 } = props;
   const { img = "" } = props;
+  const { max = 100 } = props
   const [role, setRole] = useState("");
+  const par = (hp / max) * 100 < 0 ? 100 : (hp / max) * 100
 
   useEffect(() => {
     if (types == "Attacker") {
@@ -55,7 +58,7 @@ const Card = (props) => {
 
   // Define an inline style object to apply the dynamic max-width
   const cardStyle = {
-    maxWidth: `${cardSize}px`,
+    // maxWidth: `${cardSize}px`,
   };
   const game_motion: Variants = {
     wait: {},
@@ -86,8 +89,9 @@ const Card = (props) => {
       variants={game_motion}
       initial="wait"
       animate={motionState}
+      style={style}
       // animate="attack_motion"
-      className="app-container">
+      className={`app-container ${className}`}>
       <motion.div
         // whileHover={{ y: -10 }}
         className="polaroid-card" style={cardStyle}>
@@ -107,7 +111,7 @@ const Card = (props) => {
           <div className="statusBox">
             <span className="status">HP </span>
             {/* <span>{hp}</span> */}
-            <Bar width={100} widthp={90} point={hp} color='#A4DD00'></Bar>
+            <Bar width={par} widthp={90} point={hp} color='#A4DD00'></Bar>
           </div>
           <div className="statusBox">
             {/* <img src={sword} alt="" /> */}

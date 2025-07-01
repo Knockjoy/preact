@@ -4,10 +4,14 @@ import { BrowserRouter, useNavigate } from "react-router-dom";
 import "../assets/css/Home.css"
 import "../assets/fonts/Handlee.css"
 import pencil from "../assets/icons/pencil.png";
+
 import { ScrollImages } from "../components/ScrollImages";
 import Card from "../components/Card";
 import "../assets/fonts/Huninn.css";
 import SmallCard from "../components/SmallCard";
+import { Colors } from "../constants/Colors";
+import chevron_right_24dp_0F0F0F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/chevron_right_24dp_0F0F0F_FILL0_wght400_GRAD0_opsz24.svg"
+
 
 const Home = () => {
     const navigate = useNavigate();
@@ -18,26 +22,29 @@ const Home = () => {
     // ServerSocket();  
     return (
         <div className="home">
-            <div className="HeaderBox"><div>Settings</div></div>
+            <div className="HeaderBox"><div><span style={{color:Colors.light.text}}>Settings</span></div></div>
             <div className="TitleBox">
-                <span className="Title handlee-regular">
+                <span className="Title handlee-regular" color={Colors.light.text}>
                     Let's start Sketch Card Battle
                 </span>
                 <img src={pencil} alt="pencil" className="titleIcon" />
             </div>
             <motion.div
 
-            className="Gallery">
-                {/* <SmallCard skills={[{"nickname":"aaa","ex":"基礎解析学のテストは難しかったけど、点数が上がった"},{"nickname":"aaa","ex":"aaa"},{"nickname":"aaa","ex":"aaa"},{"nickname":"aaa","ex":"aaa"}]}></SmallCard> */}
+                className="Gallery">
             </motion.div>
-            <motion.div
-                whileHover={{ y: 10 }}
+            <div
                 className="DrawingButtonBox">
-                <div className="DrawingButton" onClick={changePage}>
-                    <span className="huninn-regular">Let's Drawing</span>
-                </div>
+                <motion.div
+                    whileHover={{ y: 10 }}
+                    className="DrawingButton" 
+                    onClick={changePage}
+                    style={{display:"flex"}}>
+                    <span className="huninn-regular" color={Colors.light.text}>Let's Drawing</span>
+                    <img src={chevron_right_24dp_0F0F0F_FILL0_wght400_GRAD0_opsz24} alt="" />
+                </motion.div>
                 {/* <button onClick={changePage}>let's drawing</button> */}
-            </motion.div>
+            </div>
         </div>);
 };
 

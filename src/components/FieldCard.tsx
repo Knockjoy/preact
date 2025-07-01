@@ -20,12 +20,16 @@ const FieldCard = (props) => {
   let { cardSize = 300 } = props;
   let { name = "name" } = thisTurn?.card;
   let { role = "Attack" } = thisTurn?.card;
-  let { hp = 51 } = thisTurn?.card;
-  let { attack = 52 } = thisTurn?.card;
-  let { defence = 53 } = thisTurn?.card;
-  let { speed = 54 } = thisTurn?.card;
+  let { hp = -1 } = thisTurn?.card;
+  let { attack = -1 } = thisTurn?.card;
+  let { defence = -1 } = thisTurn?.card;
+  let { speed = -1 } = thisTurn?.card;
   let { img = "" } = thisTurn?.card;
+  let {hpmax=100}=thisTurn?.card;
+  let {className=""}=props;
+  let {style}=props;
   let [role_, setRole] = useState("");
+  const par=(hp/hpmax)*100<0?100:(hp/hpmax)*100
 
   useEffect(() => {
     if(thisTurn.set)
@@ -94,19 +98,15 @@ const FieldCard = (props) => {
       initial="wait"
       animate={motionState}
       // animate="attack_motion"
-      className="app-container">
+      style={style}
+      className={`app-container ${className}`}>
       <motion.div
         // whileHover={{ y: -10 }}
         className="polaroid-card" style={cardStyle}>
         <div className="image-container">
-          {/* Placeholder SVG for the image */}
           <div className="image-placeholder">
             <img src={role_} className="typeIcon" alt="" />
             <img src={img} alt="" style={{ "width": "100%" }} />
-            {/* 
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M15 12V6a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM2 5a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H2zm3.5-3.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.496 7.422a.5.5 0 0 0-.8-.11l-3.23 2.923L2.5 7.644a.5.5 0 0 0-.646.002L.892 9.02a.5.5 0 0 0-.002.646L4 13.5l1.646-1.492a.5.5 0 0 0 .646-.002l3.23-2.923L13.108 14a.5.5 0 0 0 .798-.11l1.5-3a.5.5 0 0 0-.8-.11L13 9.422l-3.504-2.113z" />
-            </svg> */}
           </div>
         </div>
         <div className="text-content">
@@ -114,25 +114,25 @@ const FieldCard = (props) => {
           <div className="statusBox">
             <span className="status">HP </span>
             {/* <span>{hp}</span> */}
-            <Bar width={100} widthp={90} point={hp} color='#A4DD00'></Bar>
+            <Bar width={par} widthp={90} point={hp} color='#A4DD00'></Bar>
           </div>
           <div className="statusBox">
             {/* <img src={sword} alt="" /> */}
             <span className="status">ATK </span>
-            <span>{attack.toString()}</span>
+            <span>{attack>0?attack.toString():"-"}</span>
             {/* <Bar width={100} color='#D84040'></Bar> */}
 
           </div>
           <div className="statusBox">
             {/* <img src={shield} alt="" /> */}
             <span className="status">DEF </span>
-            <span>{defence.toString()}</span>
+            <span>{defence>0?defence.toString():"-"}</span>
             {/* <Bar width={100}></Bar> */}
 
           </div>
           <div className="statusBox">
             <span className="status">SPD </span>
-            <span>{speed.toString()}</span>
+            <span>{speed>0?speed.toString():"-"}</span>
             {/* <Bar width={100} color='#0D92F4'></Bar> */}
 
           </div>

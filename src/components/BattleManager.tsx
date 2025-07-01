@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useRef, Dispatch, SetStateAction } from "react"
 import { useWebSocketContext } from "./WebSocketManager";
+import Card from "./Card";
 
 export const BattleManagerContext = createContext({} as {
     userid: String;
@@ -50,7 +51,10 @@ export const BattleManagerProvider = ({ children }) => {
                     id: data["battleid"],
                     myId: userid,
                     myCards: myCards,
-                    opponentCards: data["opponentcards"],
+                    opponentCards: data["opponentcards"].map((item) =>({
+                        ...item,
+                        hpmax:item["hp"]
+                    }as Card.OpponentCard)),
                     opponentId: data["opponent"],
                     thisTurnHistory: [],
                     continue: true
@@ -61,102 +65,25 @@ export const BattleManagerProvider = ({ children }) => {
             if (status == "exec_battle") {
                 if (data["msg"] == "success") {
                     const battle_log = data["battle_log"];
-                    if (battle_log["game_status"] == "finish") {
-                        battle.continue = false; return;
-                    }
                     const player = data["players"]["player1"] == userid ? "player1" : "player2"
                     const opponent = player == "player1" ? "player2" : "player1"
+                    // if (battle_log["game_status"] == "finish") {
+                    //     battle.continue = false; 
+                    //     const temp_history=createHistory(battle_log["history"])
+                    //     return;
+                    // }
+                    if (battle_log["game_status"] == "finish") {
+                        const temp_battle = {
+                            ...battle,
+                            continue: false
+                        }
+                        setBattle(temp_battle)
+                    }
+
                     console.log(player)
                     console.log(opponent)
 
-                    const temp_history: (Battle.History.Skill | Battle.History.NextTurn | Battle.History.SysMsg)[] = battle_log["history"].map((item) => {
-                        if (item["status"] == "skill") {
-                            const temp_history_: Battle.History.Skill = {
-                                "type": "BattleHistorySkill",
-                                "msg": item["msg"],
-                                "executor": item["executor"],
-                                "target": item["target"],
-                                "myCards": battle.myCards.map((item_, index) => {
-                                    const temp_mycard: Card.MyCard = {
-                                        ...item_,
-                                        "skills": item_.skills.map((item__, index__) => {
-                                            return {
-                                                "ex": item__.ex,
-                                                "lookturn": parseInt(item["cards"][player][index]["skillStatus"][index__]["lookturn"]),
-                                                "name": item__.name,
-                                                "nickname": item__.nickname,
-                                                "target_exist": item__.target_exist,
-                                                "useTimes": item["cards"][player][index]["skillStatus"][index__]["usetimes"],
-                                                "nowlooktime": item["cards"][player][index]["skillStatus"][index__]["nowlooktime"]
-                                            } as Card.Skill
-                                        }),
-
-                                        "hp": item["cards"][player][index]["charactorStatus"]["hp"],
-                                        "attack": item["cards"][player][index]["charactorStatus"]["attack"],
-                                        "defence": item["cards"][player][index]["charactorStatus"]["defence"],
-                                        "speed": item["cards"][player][index]["charactorStatus"]["speed"],
-                                    }
-                                    return temp_mycard
-                                }),
-                                "opponentCards": battle.opponentCards.map((item_, index_) => {
-                                    const temp_opcard: Card.OpponentCard = {
-                                        "name": item_.name,
-                                        "id": item_.id,
-                                        "img": item_.img,
-                                        "userId": item_.userId,
-                                        "username": item_.username,
-                                        "hp": item["cards"][opponent][index_]["charactorStatus"]["hp"]
-                                    }
-                                    return temp_opcard
-                                }, [])
-                            }
-                            return temp_history_
-                        }
-                        if (item["status"] == "nextTurn") {
-                            const temp_history_: Battle.History.NextTurn = {
-                                "type": "BattleHistoryNextTurn",
-                                "msg": item["msg"],
-                                "target": item["target"],
-                                "myCards": battle.myCards.map((item_, index) => {
-                                    const temp_mycard: Card.MyCard = {
-                                        ...item_,
-                                        "skills": item_.skills.map((item__, index__) => {
-                                            return {
-                                                "ex": item__.ex,
-                                                "lookturn": parseInt(item["cards"][player][index]["skillStatus"][index__]["lookturn"]),
-                                                "name": item__.name,
-                                                "nickname": item__.nickname,
-                                                "target_exist": item__.target_exist,
-                                                "useTimes": item["cards"][player][index]["skillStatus"][index__]["usetimes"],
-                                                "nowlooktime": item["cards"][player][index]["skillStatus"][index__]["nowlooktime"]
-                                            } as Card.Skill
-                                        }),
-                                        "hp": item["cards"][player][index]["charactorStatus"]["hp"],
-                                        "attack": item["cards"][player][index]["charactorStatus"]["attack"],
-                                        "defence": item["cards"][player][index]["charactorStatus"]["defence"],
-                                        "speed": item["cards"][player][index]["charactorStatus"]["speed"],
-                                    }
-                                    return temp_mycard
-                                }),
-                                "opponentCards": battle.opponentCards.map((item_, index) => {
-                                    const temp_opcard: Card.OpponentCard = {
-                                        "name": item_.name,
-                                        "id": item_.id,
-                                        "img": item_.img,
-                                        "userId": item_.userId,
-                                        "username": item_.username,
-                                        "hp": item["cards"][opponent][index]["charactorStatus"]["hp"]
-                                    }
-                                    return temp_opcard
-                                }, [])
-                            }
-                            return temp_history_
-                        }
-                        if (item["status"] == "::nextturn::" || item["status"] == "::Confirmed::") {
-                            return { "type": "BattleHistorySysMsg", "msg": item["msg"] } as Battle.History.SysMsg
-                        }
-                    }
-                    )
+                    const temp_history: (Battle.History.Skill | Battle.History.NextTurn | Battle.History.SysMsg)[] = createHistory(battle_log["history"], player, opponent)
                     setThisTurnHistory(temp_history)
 
                 }
@@ -166,10 +93,86 @@ export const BattleManagerProvider = ({ children }) => {
         return () => unsubscribe(handler)
     }, [subscribe, unsubscribe, myCards, battle, thisTurn])
 
+    const createHistory = (historydata, player: string, opponent: string): (Battle.History.Skill | Battle.History.NextTurn | Battle.History.SysMsg)[] => {
+        return historydata.map((item) => {
+            if (item["status"] == "skill") {
+                const temp_history_: Battle.History.Skill = {
+                    "type": "BattleHistorySkill",
+                    "msg": item["msg"],
+                    "executor": item["executor"],
+                    "target": item["target"],
+                    "myCards": battle.myCards.map((item_, index) => {
+                        const temp_mycard: Card.MyCard = {
+                            ...item_,
+                            "skills": item_.skills.map((item__, index__) => {
+                                return {
+                                    ...item__,
+                                    "lookturn": parseInt(item["cards"][player][index]["skillStatus"][index__]["lookturn"]),
+                                    "useTimes": item["cards"][player][index]["skillStatus"][index__]["usetimes"],
+                                    "nowlooktime": item["cards"][player][index]["skillStatus"][index__]["nowlooktime"]
+                                } as Card.Skill
+                            }),
+                            "hp": item["cards"][player][index]["charactorStatus"]["hp"],
+                            "attack": item["cards"][player][index]["charactorStatus"]["attack"],
+                            "defence": item["cards"][player][index]["charactorStatus"]["defence"],
+                            "speed": item["cards"][player][index]["charactorStatus"]["speed"],
+                        }
+                        return temp_mycard
+                    }),
+                    "opponentCards": battle.opponentCards.map((item_, index_) => {
+                        const temp_opcard: Card.OpponentCard = {
+                            ...item_,
+                            "hp": item["cards"][opponent][index_]["charactorStatus"]["hp"]
+                        }
+                        return temp_opcard
+                    }, [])
+                }
+                return temp_history_
+            }
+            if (item["status"] == "nextTurn") {
+                const temp_history_: Battle.History.NextTurn = {
+                    "type": "BattleHistoryNextTurn",
+                    "msg": item["msg"],
+                    "target": item["target"],
+                    "myCards": battle.myCards.map((item_, index) => {
+                        const temp_mycard: Card.MyCard = {
+                            ...item_,
+                            "skills": item_.skills.map((item__, index__) => {
+                                return {
+                                    ...item__,
+                                    "lookturn": parseInt(item["cards"][player][index]["skillStatus"][index__]["lookturn"]),
+                                    "useTimes": item["cards"][player][index]["skillStatus"][index__]["usetimes"],
+                                    "nowlooktime": item["cards"][player][index]["skillStatus"][index__]["nowlooktime"]
+                                } as Card.Skill
+                            }),
+                            "hp": item["cards"][player][index]["charactorStatus"]["hp"],
+                            "attack": item["cards"][player][index]["charactorStatus"]["attack"],
+                            "defence": item["cards"][player][index]["charactorStatus"]["defence"],
+                            "speed": item["cards"][player][index]["charactorStatus"]["speed"],
+                        }
+                        return temp_mycard
+                    }),
+                    "opponentCards": battle.opponentCards.map((item_, index) => {
+                        const temp_opcard: Card.OpponentCard = {
+                            ...item_,
+                            "hp": item["cards"][opponent][index]["charactorStatus"]["hp"]
+                        }
+                        return temp_opcard
+                    }, [])
+                }
+                return temp_history_
+            }
+            if (item["status"] == "::nextturn::" || item["status"] == "::Confirmed::") {
+                return { "type": "BattleHistorySysMsg", "msg": item["msg"] } as Battle.History.SysMsg
+            }
+        }
+        )
+    }
+
     const setThisTurnHistory = (th: (Battle.History.Skill | Battle.History.NextTurn | Battle.History.SysMsg)[]) => {
-        const newHistory:Battle.State={
+        const newHistory: Battle.State = {
             ...battle,
-            thisTurnHistory:th
+            thisTurnHistory: th
         }
         setBattle(newHistory)
     }
@@ -184,11 +187,13 @@ export const BattleManagerProvider = ({ children }) => {
             "defence": data["cardstatus"]["defence"],
             "speed": data["cardstatus"]["speed"],
             "skills": data["cardstatus"]["skills"],
-            "role": data["cardstatus"]["role"]
+            "role": data["cardstatus"]["role"],
+            "hpmax": data["cardstatus"]["hp"]
         }
         setMyCards(prev => [...prev, temp_card])
     }
     const sendSkill = (turn: Battle.ThisTurn) => {
+        console.log(turn)
         sendMessage(JSON.stringify({
             "status": "set_skill",
             "userid": userid,
@@ -204,7 +209,7 @@ export const BattleManagerProvider = ({ children }) => {
             ...thisTurn,
             card,
             skill_num,
-            target_card: target_card,
+            "targetCard": target_card,
             set: true
         };
 
