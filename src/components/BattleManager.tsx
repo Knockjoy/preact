@@ -73,13 +73,13 @@ export const BattleManagerProvider = ({ children }) => {
                     //     const temp_history=createHistory(battle_log["history"])
                     //     return;
                     // }
-                    if (battle_log["game_status"] == "finish") {
-                        const temp_battle = {
-                            ...battle,
-                            continue: false
-                        }
-                        setBattle(temp_battle)
-                    }
+                    // if (battle_log["game_status"] == "finish") {
+                    //     const temp_battle = {
+                    //         ...battle,
+                    //         continue: false
+                    //     }
+                    //     setBattle(temp_battle)
+                    // }
 
                     console.log(player)
                     console.log(opponent)
@@ -170,7 +170,7 @@ export const BattleManagerProvider = ({ children }) => {
                 return {
                     "type": "BattleHistorySysMsg",
                     "msg": item["status"],
-                    "game_msg":item["msg"]
+                    "game_msg":item["msg"]["gamefinish"]
                 } as Battle.History.SysMsg
             }
         }

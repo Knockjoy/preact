@@ -106,7 +106,7 @@ const SmallCard = (props: Props) => {
     const target = document.querySelector<HTMLSelectElement>(`#selectbox-${mycard.id}`);
     console.log(skill?.value)
     console.log(target?.value)
-    if (!thisTurn.set && skill?.value != null && target?.value != null) {
+    if (!thisTurn.set && skill?.value != null && target?.value != null && target?.value!="") {
       const skillIndex = parseInt(skill!.value)
       const targetCard: (Card.MyCard | Card.OpponentCard) = targets.find((item) => item.id == target!.value)!
       SetSkill(mycard, skillIndex, targetCard)

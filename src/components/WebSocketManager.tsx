@@ -23,8 +23,8 @@ export const WebSocketProvider = ({ children }) => {
   const messageHandlersRef = useRef<Set<MessageHandler>>(new Set())
   useEffect(() => {
     const uri=window.location.hostname
-    // const socket = new WebSocket(`ws://${uri}:19004/ws`);
-    const socket = new WebSocket(`ws://${uri}:55239/ws`);
+    const socket = new WebSocket(`ws://${uri}:19004/ws`);
+    // const socket = new WebSocket(`ws://${uri}:55239/ws`);
 
     socketRef.current = socket;
 
