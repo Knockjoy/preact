@@ -57,6 +57,7 @@ const Battle = () => {
     useEffect(() => {
         console.log("bt log ")
         console.log(battle.thisTurnHistory)
+        let plueTimes=0;
         const interval = setInterval(() => {
             setGamefield_msgindex(prev => {
                 if (prev < battle.thisTurnHistory.length - 1) {
@@ -65,6 +66,7 @@ const Battle = () => {
                 } else {
                     clearInterval(interval)
                     setFieldcardstatus(null)
+                    // setBattle(screen)
                     setThisTurn({
                         "card": {} as Card.MyCard,
                         "set": false,
@@ -87,9 +89,12 @@ const Battle = () => {
         const log=battle.thisTurnHistory[gamefield_msgindex]
         // TODO:Skill,nextTurn,::Confirmed::,::nextTurn::
         console.log(log.msg)
-        setGamefield_msg(log.msg)
+        // setGamefield_msg(log.msg)
         switch(log.type){
             case "BattleHistorySkill":{
+                const interval=setInterval(() => {
+                    
+                }, 1000);
                 const skilllog:Battle.History.Skill=log
                 const newBT:Battle.State={
                     ...battle,

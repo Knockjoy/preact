@@ -14,7 +14,7 @@ declare namespace Battle {
     namespace History {
         interface Skill {
             type:"BattleHistorySkill";
-            msg: string,
+            msg: TurnMsg[],
             executor: Card.MyCard | Card.OpponentCard,
             target: Card.MyCard | Card.OpponentCard,
             myCards: Card.MyCard[],
@@ -23,7 +23,7 @@ declare namespace Battle {
 
         interface NextTurn {
             type:"BattleHistoryNextTurn",
-            msg: string,
+            msg: TurnMsg[],
             target:Card.MyCard|Card.OpponentCard,
             myCards: Card.MyCard[],
             opponentCards: Card.OpponentCard[]

@@ -51,11 +51,11 @@ export const BattleManagerProvider = ({ children }) => {
                     id: data["battleid"],
                     myId: userid,
                     myCards: myCards,
-                    opponentCards: data["opponentcards"].map((item) =>({
+                    opponentCards: data["opponentcards"].map((item) => ({
                         ...item,
-                        hpmax:item["hp"],
-                        type:"op"
-                    }as Card.OpponentCard)),
+                        hpmax: item["hp"],
+                        type: "op"
+                    } as Card.OpponentCard)),
                     opponentId: data["opponent"],
                     thisTurnHistory: [],
                     continue: true
@@ -99,7 +99,7 @@ export const BattleManagerProvider = ({ children }) => {
             if (item["status"] == "skill") {
                 const temp_history_: Battle.History.Skill = {
                     "type": "BattleHistorySkill",
-                    "msg": item["msg"],
+                    "msg": item["msg"].map((item) => ({ "msg": item["msg"], "motion": item["motion"]["motion"], "target": item["motion"]["target"] } as TurnMsg)),
                     "executor": item["executor"],
                     "target": item["target"],
                     "myCards": battle.myCards.map((item_, index) => {
@@ -133,7 +133,7 @@ export const BattleManagerProvider = ({ children }) => {
             if (item["status"] == "nextTurn") {
                 const temp_history_: Battle.History.NextTurn = {
                     "type": "BattleHistoryNextTurn",
-                    "msg": item["msg"],
+                    "msg": item["msg"].map((item) => ({ "msg": item["msg"], "motion": item["motion"]["motion"], "target": item["motion"]["target"] } as TurnMsg)),
                     "target": item["target"],
                     "myCards": battle.myCards.map((item_, index) => {
                         const temp_mycard: Card.MyCard = {
@@ -164,7 +164,10 @@ export const BattleManagerProvider = ({ children }) => {
                 return temp_history_
             }
             if (item["status"] == "::nextturn::" || item["status"] == "::Confirmed::") {
-                return { "type": "BattleHistorySysMsg", "msg": item["msg"] } as Battle.History.SysMsg
+                return {
+                    "type": "BattleHistorySysMsg",
+                    "msg": item["msg"],
+                } as Battle.History.SysMsg
             }
         }
         )
@@ -175,6 +178,7 @@ export const BattleManagerProvider = ({ children }) => {
             ...battle,
             thisTurnHistory: th
         }
+        console.log(newHistory)
         setBattle(newHistory)
     }
 
@@ -190,7 +194,7 @@ export const BattleManagerProvider = ({ children }) => {
             "skills": data["cardstatus"]["skills"],
             "role": data["cardstatus"]["role"],
             "hpmax": data["cardstatus"]["hp"],
-            "type":"my"
+            "type": "my"
         }
         setMyCards(prev => [...prev, temp_card])
     }
