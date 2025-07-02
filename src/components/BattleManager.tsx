@@ -85,6 +85,9 @@ export const BattleManagerProvider = ({ children }) => {
                     console.log(opponent)
 
                     const temp_history: (Battle.History.Skill | Battle.History.NextTurn | Battle.History.SysMsg)[] = createHistory(battle_log["history"], player, opponent)
+                    // if (battle_log["game_status"]=="finish"){
+                    //     temp_history.push({"type":"BattleHistorySysMsg","msg":battle_log["game_status"],"game_msg":battle_log["msg"]} as Battle.History.SysMsg)
+                    // }
                     setThisTurnHistory(temp_history)
 
                 }
@@ -133,7 +136,7 @@ export const BattleManagerProvider = ({ children }) => {
             if (item["status"] == "nextTurn") {
                 const temp_history_: Battle.History.NextTurn = {
                     "type": "BattleHistoryNextTurn",
-                    "msg": item["msg"].map((item) => ({ "msg": item["msg"], "motion": item["motion"]["motion"], "target": item["motion"]["target"] } as TurnMsg)),
+                    "msg": item["msg"],
                     "target": item["target"],
                     "myCards": battle.myCards.map((item_, index) => {
                         const temp_mycard: Card.MyCard = {
@@ -163,10 +166,11 @@ export const BattleManagerProvider = ({ children }) => {
                 }
                 return temp_history_
             }
-            if (item["status"] == "::nextturn::" || item["status"] == "::Confirmed::") {
+            if (item["status"] == "::nextturn::" || item["status"] == "::Confirmed::"||item["status"]=="::finish::") {
                 return {
                     "type": "BattleHistorySysMsg",
-                    "msg": item["msg"],
+                    "msg": item["status"],
+                    "game_msg":item["msg"]
                 } as Battle.History.SysMsg
             }
         }

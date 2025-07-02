@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useEffect, useContext } from "react";
+import React, { ReactNode, useState, useEffect, useContext, useRef } from "react";
 import { data, Navigate, useLocation, useNavigate } from "react-router-dom";
 import Home from "./home";
 import "../assets/css/Battle.css"
@@ -28,7 +28,7 @@ const Battle = () => {
 
     const [gamefield_msgindex, setGamefield_msgindex] = useState(-1);
     const [gamefield_msg, setGamefield_msg] = useState("");
-
+    const msgforward=useRef(true);
     const [screen,setScreen]=useState({
         "continue":true,
         "id":"",
@@ -60,7 +60,7 @@ const Battle = () => {
         let plueTimes=0;
         const interval = setInterval(() => {
             setGamefield_msgindex(prev => {
-                if (prev < battle.thisTurnHistory.length - 1) {
+                if (prev < battle.thisTurnHistory.length - 1&&msgforward.current) {
                     // update_ScreenWithhistory(battle.thisTurnHistory)
                     return prev + 1
                 } else {
@@ -92,8 +92,17 @@ const Battle = () => {
         // setGamefield_msg(log.msg)
         switch(log.type){
             case "BattleHistorySkill":{
+                let num=0;
                 const interval=setInterval(() => {
-                    
+                    if(num<log.msg.length-1){
+                        msgforward.current=false
+                        setGamefield_msg(log.msg[num].msg)
+                    }else{
+                        msgforward.current=false
+                        num=0
+                        clearInterval(interval)
+                    }
+                    num+=1
                 }, 1000);
                 const skilllog:Battle.History.Skill=log
                 const newBT:Battle.State={
@@ -111,7 +120,21 @@ const Battle = () => {
                     "opponentCards":nextTurnlog.opponentCards
                 }
                 setScreen(newBT)
+            };break;
+            case "BattleHistorySysMsg":{
+                
+                // 引き分け
+                if(log.msg=="draw"){
+                    setGamefield_msg("引き分け")
+                    
+                    
+                }
 
+                if(log.msg=="win"){
+                    setGamefield_msg("勝ち")
+                // log.game_msg
+                }
+                setScreen(battle)
             };break;
         }
     },[gamefield_msgindex])

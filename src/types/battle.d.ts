@@ -31,7 +31,8 @@ declare namespace Battle {
 
         interface SysMsg{
             type:"BattleHistorySysMsg",
-            msg:string
+            msg:string,
+            game_msg:string
         }
     }
 
