@@ -20,7 +20,7 @@ const Battle = () => {
     const location = useLocation();
     const navigate = useNavigate()
     const { sendMessage, isConnected, subscribe, unsubscribe } = useWebSocketContext();
-    const { userid, myCards: mycards, setThisTurn, battle,setBattle } = useContext(BattleManagerContext)
+    const { userid, myCards: mycards, setThisTurn, battle, setBattle } = useContext(BattleManagerContext)
     // smallcardsに渡す用
     const [alltargetcards, setAlltargetcards] = useState<(Card.MyCard | Card.OpponentCard)[]>([]);
     // field card用
@@ -29,17 +29,17 @@ const Battle = () => {
     const [gamefield_msgindex, setGamefield_msgindex] = useState(-1);
     const [gamefield_msg, setGamefield_msg] = useState("");
 
-    const [screen,setScreen]=useState({
-        "continue":true,
-        "id":"",
-        "myCards":[] as Card.MyCard[],
-        "opponentCards":[] as Card.OpponentCard[],
-        "myId":"",
-        "opponentId":"",
-        "thisTurnHistory":[]
-    }as Battle.State);
-    useEffect(()=>{setScreen(battle)},[])
-    useEffect(()=>{setScreen(battle)},[battle])
+    const [screen, setScreen] = useState({
+        "continue": true,
+        "id": "",
+        "myCards": [] as Card.MyCard[],
+        "opponentCards": [] as Card.OpponentCard[],
+        "myId": "",
+        "opponentId": "",
+        "thisTurnHistory": []
+    } as Battle.State);
+    useEffect(() => { setScreen(battle) }, [])
+    useEffect(() => { setScreen(battle) }, [battle])
     // 画面遷移
     useEffect(() => {
         const changePage = () => {
@@ -74,49 +74,59 @@ const Battle = () => {
                     return -1
                 }
             });
-            
+
         }, 1000);
 
     }, [battle.thisTurnHistory])
 
-    useEffect(()=>{
+    useEffect(() => {
         if (gamefield_msgindex === -1) {
             setGamefield_msg("")
             return
         }
-        const log=battle.thisTurnHistory[gamefield_msgindex]
+        const log = battle.thisTurnHistory[gamefield_msgindex]
         // TODO:Skill,nextTurn,::Confirmed::,::nextTurn::
         console.log(log.msg)
         setGamefield_msg(log.msg)
-        switch(log.type){
-            case "BattleHistorySkill":{
-                const skilllog:Battle.History.Skill=log
-                const newBT:Battle.State={
+        switch (log.type) {
+            case "BattleHistorySkill": {
+                const skilllog: Battle.History.Skill = log
+                const newBT: Battle.State = {
                     ...battle,
-                    "myCards":skilllog.myCards,
-                    "opponentCards":skilllog.opponentCards
+                    "myCards": skilllog.myCards,
+                    "opponentCards": skilllog.opponentCards
                 }
                 setScreen(newBT)
-            };break;
-            case "BattleHistoryNextTurn":{
-                const nextTurnlog:Battle.History.NextTurn=log
-                const newBT:Battle.State={
+            }; break;
+            case "BattleHistoryNextTurn": {
+                const nextTurnlog: Battle.History.NextTurn = log
+                const newBT: Battle.State = {
                     ...battle,
-                    "myCards":nextTurnlog.myCards,
-                    "opponentCards":nextTurnlog.opponentCards
+                    "myCards": nextTurnlog.myCards,
+                    "opponentCards": nextTurnlog.opponentCards
                 }
                 setScreen(newBT)
 
-            };break;
+            }; break;
+            case "BattleHistorySysMsg": {
+                const syslog: Battle.History.SysMsg = log
+                if (syslog.msg == "::finish::") {
+                    const newBT: Battle.State = {
+                        ...battle,
+                        continue: false
+                    }
+                    setScreen(newBT)
+                }
+            }; break;
         }
-    },[gamefield_msgindex])
+    }, [gamefield_msgindex])
 
     // 自動的にカードをまとめる
     useEffect(() => {
         console.log(battle)
-        let cards:(Card.MyCard|Card.OpponentCard)[] = []
-        cards=cards.concat(battle.myCards);
-        cards=cards.concat(battle.opponentCards)
+        let cards: (Card.MyCard | Card.OpponentCard)[] = []
+        cards = cards.concat(battle.myCards);
+        cards = cards.concat(battle.opponentCards)
         console.log(cards)
         setAlltargetcards(cards);
     }, [battle.myCards, battle.opponentCards])
@@ -138,7 +148,7 @@ const Battle = () => {
     const CardWrapper = ({ className, children }: { className?: string, children?: ReactNode }) => {
         return (
             <motion.div
-            style={{width:"100%",justifyContent:"space-evenly"}}
+                style={{ width: "100%", justifyContent: "space-evenly" }}
                 // variants={container}
                 // initial="hidden"
                 // whileInView="show"
@@ -148,9 +158,9 @@ const Battle = () => {
             </motion.div>
         );
     }
-    
-    const fieldCard={
-        width:"75%"
+
+    const fieldCard = {
+        width: "75%"
     }
 
     const enemyCardSize = 180;
@@ -164,7 +174,7 @@ const Battle = () => {
                     <span>対戦相手の名前</span>
                     <span>thinking...</span>
                 </div> */}
-                <div className="card-slider" style={{ 'justifyContent': "space-evenly",width:"90%" }}>
+                <div className="card-slider" style={{ 'justifyContent': "space-evenly", width: "90%" }}>
                     {
                         screen.opponentCards.map((item) => (
                             <EnemyCard
@@ -181,18 +191,18 @@ const Battle = () => {
                 <div className="battle-field">
                     <div className="Battle-fieldCard">
                         {/* TODO:thisturn系を監視 */}
-                        <span style={{display:"none"}}>Your Card</span>
-                        <FieldCard 
+                        <span style={{ display: "none" }}>Your Card</span>
+                        <FieldCard
                             style={fieldCard}
-                            // cardSize={250}
-                            // style={{ width: 2 }}
-                            // name={((thisTurn.card.name==null&&typeof thisTurn.card.name!="object")&&typeof thisTurn.card.name!="undefined")?thisTurn.card.name:""}
-                            // img={((thisTurn.card.img!=null&&typeof thisTurn.card.img!="object")&&typeof thisTurn.card.img!="undefined")?thisTurn.card.img:""}
-                            // types={((thisTurn.card.role!=null&&typeof thisTurn.card.role!="object")&&typeof thisTurn.card.role!="undefined")?thisTurn.card.role:""}
-                            // hp={((thisTurn.card.hp!=null&&typeof thisTurn.card.hp!="object")&&typeof thisTurn.card.hp!="undefined")?thisTurn.card.hp:""}
-                            // attack={((thisTurn.card.attack!=null&&typeof thisTurn.card.attack!="object")&&typeof thisTurn.card.attack!="undefined")?thisTurn.card.attack:""}
-                            // defence={((thisTurn.card.defence!=null&&typeof thisTurn.card.defence!="object")&&typeof thisTurn.card.defence!="undefined")?thisTurn.card.defence:""}
-                            // speed={((thisTurn.card.speed!=null&&typeof thisTurn.card.speed!="object")&&typeof thisTurn.card.speed!="undefined")?thisTurn.card.speed:""}
+                        // cardSize={250}
+                        // style={{ width: 2 }}
+                        // name={((thisTurn.card.name==null&&typeof thisTurn.card.name!="object")&&typeof thisTurn.card.name!="undefined")?thisTurn.card.name:""}
+                        // img={((thisTurn.card.img!=null&&typeof thisTurn.card.img!="object")&&typeof thisTurn.card.img!="undefined")?thisTurn.card.img:""}
+                        // types={((thisTurn.card.role!=null&&typeof thisTurn.card.role!="object")&&typeof thisTurn.card.role!="undefined")?thisTurn.card.role:""}
+                        // hp={((thisTurn.card.hp!=null&&typeof thisTurn.card.hp!="object")&&typeof thisTurn.card.hp!="undefined")?thisTurn.card.hp:""}
+                        // attack={((thisTurn.card.attack!=null&&typeof thisTurn.card.attack!="object")&&typeof thisTurn.card.attack!="undefined")?thisTurn.card.attack:""}
+                        // defence={((thisTurn.card.defence!=null&&typeof thisTurn.card.defence!="object")&&typeof thisTurn.card.defence!="undefined")?thisTurn.card.defence:""}
+                        // speed={((thisTurn.card.speed!=null&&typeof thisTurn.card.speed!="object")&&typeof thisTurn.card.speed!="undefined")?thisTurn.card.speed:""}
                         ></FieldCard>
                     </div>
                     <div className="battle-msgbox">
@@ -208,7 +218,7 @@ const Battle = () => {
                         </div>
                     </div>
                     <div className="Battle-fieldCard enemymenu">
-                        <span style={{display:"none"}}>Enemy's Card</span>
+                        <span style={{ display: "none" }}>Enemy's Card</span>
                         <Card
                             className=""
                             // cardSize={250}
@@ -227,7 +237,7 @@ const Battle = () => {
 
                 <div className="card-slider" style={{
                     height: "30vh",
-                    width:"90%",
+                    width: "90%",
                     display: "flex",
                     'justifyContent': "space-between"
                 }}>
@@ -235,9 +245,9 @@ const Battle = () => {
                     <CardWrapper className="CardsSlider">
                         {screen.myCards.map((item) => (
                             <SmallCard
-                            cardSize={myCardsize}    
-                            mycard={item}
-                            targets={alltargetcards}
+                                cardSize={myCardsize}
+                                mycard={item}
+                                targets={alltargetcards}
                             ></SmallCard>
                         ))}
                     </CardWrapper>
