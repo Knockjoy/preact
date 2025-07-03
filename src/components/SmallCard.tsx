@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, createRef, useContext } from 'react
 import { motion, Variants } from "framer-motion";
 import Modal from "react-modal";
 import "../assets/css/card.css";
-import sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20.svg";
+import sports_mma_16dp_EECECD_FILL0_wght400_GRAD0_opsz20 from "../assets/icons/sports_mma_16dp_BB271A_FILL0_wght400_GRAD0_opsz20.svg";
 import sword from "../assets/icons/sword.png";
 import shield from "../assets/icons/shield (1).png";
 import heart from "../assets/icons/heart.png";

@@ -3,7 +3,7 @@ import "../assets/css/Home.css"
 import { useNavigate } from "react-router-dom";
 import "../assets/fonts/Handlee.css"
 import "../assets/fonts/ZenMaru.css"
-import {motion} from "framer-motion"
+import { motion } from "framer-motion"
 import chevron_right_24dp_0F0F0F_FILL0_wght400_GRAD0_opsz24 from "../assets/icons/chevron_right_24dp_0F0F0F_FILL0_wght400_GRAD0_opsz24.svg"
 import { Colors } from "../constants/Colors";
 
@@ -18,34 +18,34 @@ const Rules = () => {
         <div className="box">
             <div className="RuleTitle"><span className="handlee-regular" style={{ "fontWeight": "550" }}>Rules</span><span>💡</span></div>
             <div className="ruleex zen-maru-gothic-regular">
-                <span>このゲームは絵を描いて自分だけのカードを作成して、バトルをする新感覚ゲームです。</span>
+                <span style={{fontSize:"1.5em"}}>このゲームは絵を描いて自分だけのカードを作成して、バトルをする新感覚ゲームです。</span>
                 <br />
-                <span>1. このゲームのカードには4つの役職のうちの一つが割り当てられます！</span>
+                <span style={{ fontSize: "1.3em" }}>1. このゲームのカードには3つの役職のうちの一つが割り当てられます！</span>
                 <div>
                     <div>
-                        <span>アタッカー</span>
-                    </div>
-
-                    <div>
-                        <span>アタッカー</span>
+                        <li><span style={{fontSize:"1.1em"}}>アタッカー (攻撃が得意)</span></li>
                     </div>
                     <div>
-                        <span>アタッカー</span>
+                        <li>
+                            <span style={{fontSize:"1.1em"}}>ヒーラー (回復が得意)</span>
+                        </li>
                     </div>
                     <div>
-                        <span>アタッカー</span>
+                        <li>
+                            <span style={{fontSize:"1.1em"}}>タンク (防御が得意)</span>
+                        </li>
                     </div>
                 </div>
                 <br />
-                <span>2. このゲームのカードにはhp,アタック,ディフェンス,スピードの四つのステータスがあり、これらのステータスをもとにゲームが進行します。</span>
+                <span style={{ fontSize: "1.3em" }}>2. このゲームのカードにはhp,アタック,ディフェンス,スピードの四つのステータスがあり、これらのステータスをもとにゲームが進行します。</span>
             </div>
             <motion.div
                 whileHover={{ y: 10 }}
-                style={{display:"flex"}}
+                style={{ display: "flex" }}
                 color={Colors.light.text}
                 className="DrawingButton huninn-regular" onClick={changePage}>
                 理解した！
-                    <img src={chevron_right_24dp_0F0F0F_FILL0_wght400_GRAD0_opsz24} alt="" />
+                <img src={chevron_right_24dp_0F0F0F_FILL0_wght400_GRAD0_opsz24} alt="" />
             </motion.div>
         </div>
     );

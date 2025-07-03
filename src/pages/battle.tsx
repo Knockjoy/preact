@@ -118,14 +118,8 @@ const Battle = () => {
                     setScreen(newBT)
                 }; break;
                 case "BattleHistorySysMsg": {
-                    // 引き分け
-                    if (log.game_msg == "draw") {
-                        setGamefield_msg("引き分け")
-                        // setFinishbattle(true)
-                    }
-                    if (log.game_msg == "win") {
-                        setGamefield_msg("勝ち")
-                        // setFinishbattle(true)
+                    if(log.msg=="finish"){
+                        setGamefield_msg(log.game_msg)
                     }
                     if (log.msg == "::confirmed::") {
                         const newBT: Battle.State = {
