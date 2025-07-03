@@ -40,7 +40,7 @@ const Drawing = () => {
   const [cardids, setCardids] = useState([]);
   const [cardNickname, setCardNickname] = useState("");
   const [createError, setCreateError] = useState("");
-
+  const maxCards=1
   //画面更新用
   useEffect(() => { console.log(myCards); setDrawingCards(myCards); }, [myCards]);
 
@@ -83,7 +83,7 @@ const Drawing = () => {
   };
 
   const Download2img = () => {
-    if (cardslen < 5) {
+    if (cardslen < maxCards) {
       const dataURL = canvas!.toDataURL({
         multiplier: 1,
         format: "png",
@@ -250,7 +250,7 @@ const Drawing = () => {
 
   const navigate = useNavigate();
   const changePage = () => {
-    if (myCards.length == cardslen&&myCards.length==5) {
+    if (myCards.length == cardslen&&myCards.length==maxCards) {
       battle_in()
       navigate("/loading", { state: { frombutton: true } })
     } else {

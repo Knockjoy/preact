@@ -85,9 +85,15 @@ export const BattleManagerProvider = ({ children }) => {
                     console.log(opponent)
 
                     const temp_history: (Battle.History.Skill | Battle.History.NextTurn | Battle.History.SysMsg)[] = createHistory(battle_log["history"], player, opponent)
-                    // if (battle_log["game_status"]=="finish"){
-                    //     temp_history.push({"type":"BattleHistorySysMsg","msg":battle_log["game_status"],"game_msg":battle_log["msg"]} as Battle.History.SysMsg)
-                    // }
+                    if (battle_log["game_status"]=="finish"){
+                        temp_history.push({"type":"BattleHistorySysMsg","msg":battle_log["game_status"],"game_msg":battle_log["msg"]["game_finish"]} as Battle.History.SysMsg)
+                        temp_history.push({"type":"BattleHistorySysMsg","msg":"::wait::","game_msg":""} as Battle.History.SysMsg)
+                        temp_history.push({"type":"BattleHistorySysMsg","msg":"::wait::","game_msg":""} as Battle.History.SysMsg)
+                        temp_history.push({"type":"BattleHistorySysMsg","msg":"::wait::","game_msg":""} as Battle.History.SysMsg)
+
+                        temp_history.push({"type":"BattleHistorySysMsg","msg":"::confirmed::","game_msg":""} as Battle.History.SysMsg)
+                        
+                    }
                     setThisTurnHistory(temp_history)
 
                 }

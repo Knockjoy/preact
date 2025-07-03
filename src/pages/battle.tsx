@@ -39,6 +39,8 @@ const Battle = () => {
         "opponentId": "",
         "thisTurnHistory": []
     } as Battle.State);
+
+    const [finishbattle, setFinishbattle] = useState(false);
     useEffect(() => { setScreen(battle) }, [])
     useEffect(() => { setScreen(battle) }, [battle])
     // 画面遷移
@@ -61,7 +63,7 @@ const Battle = () => {
         let plueTimes = 0;
         const interval = setInterval(() => {
             setIntervalUpdate(prev => {
-                if (prev < battle.thisTurnHistory.length - 1 && msgforward.current) {
+                if (prev < battle.thisTurnHistory.length - 1) {
                     // update_ScreenWithhistory(battle.thisTurnHistory)
                     return prev + 1
                 } else {
@@ -78,7 +80,7 @@ const Battle = () => {
                 }
             });
 
-        }, 1000);
+        }, 1500);
 
     }, [battle.thisTurnHistory])
 
@@ -87,60 +89,54 @@ const Battle = () => {
             setGamefield_msg("")
             return
         }
-        const log = battle.thisTurnHistory[intervalupdate]
-        // TODO:Skill,nextTurn,::Confirmed::,::nextTurn::
-        console.log(log.msg)
-        // setGamefield_msg(log.msg)
-        switch (log.type) {
-            case "BattleHistorySkill": {
-                let num = 0;
-                setGamefield_msg(log.msg[0].msg)
-                // const interval = setInterval(() => {
-                //     if (num < log.msg.length - 1) {
-                //         msgforward.current = false
-                //         setGamefield_msg(log.msg[num].msg)
-                //     } else {
-                //         msgforward.current = false
-                //         num = 0
-                //         clearInterval(interval)
-                //     }
-                //     num += 1
-                // }, 1000);
-                const skilllog: Battle.History.Skill = log
-                const newBT: Battle.State = {
-                    ...battle,
-                    "myCards": skilllog.myCards,
-                    "opponentCards": skilllog.opponentCards
-                }
-                setScreen(newBT)
-            }; break;
-            case "BattleHistoryNextTurn": {
-                const nextTurnlog: Battle.History.NextTurn = log
-                const newBT: Battle.State = {
-                    ...battle,
-                    "myCards": nextTurnlog.myCards,
-                    "opponentCards": nextTurnlog.opponentCards
-                }
-                setScreen(newBT)
-            }; break;
-            case "BattleHistorySysMsg": {
 
-            }
-                // 引き分け
-                if (log.game_msg == "draw") {
-                    setGamefield_msg("引き分け")
-                }
-                if (log.game_msg == "win") {
-                    setGamefield_msg("勝ち")
-                }
-                if (log.msg == "finish") {
+        else {
+            const log = battle.thisTurnHistory[intervalupdate]
+            console.log(log)
+            // TODO:Skill,nextTurn,::Confirmed::,::nextTurn::
+            // console.log(log.msg)
+            // setGamefield_msg(log.msg)
+            switch (log.type) {
+                case "BattleHistorySkill": {
+                    let num = 0;
+                    setGamefield_msg(log.msg[0].msg)
+                    const skilllog: Battle.History.Skill = log
                     const newBT: Battle.State = {
                         ...battle,
-                        continue: false
+                        "myCards": skilllog.myCards,
+                        "opponentCards": skilllog.opponentCards
                     }
                     setScreen(newBT)
-
                 }; break;
+                case "BattleHistoryNextTurn": {
+                    const nextTurnlog: Battle.History.NextTurn = log
+                    const newBT: Battle.State = {
+                        ...battle,
+                        "myCards": nextTurnlog.myCards,
+                        "opponentCards": nextTurnlog.opponentCards
+                    }
+                    setScreen(newBT)
+                }; break;
+                case "BattleHistorySysMsg": {
+                    // 引き分け
+                    if (log.game_msg == "draw") {
+                        setGamefield_msg("引き分け")
+                        // setFinishbattle(true)
+                    }
+                    if (log.game_msg == "win") {
+                        setGamefield_msg("勝ち")
+                        // setFinishbattle(true)
+                    }
+                    if (log.msg == "::confirmed::") {
+                        const newBT: Battle.State = {
+                            ...battle,
+                            continue: false
+                        };
+                        setScreen(newBT);
+                    }
+                }
+                    break;
+            }
         }
     }, [intervalupdate])
 
