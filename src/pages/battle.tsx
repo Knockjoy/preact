@@ -16,7 +16,6 @@ import FieldCard from "../components/FieldCard";
 
 const Battle = () => {
 
-    //TODO:技を受けた時の実装
     const location = useLocation();
     const navigate = useNavigate()
     const { sendMessage, isConnected, subscribe, unsubscribe } = useWebSocketContext();
@@ -25,6 +24,7 @@ const Battle = () => {
     const [alltargetcards, setAlltargetcards] = useState<(Card.MyCard | Card.OpponentCard)[]>([]);
     // field card用
     const [fieldcardStatus, setFieldcardstatus] = useState(null);
+    const [targetcard,setTargetcard]=useState<Card.MyCard|Card.OpponentCard|null>(null)
 
     const [intervalupdate, setIntervalUpdate] = useState(-1);
     const [historyIndex, setHistoryIndex] = useState(-1);
@@ -39,10 +39,10 @@ const Battle = () => {
         "opponentId": "",
         "thisTurnHistory": []
     } as Battle.State);
-
+    useEffect(()=>{document.documentElement.requestFullscreen()},[])
     const [finishbattle, setFinishbattle] = useState(false);
     useEffect(() => { setScreen(battle) }, [])
-    useEffect(() => { setScreen(battle) }, [battle])
+    // useEffect(() => { setScreen(battle) }, [battle])
     // 画面遷移
     useEffect(() => {
         const changePage = () => {
@@ -69,6 +69,7 @@ const Battle = () => {
                 } else {
                     clearInterval(interval)
                     setFieldcardstatus(null)
+                    setTargetcard(null)
                     // setBattle(screen)
                     setThisTurn({
                         "card": {} as Card.MyCard,
@@ -106,17 +107,21 @@ const Battle = () => {
                         "myCards": skilllog.myCards,
                         "opponentCards": skilllog.opponentCards
                     }
-                    setScreen(newBT)
-                }; break;
-                case "BattleHistoryNextTurn": {
-                    const nextTurnlog: Battle.History.NextTurn = log
-                    const newBT: Battle.State = {
-                        ...battle,
-                        "myCards": nextTurnlog.myCards,
-                        "opponentCards": nextTurnlog.opponentCards
+                    if(log.target.type=="op"){
+                    setTargetcard(log.target);
                     }
+
                     setScreen(newBT)
                 }; break;
+                // case "BattleHistoryNextTurn": {
+                //     const nextTurnlog: Battle.History.NextTurn = log
+                //     const newBT: Battle.State = {
+                //         ...battle,
+                //         "myCards": nextTurnlog.myCards,
+                //         "opponentCards": nextTurnlog.opponentCards
+                //     }
+                //     setScreen(newBT)
+                // }; break;
                 case "BattleHistorySysMsg": {
                     if(log.msg=="finish"){
                         setGamefield_msg(log.game_msg)
@@ -233,12 +238,12 @@ const Battle = () => {
                     <div className="Battle-fieldCard enemymenu">
                         <span style={{ display: "none" }}>Enemy's Card</span>
                         <Card
-                            className=""
+                            className={targetcard!=null?targetcard.name:""}
                             // cardSize={250}
                             // style={{ width: 2 }}
                             style={fieldCard}
                             type="?"
-                            hp={-1}
+                            hp={targetcard!=null?targetcard.hp:-1}
                             attack="?"
                             defence="?"
                             speed="?"

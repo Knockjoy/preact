@@ -114,7 +114,6 @@ const SmallCard = (props: Props) => {
 
     } else {
       setErrormsg(true)
-      // TODO:技をせっていできなかった時
     }
   };
 
@@ -133,7 +132,6 @@ const SmallCard = (props: Props) => {
 
   return (
     <motion.div
-      // TODO:技更新時にアニメーションしない
       // variants={item}
       className="app-container" style={{ width: "20%" }}>
       <motion.button

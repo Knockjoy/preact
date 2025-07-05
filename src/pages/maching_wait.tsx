@@ -14,19 +14,6 @@ const Waiting = () => {
         navigate("/battle", { state: { frombutton: true } });
     }
 
-    // useEffect(()=>{
-    //     const interval=setInterval(() => {
-    //         setIndex(prev=>prev+1);
-    //     }, 1000);
-    //     // return clearInterval(interval)
-    // },[])
-    // useEffect(()=>{
-    //     let msg="対戦相手を待っています."
-    //     for(let i=0;i<=index%4;i++){
-    //         msg+=" ."
-    //     }
-    //     setWaitmsg(msg)
-    // },[index])
     useEffect(() => {
         const handler = (e) => {
             const data = e;

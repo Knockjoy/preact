@@ -13,6 +13,7 @@ const Result = () => {
     const changePage = () => {
         navigate("/home");
         window.location.reload()
+        document.documentElement.requestFullscreen()
     };
     if (!location.state?.frombutton) {
         return <Navigate to="/home" replace />

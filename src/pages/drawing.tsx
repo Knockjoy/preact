@@ -40,7 +40,8 @@ const Drawing = () => {
   const [cardids, setCardids] = useState([]);
   const [cardNickname, setCardNickname] = useState("");
   const [createError, setCreateError] = useState("");
-  const maxCards=1
+  const maxCards=5
+  const [untitlenum,setUntitlenum]=useState(0)
   //画面更新用
   useEffect(() => { console.log(myCards); setDrawingCards(myCards); }, [myCards]);
 
@@ -50,7 +51,7 @@ const Drawing = () => {
     if (canvasEl.current === null) {
       return;
     }
-
+    // useEffect(()=>{document.documentElement.requestFullscreen()},)
     const canvas = new fabric.Canvas(canvasEl.current);
 
     setCanvas(canvas);
@@ -89,7 +90,14 @@ const Drawing = () => {
         format: "png",
         quality: 1,
       });
-      const nickname = cardNickname == "" ? "Untitle" : cardNickname
+      // const nickname = cardNickname == "" ? {return "Untitle"} : cardNickname
+      let nickname=""
+      if(cardNickname==""){
+        nickname=`Untitle${untitlenum}`;
+        setUntitlenum(prev=>prev+1);
+      }else{
+        nickname=cardNickname
+      }
       sendMessage(JSON.stringify({ status: "createCard", userID: userid, charaname: nickname, sketch: dataURL }))
       setCardslen(pre => pre + 1);
       //init
